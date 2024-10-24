@@ -46,18 +46,27 @@ OSTALI ZAHTJEVI
 
 # Tehnologije
 > React
+> 
 > Spring
+> 
 > PostgreSQL
 
 
 # Članovi tima 
 > Popis članova tima/linkovi/ glavni doprinos
+> 
 > Dario Jurgec / djurgec
+> 
 > Mihovil Mađerić / mihovil13
+> 
 > Zita Martinović / zita-m
+> 
 > Adi Stajku / asttajku
+> 
 > Borna Svjetličić / borna21
+> 
 > Adam Šinjori / aSinjori
+> 
 > Mia Zekić / miazze
 
 # Kontribucije
