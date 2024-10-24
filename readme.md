@@ -24,7 +24,13 @@ Kratko opisati cilj Vašeg projekta. Vaša motivacija?  (Napomena: odgovor nije 
 #Instalcija
 # Članovi tima 
 > Popis članova tima/linkovi/ glavni doprinos
->
+> Dario Jurgec / djurgec
+> Mihovil Mađerić / mihovil13
+> Zita Martinović / zita-m
+> Adi Stajku / asttajku
+> Borna Svjetličić / borna21
+> Adam Šinjori / aSinjori
+> Mia Zekić / miazze
 
 # Kontribucije
 >Pravila ovise o organizaciji tima i su često izdvojena u CONTRIBUTING.md
