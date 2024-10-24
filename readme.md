@@ -10,37 +10,37 @@
 > registracija: bilo tko, unese osnovne podatke i može birati je li učitelj ili učenik
 > adresa mora biti važeća (e-mail) -> autorizacija: OAuth 2.0 protokol koristeći tokene
   
-UČITELJ:
+> UČITELJ:
 > mora dodati podatke: koje jezike podučava, iskustvo, kvalifikacije, stil podučavanja, slika profila i satnica
 > mora se dodati funkcionalnost kalendara u kojem će si učitelji postaviti termine u kojima su slobodni za podučavanje --> za integraciju kalendara koristimo postojeća rješenja
 
-UČENIK:
+> UČENIK:
 > koje jezike želi učiti, svoju trenutnu razinu znanja [početna, srednja, napredna], preferirani stil podučavanja
 > mogu postaviti ciljeve učenja (npr. putovanje, poslovna komunikacija, priprema za ispit etc.)
 
-PRETRAGA:
+> PRETRAGA:
 > kad učenik pretražuje --> prvo se prikazuju učitelji po preferencijama svog profila
 > učenik može regulirati pretragu mijenjajući filtere pretrage --> nije ograničen na preference koje je postavio na svom profilu
 
-KATEGORIJE FILTRIRANJA: jezici, kvalifikacije, stil podučavanja, satnica i kalendar dostupnosti
+> KATEGORIJE FILTRIRANJA: jezici, kvalifikacije, stil podučavanja, satnica i kalendar dostupnosti
 
-PRONAŠLI SU SE UČITELJ I UČENIK:
+> PRONAŠLI SU SE UČITELJ I UČENIK:
 
-UČENIK: bira datum i vrijeme i šalje ZAHTJEV
+> UČENIK: bira datum i vrijeme i šalje ZAHTJEV
 
-UČITELJ: svaki zahtjev može prihvatiti ili odbiti
+> UČITELJ: svaki zahtjev može prihvatiti ili odbiti
 > učitelj je obaviješten o svakom zahtjevu za lekcijom, a učenik o svakom prihvaćanju zahtjeva [UČENIK NE DOBIVA OBAVIJEST AKO NIJE PRIHVAĆENO??]
 > nakon uspješnog dogovora, sastanak je evidentiran u kalendaru i otvara se mogućnost CHATa između učitelja i učenika
 > u chatu se mogu dogovoriti preko koje platforme će se održati lekcija, razmjena brojeva, načini plaćanja
 > za implementaciju chata: FreeChat
 
-KOMENTARI I RECENZIJE
+> KOMENTARI I RECENZIJE
 > ako učenik ima odrađenu BAREM jednu lekciju s određenim učiteljom, otvara se mogućnost ostavljanja komentara i ocjene na profilu učitelja
 > odrađene lekcije se ARHIVIRAJU, ne brišu! --> svaki korisnik ima uvid u svoje prijašnje lekcije (i učenik i učitelj)
 > na profilu učitelja prikazuje se BROJ učenika koje je podučavao i broj lekcija koje je održao
 > platformu održavaju sistemski administratori koji mogu upravljati korisnicima, uređivati i brisati profile
 
-OSTALI ZAHTJEVI
+> OSTALI ZAHTJEVI
 > aplikacija treba biti izvedena kao web aplikacija prilagođena mobilnom uređaju kojoj će registrirani korisnici pristupati uz pomoć korisničkog imena i lozinke
 > sustav treba podržati više korisnika u stvarnom vremenu
 
