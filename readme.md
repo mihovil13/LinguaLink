@@ -45,8 +45,11 @@ OSTALI ZAHTJEVI
 > sustav treba podržati više korisnika u stvarnom vremenu
 
 # Tehnologije
+> React
+> Spring
+> PostgreSQL
 
-#Instalcija
+
 # Članovi tima 
 > Popis članova tima/linkovi/ glavni doprinos
 > Dario Jurgec / djurgec
