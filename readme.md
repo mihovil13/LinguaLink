@@ -4,19 +4,19 @@
 > Aplikacija će omogućiti učenicima jezika pretragu, a zatim i spajanje s učiteljima koji će ih voditi kroz učenje jezika.
 
 
-# Funkcijski zahtjevi
+# Funkcijski zahtjevi:
 > uvid svih dostupnih učitelja i njihovih rasporeda dostupan je bez registracije
 > za sve ostale funkcionalnosti, korisnik se treba registrirati/prijavit u sustav
 > registracija: bilo tko, unese osnovne podatke i može birat jel učitelj ili učenik
 > adresa mora bit važeća (e-mail) -> autorizacija: OAuth 2.0 protokol koristeći tokene
   
 UČITELJ:
-> mora dodat podatke koje jezike podučava, iskustvo, kvalifikacije, stil podučavanja, slika profila i satnica
-> mora se dodat funkcionalnost kalendara u kojem će si učitelji postaviti termine u kojima su slobodni za podučavanje --> za integraciju kalendara koristimo postojeća rješenja
+> mora dodati podatke: koje jezike podučava, iskustvo, kvalifikacije, stil podučavanja, slika profila i satnica
+> mora se dodati funkcionalnost kalendara u kojem će si učitelji postaviti termine u kojima su slobodni za podučavanje --> za integraciju kalendara koristimo postojeća rješenja
 
 UČENIK:
-> koje jezike želi učit, svoju trenutnu razinu znanja [početna, srednja, napredna], preferirani stil podučavanja
-> mogu postavit ciljeve učenja (npr. putovanje, poslovna komunikacija, priprema za ispit etc.)
+> koje jezike želi učiti, svoju trenutnu razinu znanja [početna, srednja, napredna], preferirani stil podučavanja
+> mogu postaviti ciljeve učenja (npr. putovanje, poslovna komunikacija, priprema za ispit etc.)
 
 PRETRAGA:
 > kad učenik pretražuje --> prvo se prikazuju učitelji po preferencijama svog profila
