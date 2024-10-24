@@ -6,9 +6,9 @@
 
 # Funkcijski zahtjevi:
 > uvid svih dostupnih učitelja i njihovih rasporeda dostupan je bez registracije
-> za sve ostale funkcionalnosti, korisnik se treba registrirati/prijavit u sustav
-> registracija: bilo tko, unese osnovne podatke i može birat jel učitelj ili učenik
-> adresa mora bit važeća (e-mail) -> autorizacija: OAuth 2.0 protokol koristeći tokene
+> za sve ostale funkcionalnosti, korisnik se treba registrirati/prijaviti u sustav
+> registracija: bilo tko, unese osnovne podatke i može birati je li učitelj ili učenik
+> adresa mora biti važeća (e-mail) -> autorizacija: OAuth 2.0 protokol koristeći tokene
   
 UČITELJ:
 > mora dodati podatke: koje jezike podučava, iskustvo, kvalifikacije, stil podučavanja, slika profila i satnica
@@ -41,7 +41,7 @@ KOMENTARI I RECENZIJE
 > platformu održavaju sistemski administratori koji mogu upravljati korisnicima, uređivati i brisati profile
 
 OSTALI ZAHTJEVI
-> aplikacija treba bit izvedena kao web aplikacija prilagođena mobilnom uređaju kojoj će registrirani korisnici pristupati uz pomoć korisničkog imena i lozinke
+> aplikacija treba biti izvedena kao web aplikacija prilagođena mobilnom uređaju kojoj će registrirani korisnici pristupati uz pomoć korisničkog imena i lozinke
 > sustav treba podržati više korisnika u stvarnom vremenu
 
 # Tehnologije
