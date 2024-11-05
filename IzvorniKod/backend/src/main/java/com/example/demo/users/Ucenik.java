@@ -1,14 +1,14 @@
 package com.example.demo.users;
 
-public class Student extends User{
+public class Ucenik extends Korisnik {
     private Integer student_ID;
     private String ciljevi_ucenja;
 
-    public Student(String ime, String prezime, String lozinka, String email) {
+    public Ucenik(String ime, String prezime, String lozinka, String email) {
         super(ime, prezime, lozinka, email);
     }
 
-    public Student(String ime, String prezime, String lozinka, String email, String ciljevi_ucenja) {
+    public Ucenik(String ime, String prezime, String lozinka, String email, String ciljevi_ucenja) {
         super(ime, prezime, lozinka, email);
         this.ciljevi_ucenja = ciljevi_ucenja;
     }
@@ -33,3 +33,5 @@ public class Student extends User{
                 '}';
     }
 }
+
+

@@ -1,15 +1,15 @@
 package com.example.demo.users;
 
-public class Teacher extends User{
+public class Ucitelj extends Korisnik{
     private Integer godine_iskustva;
     private String kvalifikacije;
     private Integer satnica ;
 
-    public Teacher(String ime, String prezime, String lozinka, String email) {
+    public Ucitelj(String ime, String prezime, String lozinka, String email) {
         super(ime, prezime, lozinka, email);
     }
 
-    public Teacher(String ime, String prezime, String lozinka, String email, Integer godine_iskustva, String kvalifikacije, Integer satnica) {
+    public Ucitelj(String ime, String prezime, String lozinka, String email, Integer godine_iskustva, String kvalifikacije, Integer satnica) {
         super(ime, prezime, lozinka, email);
         this.godine_iskustva = godine_iskustva;
         this.kvalifikacije = kvalifikacije;
