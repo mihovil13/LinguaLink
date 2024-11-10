@@ -1,7 +1,7 @@
 package com.example.demo.controller;
 
-import com.example.demo.repository.StudentRepo;
-import com.example.demo.rest.student.Student;
+import com.example.demo.repository.UcenikRepo;
+import com.example.demo.users.Ucenik;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,11 +14,11 @@ import java.util.Optional;
 @RestController
 public class StudentController {
     @Autowired
-    private StudentRepo studentRepo;
+    private UcenikRepo studentRepo;
     @GetMapping("/getAllStudents")
-    public ResponseEntity<List<Student>> getAllStudents(){
+    public ResponseEntity<List<Ucenik>> getAllStudents(){
         try {
-            List<Student> studentsList = new ArrayList<>(studentRepo.findAll());
+            List<Ucenik> studentsList = new ArrayList<>(studentRepo.findAll());
             if (studentsList.isEmpty()){
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
@@ -28,25 +28,25 @@ public class StudentController {
         }
     }
     @GetMapping("/getStudentById/{id}")
-    public ResponseEntity<Student> getStudentById(@PathVariable Long id){
-        Optional<Student> studentData = studentRepo.findById(id);
+    public ResponseEntity<Ucenik> getStudentById(@PathVariable Long id){
+        Optional<Ucenik> studentData = studentRepo.findById(id);
         if (studentData.isPresent()){
             return new ResponseEntity<>(studentData.get(), HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
     @PostMapping("/addStudent")
-    public ResponseEntity<Student> addStudent(@RequestBody Student student){
-        Student studentObj = studentRepo.save(student);
+    public ResponseEntity<Ucenik> addStudent(@RequestBody Ucenik student){
+        Ucenik studentObj = studentRepo.save(student);
         return new ResponseEntity<>(studentObj, HttpStatus.OK);
     }
     @PostMapping("/updateStudentById/{id}")
-    public ResponseEntity<Student> updateStudentById(@PathVariable Long id, @RequestBody Student newStudentData){
-        Optional<Student> oldStudentData = studentRepo.findById(id);
+    public ResponseEntity<Ucenik> updateStudentById(@PathVariable Long id, @RequestBody Ucenik newStudentData){
+        Optional<Ucenik> oldStudentData = studentRepo.findById(id);
         if(oldStudentData.isPresent()){
-            Student updatedStudentData = oldStudentData.get();
-            updatedStudentData.setName(newStudentData.getName());
-            Student studentObj = studentRepo.save(updatedStudentData);
+            Ucenik updatedStudentData = oldStudentData.get();
+            updatedStudentData.setIme(newStudentData.getIme());
+            Ucenik studentObj = studentRepo.save(updatedStudentData);
             return new ResponseEntity<>(studentObj, HttpStatus.OK);
 
         }

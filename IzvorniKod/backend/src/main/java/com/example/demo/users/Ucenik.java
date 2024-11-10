@@ -1,6 +1,12 @@
 package com.example.demo.users;
 
+import jakarta.persistence.*;
+
+@Entity
+
+
 public class Ucenik extends Korisnik {
+
     private Integer student_ID;
     private String ciljevi_ucenja;
 
@@ -11,6 +17,10 @@ public class Ucenik extends Korisnik {
     public Ucenik(String ime, String prezime, String lozinka, String email, String ciljevi_ucenja) {
         super(ime, prezime, lozinka, email);
         this.ciljevi_ucenja = ciljevi_ucenja;
+    }
+
+    public Ucenik() {
+
     }
 
     public Integer getStudent_ID() {
