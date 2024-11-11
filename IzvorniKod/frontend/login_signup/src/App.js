@@ -1,10 +1,14 @@
 import LoginSignup from './Components/LoginSignup/LoginSignup';
 import React from 'react';
+import {BrowserRouter} from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 function App() {
   return (
     <div>
-      <LoginSignup/>
+      <Router>
+        <Route path="/register" element={<LoginSignup/>} />
+      </Router>
     </div>
   );
 }
