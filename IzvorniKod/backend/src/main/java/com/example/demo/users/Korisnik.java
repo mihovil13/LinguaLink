@@ -29,6 +29,7 @@ public class Korisnik {
         this.prezime = prezime;
         this.lozinka = lozinka;
         this.email = email;
+
     }
 
     public Korisnik() {
