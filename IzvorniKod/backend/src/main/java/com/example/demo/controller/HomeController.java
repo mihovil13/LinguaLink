@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class HomeController {
 
     @GetMapping("/")
-    public String home() {
+    public String ne() {
         return "Hello, Home!";
     }
 
@@ -15,5 +15,7 @@ public class HomeController {
     public String secured() {
         return "Hello, Secured!";
     }
+
+
 
 }
