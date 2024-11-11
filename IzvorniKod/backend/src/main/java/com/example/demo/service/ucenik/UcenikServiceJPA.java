@@ -7,15 +7,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UcenikServiceJPA implements UcenikService {
-    @Autowired
-    private UcenikRepo studentRepo;
-    private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    @Override
-    public Ucenik addStudent(Ucenik ucenik) {
+    private UcenikRepo ucenikRepo;
+
+    @Autowired
+    public UcenikServiceJPA(UcenikRepo ucenikRepo) {
+        this.ucenikRepo = ucenikRepo;
+    }
+
+
+    public List<Ucenik> getUcenici(){
+        return ucenikRepo.findAll();
+    }
+    private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    public Ucenik addUcenik(Ucenik ucenik) {
         ucenik.setLozinka(passwordEncoder.encode(ucenik.getLozinka()));
-        return studentRepo.save(ucenik);
+        return ucenikRepo.save(ucenik);
     }
 }
