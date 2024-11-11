@@ -1,6 +1,12 @@
 package com.example.demo.users;
 
+import jakarta.persistence.*;
+
+@Entity
+
+
 public class Ucitelj extends Korisnik{
+
     private Integer godine_iskustva;
     private String kvalifikacije;
     private Integer satnica ;
@@ -14,6 +20,10 @@ public class Ucitelj extends Korisnik{
         this.godine_iskustva = godine_iskustva;
         this.kvalifikacije = kvalifikacije;
         this.satnica = satnica;
+    }
+
+    public Ucitelj() {
+
     }
 
     public Integer getGodine_iskustva() {
