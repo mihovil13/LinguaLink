@@ -8,6 +8,7 @@ class LinguaLinkApplicationTests {
 
 	@Test
 	void contextLoads() {
+
 	}
 
 }
