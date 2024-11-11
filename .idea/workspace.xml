@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ed426092-9048-4d08-8128-fe9e2c29b385" name="Changes" comment="proba">
-      <change beforePath="$PROJECT_DIR$/IzvorniKod/frontend/login_signup/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/IzvorniKod/frontend/login_signup/src/App.jsx" afterDir="false" />
-    </list>
+    <list default="true" id="ed426092-9048-4d08-8128-fe9e2c29b385" name="Changes" comment="proba" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -67,7 +65,7 @@
       <workItem from="1731344610844" duration="9000" />
       <workItem from="1731344711056" duration="89000" />
       <workItem from="1731353860868" duration="4000" />
-      <workItem from="1731353882479" duration="6448000" />
+      <workItem from="1731353882479" duration="6547000" />
     </task>
     <task id="LOCAL−00001" summary="proba">
       <created>1730828669454</created>
