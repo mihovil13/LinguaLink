@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 
-@RequestMapping("/moj-profil")
+@RequestMapping("/api/moj-profil")
 public class KorisnikController {
 
     @GetMapping
