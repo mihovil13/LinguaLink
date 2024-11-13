@@ -10,6 +10,7 @@ const LoginRegister = () => {
   const navigate = useNavigate(); //za preusmjeravanje na login page ili profile page
   const [formData, setFormData] = useState({
     ime: "",
+    prezime: "",
     email: "",
     lozinka: "",
     uloga: "Učenik",
@@ -23,13 +24,24 @@ const LoginRegister = () => {
     if (name === "ime") {
       setFormData({
         ime: value,
+        prezime: formData.prezime,
         email: formData.email,
         lozinka: formData.lozinka,
         uloga: formData.uloga,
       });
-    } else if (name === "email") {
+    } else if (name === "prezime") {
       setFormData({
         ime: formData.ime,
+        prezime: value,
+        email: formData.email,
+        lozinka: formData.lozinka,
+        uloga: formData.uloga,
+      });
+    }
+    else if (name === "email") {
+      setFormData({
+        ime: formData.ime,
+        prezime: formData.prezime,
         email: value,
         lozinka: formData.lozinka,
         uloga: formData.uloga,
@@ -37,6 +49,7 @@ const LoginRegister = () => {
     } else if (name === "lozinka") {
       setFormData({
         ime: formData.ime,
+        prezime: formData.prezime,
         email: formData.email,
         lozinka: value,
         uloga: formData.uloga,
@@ -44,6 +57,7 @@ const LoginRegister = () => {
     } else if (name === "uloga") {
       setFormData({
         ime: formData.ime,
+        prezime: formData.prezime,
         email: formData.email,
         lozinka: formData.lozinka,
         uloga: value,
@@ -97,8 +111,18 @@ const LoginRegister = () => {
           <input
             type="text"
             name="ime"
-            placeholder="Ime i prezime korisnika"
+            placeholder="Ime korisnika"
             value={formData.ime}
+            onChange={handleInputChange}
+          />
+        </div>
+        <div className="input">
+          <img src={user_icon} alt="User Icon" />
+          <input
+            type="text"
+            name="prezime"
+            placeholder="Prezime korisnika"
+            value={formData.prezime}
             onChange={handleInputChange}
           />
         </div>
