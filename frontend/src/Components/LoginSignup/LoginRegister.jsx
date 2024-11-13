@@ -7,7 +7,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const LoginRegister = () => {
-  const navigate = useNavigate(); //za preusmjeravanje na login page
+  const navigate = useNavigate(); //za preusmjeravanje na login page ili profile page
   const [formData, setFormData] = useState({
     ime: "",
     email: "",
@@ -57,7 +57,7 @@ const LoginRegister = () => {
         "http://localhost:8080/api/korisnici/register",
         formData
       ); //upit prema backendu
-      alert(response.data); //prikaz rezultata funkcije
+      navigate("/profile"); //preusmjeravanje na profilnu stranicu
     } catch (error) {
       alert(error.response?.data || "Došlo je do greške prilikom registracije");
     }
@@ -97,7 +97,7 @@ const LoginRegister = () => {
           <input
             type="text"
             name="ime"
-            placeholder="Ime korisnika"
+            placeholder="Ime i prezime korisnika"
             value={formData.ime}
             onChange={handleInputChange}
           />
