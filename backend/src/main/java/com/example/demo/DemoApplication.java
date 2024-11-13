@@ -20,10 +20,10 @@ public class DemoApplication {
 	CommandLineRunner comanndLineRunner(KorisnikRepository repository){
 		return args -> {
 			//add some data
-			repository.save(new Korisnik("ivica.maric@gmail.com", "pass123"));
-			repository.save(new Korisnik("perica.peric@gmail.com", "nogomet123"));
-			repository.save(new Korisnik("ana.katic@gmail.com", "volimpse123"));
-			repository.save(new Korisnik("nedjeljko.bajic@gmail.com", "progi<3"));
+			repository.save(new Korisnik("Ivica", "Maric","ivica.maric@gmail.com", "pass123","Učenik"));
+			repository.save(new Korisnik("Perica",  "Peric","perica.peric@gmail.com", "nogomet123","Učitelj"));
+			repository.save(new Korisnik("Ana",  "Katic","ana.katic@gmail.com", "volimpse123","Učenik"));
+			repository.save(new Korisnik("Nedjeljko", "Bajic","nedjeljko.bajic@gmail.com", "progi<3","Učenik"));
 		};
 	}
 
