@@ -1,7 +1,9 @@
 import React from 'react';
-import profilePicture from './Assets/person.png';
+import profilePicture from '../Assets/person.png';
 
 import './ProfilePage.css';
+
+//
 
 const ProfilePage = ({ 
     user = {
