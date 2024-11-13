@@ -1,12 +1,12 @@
 import React from 'react';
-import profilePicture from '../Assets/person.png';
+import profilePicture from './Assets/person.png';
 
 import './ProfilePage.css';
 
 const ProfilePage = ({ 
     user = {
-        name: "John Doe",
-        profilePicture: profilePicture,
+        name: "Aleksandar Jovanović",
+        profilePicture: "",
         email: "johndoe@example.com",
         location: "",
         languagesKnown: ["Spanish"],
@@ -37,18 +37,19 @@ const ProfilePage = ({
                 </ul>
               </div>
             </div>
+            
             <div className="profile-header">
-              <div className="profile-imagetext">
+                <div className="profile-imagetext">
                 <img 
-                    src={user.profilePicture || "https://via.placeholder.com/150"} 
+                    src={user.profilePicture || "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"} 
                     alt={`${user.name}'s profile`} 
                     className="profile-picture-large" 
                 />
                 <h1 className="profile-name">{user.name}</h1>
-              </div>
+                </div>
                 <div className="profile-buttons">
-                  <button className='homepage-button'> Početna stranica </button>
-                  <button className='odjava-button'>Odjava</button>
+                    <button className='homepage-button'>Početna stranica</button>
+                    <button className='odjava-button'>Odjava</button>
                 </div>
             </div>
         </div>
