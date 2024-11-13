@@ -7,6 +7,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 const LoginSignup = () => {
+    const navigate = useNavigate(); //za preusmjeravanje na login page
     const [loginData, setLoginData] = useState({
         email: '',
         lozinka: '',
@@ -26,8 +27,8 @@ const LoginSignup = () => {
 
     const handleLogin = async () => {
         try {
-            const response = await axios.post('http://localhost:8080/api/korisnici/login', loginData); //slanje zahtjeva na backend
-            alert(response.data); //prikaz return vrijednosti funkcije
+            const response = await axios.post('http://localhost:8080/api/korisnici/login', loginData); //upit prema backendu
+            navigate('/profile'); //preusmjeravanje na profilnu stranicu
         } catch (error) {
             alert(error.response?.data || 'Došlo je do greške prilikom prijave');
         }
