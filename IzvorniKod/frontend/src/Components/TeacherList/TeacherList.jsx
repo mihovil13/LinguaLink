@@ -20,7 +20,7 @@ const TeacherList = () => {
                 }
             } catch (error) {
                 console.error("Error fetching teacher list:", error);
-                alert("Došlo je do greške prilikom dohvaćanja liste učitelja.");
+                // alert("Došlo je do greške prilikom dohvaćanja liste učitelja.");
             }
         };
 
