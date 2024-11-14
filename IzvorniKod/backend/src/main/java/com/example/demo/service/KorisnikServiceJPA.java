@@ -55,4 +55,8 @@ public class KorisnikServiceJPA implements KorisnikService {
         System.out.println("NOVI KORISNIK SE ULOGIRAO!!");
         return existingKorisnik.get();
     }
+
+    public Optional<Korisnik> getKorisnik(String email) {
+        return korisnikRepository.findByEmail(email);
+    }
 }

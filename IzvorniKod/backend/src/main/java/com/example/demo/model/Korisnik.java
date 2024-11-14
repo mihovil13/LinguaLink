@@ -39,7 +39,6 @@ public class Korisnik implements UserDetails {
     private String email;
     private String ime;
     private String prezime;
-    @Transient
     private String uloga;
 
     @Enumerated(EnumType.STRING)
@@ -61,6 +60,11 @@ public class Korisnik implements UserDetails {
 
     public Korisnik() {
 
+    }
+    public Korisnik(String ime,String prezime,String email){
+        this.ime = ime;
+        this.prezime = prezime;
+        this.email = email;
     }
 
     public Korisnik(String ime, String prezime, String email, String lozinka) {
