@@ -35,12 +35,12 @@ public class KorisnikServiceJPA implements KorisnikService {
         Korisnik korisnik1 = new Korisnik(username,korisnik.getEmail(), korisnik.getLozinka(), korisnik.getUloga());
         if(korisnik.getUloga().equals("Učenik")){
             System.out.println("ucenik");
-            Ucenik ucenik = new Ucenik(korisnik.getIme(),korisnik.getPrezime(),korisnik.getEmail(),korisnik.getLozinka());
+            Ucenik ucenik = new Ucenik(korisnik.getIme(),korisnik.getPrezime(),korisnik.getEmail(),korisnik.getLozinka(), korisnik.getUloga());
             ucenikRepository.save(ucenik);
         }
         if(korisnik.getUloga().equals("Učitelj")){
             System.out.println("ucitelj");
-            Ucitelj ucitelj = new Ucitelj(korisnik.getIme(),korisnik.getPrezime(),korisnik.getEmail(),korisnik.getLozinka());
+            Ucitelj ucitelj = new Ucitelj(korisnik.getIme(),korisnik.getPrezime(),korisnik.getEmail(),korisnik.getLozinka(), korisnik.getUloga());
             uciteljRepository.save(ucitelj);
         }
 

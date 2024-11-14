@@ -19,6 +19,9 @@ public class Ucenik extends Korisnik{
 
     }
 
+    public Ucenik(String ime, String prezime, String email, String lozinka, String uloga) {
+        super(ime, prezime, email, lozinka, uloga);
+    }
 }
 
 //    @Override
