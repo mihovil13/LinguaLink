@@ -72,7 +72,7 @@
    gap: 10px;
 }
 .odjava-button,
-.homepage-button {
+.teachers-button {
    background-color: #613c78;
    color: #fff;
    font-size: 20px;
@@ -94,7 +94,7 @@ p {
    padding: 1px 0px;
 }
 .odjava-button,
-.homepage-button {
+.teachers-button {
    background-color: #613c78;
    color: #fff;
    font-size: 1rem;
@@ -105,7 +105,7 @@ p {
    margin-top: 20px;
 }
 .odjava-button:hover,
-.homepage-button:hover {
+.teachers-button:hover {
    background-color: #4a2c5f;
 }
 @media only screen and (max-width: 1024px) {

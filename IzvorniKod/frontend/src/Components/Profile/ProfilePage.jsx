@@ -2,6 +2,9 @@ import React from "react";
 import profilePicture from "../Assets/person.png";
 
 import "./ProfilePage.css";
+import { useNavigate } from "react-router-dom";
+
+
 
 const ProfilePage = ({
   user = {
@@ -14,6 +17,8 @@ const ProfilePage = ({
     languagesToLearn: ["English"],
   },
 }) => {
+  const navigate = useNavigate();
+
   return (
     <div className="profile-page">
       <div className="profile-sidebar">
@@ -57,7 +62,7 @@ const ProfilePage = ({
           <h1 className="profile-surname">{user.surname}</h1>
         </div>
         <div className="profile-buttons">
-          <button className="homepage-button">Početna stranica</button>
+          <button className="teachers-button" onClick={() => navigate("/teachers")}>Prikaz učitelja</button>
           <button className="odjava-button">Odjava</button>
         </div>
       </div>
