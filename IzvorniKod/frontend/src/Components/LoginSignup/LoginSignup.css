@@ -19,7 +19,8 @@ body {
     min-width: 65vh;
     max-width: 75vh;
     box-sizing: border-box;
-    overflow: hidden; 
+    overflow: hidden;
+    position: relative; 
 }
 
 .gray {
@@ -58,7 +59,7 @@ body {
     align-items: center;
     gap: 9px;
     width: 100%;
-    margin-top: 30px;
+    margin-top: 40px;
 }
 
 .text {
@@ -73,10 +74,10 @@ body {
     height: 6px;
     background: #613c78;
     border-radius: 9px;
+    margin-bottom: 15px;
 }
 
 .inputs {
-    margin-top: 5px;
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -114,7 +115,7 @@ body {
     align-items: center;
     width: 100%; 
     max-width: 300px; 
-    margin: auto;
+    margin :auto;
     height: 70px;
 }
 
@@ -124,11 +125,10 @@ body {
 }
 
 .ima_racun {
-    margin: 15px auto;
+    margin: 2px auto;
     color: #797979;
-    font-size: 18px;
-    text-align: center;
-}
+    font-size: 20px;
+    text-align: center;}
 
 .ima_racun span {
     color: #613c78;
@@ -162,7 +162,7 @@ body {
     align-items: center;
     width: 100%; 
     max-width: 180px;
-    height: 50px;
+    height: 60px;
     color: #fff;
     background: #613c78;
     border-radius: 50px;
@@ -171,23 +171,19 @@ body {
     cursor: pointer;
 }
 
-.login-google > img {
-    width: 30px;
-    margin-right: 8px;
-}
-
-.login-google {
-    margin: 10px 0px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    max-width: 230px;
+.teacher-button {
+    position: absolute;
+    top: -0.5%;
+    right: -2.2%;
+    width: 100%; 
+    max-width: 150px;
     height: 50px;
     color: #fff;
     background: #613c78;
     border-radius: 50px;
     font-size: 18px;
-    font-weight: 700;
+    font-weight: 500;
     cursor: pointer;
 }
+
+

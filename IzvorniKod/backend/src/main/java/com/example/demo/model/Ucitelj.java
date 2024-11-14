@@ -19,6 +19,10 @@ public class Ucitelj extends Korisnik {
         super(ime, prezime, email, lozinka);
     }
 
+    public Ucitelj(String ime, String prezime, String email, String lozinka, String uloga) {
+        super(ime, prezime, email, lozinka, uloga);
+    }
+
     public Ucitelj() {
 
     }

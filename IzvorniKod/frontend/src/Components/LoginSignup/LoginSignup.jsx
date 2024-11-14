@@ -1,8 +1,6 @@
 import "./LoginSignup.css";
-import user_icon from "../Assets/person.png";
 import email_icon from "../Assets/email.png";
 import password_icon from "../Assets/password.png";
-import google_logo from "../Assets/google_logo.png"
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -60,6 +58,7 @@ const LoginSignup = () => {
   return (
     <div className="container">
       <div className="header">
+        <button className="teacher-button" onClick={() => navigate("/teachers")}>Prikaz Učitelja</button>
         <div className="text">Prijava</div>
         <div className="underline"></div>
       </div>
@@ -91,10 +90,6 @@ const LoginSignup = () => {
       <div className="submit-container">
         <div className="submit" onClick={handleLogin}>
           Prijavi se
-        </div>
-        <div className="login-google" onClick={handleLogin}>
-          <img src={google_logo} alt="Google Icon" />
-          Nastavi uz Google
         </div>
       </div>
     </div>

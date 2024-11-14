@@ -1,29 +1,71 @@
-import React from "react";
-import profilePicture from "../Assets/person.png";
-
+import React, { useEffect, useState } from "react";
 import "./ProfilePage.css";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
-const ProfilePage = ({
-  user = {
-    name: "Aleksandar",
-    surname: "Jovanović",
-    profilePicture: "",
-    email: "johndoe@example.com",
-    role: "Učitelj",
-    languagesKnown: ["Spanish"],
-    languagesToLearn: ["English"],
-  },
-}) => {
+const ProfilePage = () => {
+  const navigate = useNavigate();
+
+  // definiramo podatke u korisniku
+  const [user, setUser] = useState({
+    ime: "",
+    prezime: "",
+    email: "",
+    uloga: "",
+    languagesKnown: ["Engleski"],
+    languagesToLearn: ["Francuski"],
+  });
+
+  // useEffect je hook koji upravlja stvarima poput dohvacanja podataka, manipulacije DOM-a itd...
+  //sastoji se od funkcije, i od polja ovisnosti koje nareduje kada ce se funkcija izvrsiti
+  //u ovom primjeru, polje ovisnosti je prazno (nalazi se na samom kraju hooka), sto znaci da ce se hook izvrsiti prilikom ucitavanja stranice
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const response = await axios.get("http://localhost:8080/api/moj-profil", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`, // slanje upita prema backendu, u headerima se salje token
+          },
+        });
+
+        if (response.status === 200) {
+          const { ime, prezime, email, uloga } = response.data; //iz odgovora uzimamo navedene varijable
+
+          // azuriramo podatke
+          setUser({
+            ime: ime || "",
+            prezime: prezime || "",
+            email: email || "",
+            uloga: uloga || "",
+            languagesKnown: ["Engleski"],
+            languagesToLearn: ["Francuski"],
+          });
+        }
+      } catch (error) {
+        console.error("Error fetching user profile:", error);
+        alert("Došlo je do greške prilikom dohvaćanja korisničkog profila.");
+      }
+    };
+
+    fetchUserProfile(); //pozivanje funkcije koja se nalazi unutar hooka
+  }, []);
+
   return (
     <div className="profile-page">
       <div className="profile-sidebar">
         <div className="profile-podaci">
           <span>Osobni podaci:</span>
           <p>
+            <strong>Ime:</strong> {user.ime}
+          </p>
+          <p>
+            <strong>Prezime:</strong> {user.prezime}
+          </p>
+          <p>
             <strong>Email:</strong> {user.email}
           </p>
           <p>
-            <strong>Uloga:</strong> {user.role || "nepoznato"}
+            <strong>Uloga:</strong> {user.uloga || "nepoznato"}
           </p>
         </div>
         <div className="profile-jezici">
@@ -47,18 +89,17 @@ const ProfilePage = ({
         <div className="profile-imagetext">
           <img
             src={
-              user.profilePicture ||
               "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"
             }
-            alt={`${user.name}'s profile`}
+            alt={`${user.ime}'s profile`}
             className="profile-picture-large"
           />
-          <h1 className="profile-name">{user.name}</h1>
-          <h1 className="profile-surname">{user.surname}</h1>
+          <h1 className="profile-name">{user.ime}</h1>
+          <h1 className="profile-surname">{user.prezime}</h1>
         </div>
         <div className="profile-buttons">
-          <button className="homepage-button">Početna stranica</button>
-          <button className="odjava-button">Odjava</button>
+          <button className="teachers-button" onClick={() => navigate("/teachers")}>Prikaz učitelja</button>
+          <button className="odjava-button" onClick={() => navigate("/")}>Odjava</button>
         </div>
       </div>
     </div>
