@@ -1,0 +1,52 @@
+.container {
+   display: flex;
+   flex-direction: column;
+   width: 60vw;
+   overflow-y: auto;
+   overflow-x: hidden;
+}
+
+.teacher-container {
+   display: flex;
+   border: 3px solid gray;
+   border-radius: 5px;
+   padding: 20px;
+   margin: 10px;
+   justify-content: space-around;
+   height: 8vh;
+   align-items: center;
+}
+
+.teacher-container > img{
+   width: 70px;
+   height: 70px;
+   border-radius: 50%;
+}
+
+p {
+   font-size: 1.5rem;
+   font-weight: 400;
+}
+
+@media (max-width: 768px) {
+   .container {
+      width: 90vw;
+   }
+
+   .teacher-container {
+      flex-direction: column;
+      height: auto;
+      padding: 10px;
+   }
+
+   .teacher-container > img {
+      margin-top: 10px;
+      width: 60px;
+      height: 60px;
+   }
+
+   p {
+      font-size: 1.2rem;
+      text-align: center;
+   }
+}
