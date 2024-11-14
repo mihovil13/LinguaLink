@@ -1,8 +1,9 @@
-target/
+backend/target/
 
 node_modules
 
-.idea
+*.iml
+.idea/
 
 .cache/
 
