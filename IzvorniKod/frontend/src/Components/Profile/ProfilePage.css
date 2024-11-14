@@ -71,24 +71,13 @@
    width: 100%;
    gap: 10px;
 }
-.odjava-button,
-.teachers-button {
-   background-color: #613c78;
-   color: #fff;
-   font-size: 20px;
-   padding: 15px 30px;
-   border: none;
-   border-radius: 5px;
-   cursor: pointer;
-   height: 10vh;
-   margin: 5px;
-}
 ul {
    list-style: none;
    padding: 0;
 }
 ul li {
    padding: 5px 0;
+   font-size: 1.2rem; 
 }
 p {
    padding: 1px 0px;
@@ -103,15 +92,86 @@ p {
    border-radius: 5px;
    cursor: pointer;
    margin-top: 20px;
+   height: 10vh;
 }
 .odjava-button:hover,
 .teachers-button:hover {
    background-color: #4a2c5f;
 }
-@media only screen and (max-width: 1024px) {
+
+@media (max-width: 768px) {
    .profile-page {
-      flex-direction: column-reverse;
-      height: 100vh;
-      width: 100vw;
+      flex-direction: column;
+      height: auto;
+      width: 90vw;
+      padding: 10px;
+   }
+
+   .profile-sidebar {
+      flex: 1;
+      width: 100%;
+      border-right: none;
+      margin-top: 10px;
+      padding: 10px;
+   }
+
+   .profile-header {
+      flex: 1;
+      align-items: flex-start;
+      width: 100%;
+      padding: 10px;
+   }
+
+   .profile-name,
+   .profile-surname {
+      font-size: 1.5em;
+   }
+
+   .profile-picture-large {
+      width: 120px;
+      height: 120px;
+   }
+
+   .profile-buttons {
+      flex-direction: column;
+      align-items: stretch;
+   }
+
+   .odjava-button,
+   .teachers-button {
+      width: 100%;
+      margin-top: 10px;
+      padding: 12px;
+   }
+
+   .profile-sidebar span {
+      font-size: 1.2rem;
+      margin: 15px 0;
+   }
+}
+
+@media (max-width: 480px) {
+
+   .profile-name,
+   .profile-surname {
+      font-size: 1.2em;
+   }
+
+   .profile-picture-large {
+      width: 100px;
+      height: 100px;
+   }
+
+   .odjava-button,
+   .teachers-button {
+      padding: 10px 20px;
+   }
+
+   .profile-sidebar {
+      padding: 5px;
+   }
+
+   .profile-header {
+      padding: 5px;
    }
 }
