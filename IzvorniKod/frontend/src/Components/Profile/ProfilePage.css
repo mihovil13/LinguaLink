@@ -1,0 +1,117 @@
+.profile-page {
+   display: flex;
+   align-items: flex-start;
+   /* horizontalno: poravna ih na pocetku */
+   height: 70vh;
+   /* viewport height */
+   width: 80vw;
+   background-color: #f9f9f9;
+   border: 3px solid #ddd;
+   border-radius: 10px;
+}
+.profile-sidebar {
+   display: flex;
+   flex: 3;
+   padding: 20px;
+   background-color: #f9f9f9;
+   border-right: 1px solid #ddd;
+   height: 60vh;
+   width: 50vw;
+   font-size: 1.2rem;
+   margin-top: 20px;
+}
+.profile-header {
+   display: flex;
+   flex: 1;
+   height: 90%;
+   flex-direction: column;
+   align-items: center;
+   padding: 20px;
+}
+.profile-podaci {
+   flex: 1;
+   padding: 10px;
+   border-radius: 30px;
+}
+.profile-jezici {
+   flex: 1;
+   padding: 10px;
+   border-radius: 30px;
+}
+.profile-sidebar span {
+   background-color: #613c78;
+   color: white;
+   font-size: 1.4rem;
+   font-weight: 450;
+   margin: 20px 0px;
+   padding: 8px;
+   border-radius: 10px;
+}
+.profile-imagetext {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+}
+.profile-picture-large {
+   width: 150px;
+   height: 150px;
+   border-radius: 50%;
+   object-fit: cover;
+   margin: 20px 0px;
+}
+.profile-name, .profile-surname {
+   font-size: 2em;
+   text-align: center;
+   margin: 0px;
+}
+.profile-buttons {
+   display: flex;
+   flex: 1;
+   align-items: flex-end;
+   width: 100%;
+   gap: 10px;
+}
+.odjava-button,
+.homepage-button {
+   background-color: #613c78;
+   color: #fff;
+   font-size: 20px;
+   padding: 15px 30px;
+   border: none;
+   border-radius: 5px;
+   cursor: pointer;
+   height: 10vh;
+   margin: 5px;
+}
+ul {
+   list-style: none;
+   padding: 0;
+}
+ul li {
+   padding: 5px 0;
+}
+p {
+   padding: 1px 0px;
+}
+.odjava-button,
+.homepage-button {
+   background-color: #613c78;
+   color: #fff;
+   font-size: 1rem;
+   padding: 15px 30px;
+   border: none;
+   border-radius: 5px;
+   cursor: pointer;
+   margin-top: 20px;
+}
+.odjava-button:hover,
+.homepage-button:hover {
+   background-color: #4a2c5f;
+}
+@media only screen and (max-width: 1024px) {
+   .profile-page {
+      flex-direction: column-reverse;
+      height: 100vh;
+      width: 100vw;
+   }
+}
