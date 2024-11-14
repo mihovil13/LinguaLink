@@ -37,8 +37,7 @@ const LoginRegister = () => {
         lozinka: formData.lozinka,
         uloga: formData.uloga,
       });
-    }
-    else if (name === "email") {
+    } else if (name === "email") {
       setFormData({
         ime: formData.ime,
         prezime: formData.prezime,
@@ -67,13 +66,36 @@ const LoginRegister = () => {
 
   const handleRegister = async () => {
     try {
-      const response = await axios.post(
+      //slanje post zahtjeva prema backendu
+      const registerResponse = await axios.post(
         "http://localhost:8080/api/korisnici/register",
         formData
-      ); //upit prema backendu
-      navigate("/profile"); //preusmjeravanje na profilnu stranicu
+      );
+      //ako je zahtjev uspio
+      if (registerResponse.status === 200) {
+        const token = registerResponse.data.token; //dohvacamo token i spremamo ga
+        localStorage.setItem("token", token);
+
+        const profileResponse = await axios.get(
+          "http://localhost:8080/api/moj-profil",
+          {
+            //slanje get zahtjeva prema backendu
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`, //u headerima saljemo token
+            },
+          }
+        ); //slanje get zahtjeva prema backendu
+
+        if (profileResponse.status === 200) {
+          alert(profileResponse.data);
+          navigate("/profile");
+        }
+      }
     } catch (error) {
-      alert(error.response?.data || "Došlo je do greške prilikom registracije");
+      alert(
+        error.response?.data ||
+          "Došlo je do greške prilikom registracije ili dohvaćanja profila"
+      );
     }
   };
 
