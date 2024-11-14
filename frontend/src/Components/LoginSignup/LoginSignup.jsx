@@ -2,6 +2,7 @@ import "./LoginSignup.css";
 import user_icon from "../Assets/person.png";
 import email_icon from "../Assets/email.png";
 import password_icon from "../Assets/password.png";
+import google_logo from "../Assets/google_logo.png"
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -47,7 +48,7 @@ const LoginSignup = () => {
         );
 
         if (profileResponse.status === 200) {
-          alert(profileResponse.data);
+          // alert(profileResponse.data);
           navigate("/profile");
         }
       }
@@ -90,6 +91,10 @@ const LoginSignup = () => {
       <div className="submit-container">
         <div className="submit" onClick={handleLogin}>
           Prijavi se
+        </div>
+        <div className="login-google" onClick={handleLogin}>
+          <img src={google_logo} alt="Google Icon" />
+          Nastavi uz Google
         </div>
       </div>
     </div>

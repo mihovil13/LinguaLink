@@ -87,7 +87,7 @@ const LoginRegister = () => {
         ); //slanje get zahtjeva prema backendu
 
         if (profileResponse.status === 200) {
-          alert(profileResponse.data);
+          // alert(profileResponse.data);
           navigate("/profile");
         }
       }
