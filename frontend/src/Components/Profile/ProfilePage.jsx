@@ -5,10 +5,11 @@ import "./ProfilePage.css";
 
 const ProfilePage = ({
   user = {
-    name: "Aleksandar Jovanović",
+    name: "Aleksandar",
+    surname: "Jovanović",
     profilePicture: "",
     email: "johndoe@example.com",
-    location: "",
+    role: "Učitelj",
     languagesKnown: ["Spanish"],
     languagesToLearn: ["English"],
   },
@@ -22,7 +23,7 @@ const ProfilePage = ({
             <strong>Email:</strong> {user.email}
           </p>
           <p>
-            <strong>Broj telefona:</strong> {user.location || "nepoznato"}
+            <strong>Uloga:</strong> {user.role || "nepoznato"}
           </p>
         </div>
         <div className="profile-jezici">
@@ -53,6 +54,7 @@ const ProfilePage = ({
             className="profile-picture-large"
           />
           <h1 className="profile-name">{user.name}</h1>
+          <h1 className="profile-surname">{user.surname}</h1>
         </div>
         <div className="profile-buttons">
           <button className="homepage-button">Početna stranica</button>
