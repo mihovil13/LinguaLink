@@ -4,7 +4,7 @@ FROM openjdk:21-jdk AS build
 WORKDIR /app
 
 # Kopiraj pom.xml
-COPY pom.xml .
+#COPY pom.xml .
 
 # Pokreni mvn clean package
 RUN mvn clean package
