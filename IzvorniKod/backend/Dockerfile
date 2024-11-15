@@ -2,10 +2,10 @@
 FROM openjdk:21-jdk-slim AS builder
 
 # Kopiraj potrebne datoteke
-COPY .mvn .mvn
-COPY mvnw .
-COPY pom.xml .
-COPY src src
+COPY ../../.mvn .mvn
+COPY ../../mvnw .
+COPY ../../pom.xml .
+COPY ../../src src
 
 # Postavi dozvole za mvnw
 RUN chmod +x mvnw
