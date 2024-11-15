@@ -1,0 +1,27 @@
+# Višestupanjska izgradnja za backend
+FROM maven:3.8.7-openjdk-17 as backend-build
+WORKDIR /app/backend
+COPY ./backend /app/backend
+RUN mvn clean package -DskipTests
+
+# Višestupanjska izgradnja za frontend
+FROM node:20 as frontend-build
+WORKDIR /app/frontend
+COPY ./frontend /app/frontend
+RUN npm install && npm run build
+
+# Konačni image za pokretanje oba servisa
+FROM openjdk:17-jdk-slim
+WORKDIR /app
+
+# Kopiraj izgradnju backend-a
+COPY --from=backend-build /app/backend/target/*.jar backend.jar
+
+# Kopiraj izgradnju frontend-a
+COPY --from=frontend-build /app/frontend/build /app/frontend/build
+
+# Expose portova za backend i frontend
+EXPOSE 8080 3000
+
+# Pokretanje backend-a i frontend-a
+CMD ["sh", "-c", "java -jar backend.jar & http-server -p 3000 /app/frontend/build"]
