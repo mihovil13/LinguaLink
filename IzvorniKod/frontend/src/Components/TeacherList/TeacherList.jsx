@@ -10,7 +10,7 @@ const TeacherList = () => {
     useEffect(() => {
         const fetchTeacherData = async () => {
             try {
-                const response = await axios.get("http://localhost:8080/teachers", {
+                const response = await axios.get("https://lingualinkbackend.onrender.com/teachers", {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem("token")}`,
                     },  
