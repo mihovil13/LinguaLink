@@ -1,17 +1,17 @@
 # Višestupanjska izgradnja za backend
-FROM maven:3.8.7-openjdk-17 as backend-build
+FROM maven:3.9.4-eclipse-temurin-21 AS backend-build
 WORKDIR /app/backend
 COPY ./backend /app/backend
 RUN mvn clean package -DskipTests
 
 # Višestupanjska izgradnja za frontend
-FROM node:20 as frontend-build
+FROM node:20 AS frontend-build
 WORKDIR /app/frontend
 COPY ./frontend /app/frontend
 RUN npm install && npm run build
 
 # Konačni image za pokretanje oba servisa
-FROM openjdk:17-jdk-slim
+FROM eclipse-temurin:21-jre AS runtime
 WORKDIR /app
 
 # Kopiraj izgradnju backend-a
