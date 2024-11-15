@@ -68,7 +68,7 @@ const LoginRegister = () => {
     try {
       //slanje post zahtjeva prema backendu
       const registerResponse = await axios.post(
-        "http://localhost:8080/api/korisnici/register",
+        "https://lingualinkbackend.onrender.com/api/korisnici/register",
         formData
       );
       //ako je zahtjev uspio
@@ -77,7 +77,7 @@ const LoginRegister = () => {
         localStorage.setItem("token", token);
 
         const profileResponse = await axios.get(
-          "http://localhost:8080/api/moj-profil",
+          "https://lingualinkbackend.onrender.com/api/moj-profil",
           {
             //slanje get zahtjeva prema backendu
             headers: {
