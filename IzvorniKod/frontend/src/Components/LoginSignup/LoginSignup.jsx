@@ -27,7 +27,7 @@ const LoginSignup = () => {
   const handleLogin = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/korisnici/login",
+        "https://lingualinkbackend.onrender.com/api/korisnici/login",
         loginData
       );
 
@@ -36,7 +36,7 @@ const LoginSignup = () => {
         localStorage.setItem("token", token);
 
         const profileResponse = await axios.get(
-          "http://localhost:8080/api/moj-profil",
+          "https://lingualinkbackend.onrender.com/api/moj-profil",
           {
             //slanje get zahtjeva prema backendu
             headers: {
