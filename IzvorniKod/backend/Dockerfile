@@ -1,27 +1,18 @@
+FROM openjdk:21-jdk-slim AS builder
 
-# Koristi OpenJDK kao bazu
-FROM openjdk:21-jdk
+COPY ../../.mvn .mvn
+COPY ../../mvnw .
+COPY ../../pom.xml .
+COPY ../../src src
+RUN chmod +x mvnw
 
-# Postavi radni direktorij
-WORKDIR /app
 
-# Kopiraj Maven Wrapper i konfiguraciju
-COPY .mvn/ .mvn/
-COPY mvnw .
-COPY pom.xml .
+RUN ./mvnw clean package
 
-# Preuzmi Maven dependency-je
-RUN ./mvnw dependency:resolve
+FROM openjdk:21-jdk-slim
 
-# Kopiraj sav izvorni kod
-COPY src ./src
+COPY --from=builder target/*.jar /app.jar
 
-# Gradnja aplikacije
-RUN ./mvnw clean package -DskipTests
+EXPOSE 8080
 
-# Dodaj korisnika
-RUN groupadd -r app && useradd -r -g app app
-USER app
-
-# Pokreni aplikaciju s ispravnim imenom JAR datoteke
-ENTRYPOINT ["java", "-jar", "target/demo-0.0.1-SNAPSHOT.jar", "-web -webAllowOthers -tcp -tcpAllowOthers -browser"]
+ENTRYPOINT ["java","-jar","/app.jar"]
