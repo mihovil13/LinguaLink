@@ -100,7 +100,13 @@ p {
    height: 10vh;
 }
 .odjava-button:hover,
-.teachers-button:hover {
+.teachers-button:hover,
+.edit-profile-button:hover,
+.jezici-koje-znam > button:hover,
+.jezici-koje-znam > div > button:hover,
+.jezici-koje-zelim-nauciti > button:hover,
+.jezici-koje-zelim-nauciti > div > button:hover,
+.spremi-zatvori > button:hover {
    background-color: #4a2c5f;
 }
 
@@ -124,6 +130,7 @@ p {
    background-color: rgba(0, 0, 0, 0.8);
    border-radius: 8px;
    justify-content: center;
+   /* align-items: center; */
    z-index: 999;
 }
 
@@ -134,51 +141,30 @@ p {
    width: 400px;
    max-width: 80%;
    max-height: 80vh;
-   overflow-y: auto;
-}
-
-.jezici-koje-znam > div {
    display: flex;
-   gap: 7px;
-   padding: 4px 0px;
+   flex-direction: column;
 }
 
-.jezici-koje-znam > button {
-   background-color: #613c78;
-   padding: 5px;
-   color: #fff;
-   border: none;
-   border-radius: 5px;
-   cursor: pointer;
+.modal-content > .scrollable-content {
+   padding: 10px 20px;
+   overflow-y: auto;
+   flex: 1;
 }
 
-.jezici-koje-znam > div > button {
-      background-color: #613c78;
-      padding: 5px;
-      color: #fff;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-}
-
+.jezici-koje-znam > div,
 .jezici-koje-zelim-nauciti > div {
    display: flex;
    gap: 7px;
    padding: 4px 0px;
 }
 
-.jezici-koje-zelim-nauciti > button {
+.jezici-koje-znam > button,
+.jezici-koje-znam > div > button,
+.jezici-koje-zelim-nauciti > button,
+.jezici-koje-zelim-nauciti > div > button,
+.tooltip-container > :nth-child(1) {
    background-color: #613c78;
-   padding: 5px;
-   color: #fff;
-   border: none;
-   border-radius: 5px;
-   cursor: pointer;
-}
-
-.jezici-koje-zelim-nauciti > div > button {
-   background-color: #613c78;
-   padding: 5px;
+   padding: 5px 8px;
    color: #fff;
    border: none;
    border-radius: 5px;
@@ -186,16 +172,19 @@ p {
 }
 
 .spremi-zatvori {
+   padding: 10px 20px;
+   background: white;
+   border-top: 1px solid #ddd;
    display: flex;
    justify-content: center;
    gap: 10px;
 }
 
 .spremi-zatvori > button {
-   margin-top: auto;
    background-color: #613c78;
    color: #fff;
    font-size: 1rem;
+   padding: 10px;
    border: none;
    border-radius: 5px;
    cursor: pointer;
@@ -225,6 +214,53 @@ p {
    background: transparent;
    border: none;
    font-size: 20px;
+   color: #333;
+}
+
+.styles-section {
+   margin-top: 20px;
+   padding: 10px 0;
+   display: flex;
+   flex-direction: column;
+   gap: 10px;
+}
+
+.styles-section h3 {
+   margin: 0;
+   font-size: 1.2rem;
+   color: #333;
+}
+
+.tooltip-container {
+   width: 100%;
+   border-radius: 5px;
+   font-size: 1rem;
+   cursor: pointer;
+}
+
+.learning-goals-section {
+   margin-top: 20px;
+}
+
+.learning-goals-box {
+   margin-top: 10px;
+   padding: 10px;
+   border: 1px solid #ccc;
+   border-radius: 5px;
+   background-color: #f9f9f9;
+}
+
+.learning-goals-box textarea {
+   width: 100%;
+   height: 150px;
+   padding: 10px;
+   font-size: 1rem;
+   border: none;
+   border-radius: 5px;
+   resize: none;
+   outline: none;
+   box-sizing: border-box;
+   background-color: #fff;
    color: #333;
 }
 
