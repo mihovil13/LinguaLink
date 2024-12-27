@@ -28,7 +28,7 @@ const ProfilePage = () => {
     const fetchUserProfile = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8080/api/moj-profil",
+          "https://lingualinkbackend.onrender.com/api/moj-profil",
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`, // slanje upita prema backendu, u headerima se salje token
