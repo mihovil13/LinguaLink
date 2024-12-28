@@ -102,7 +102,12 @@ const LoginRegister = () => {
   return (
     <div className="container">
       <div className="header">
-        <button className="teacher-button" onClick={() => navigate("/teachers")}>Prikaz Učitelja</button>
+        <button
+          className="teacher-button"
+          onClick={() => navigate("/teachers")}
+        >
+          Prikaz Učitelja
+        </button>
         <div className="text">Registracija</div>
         <div className="underline"></div>
       </div>

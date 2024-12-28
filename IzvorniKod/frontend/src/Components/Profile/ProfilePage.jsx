@@ -15,23 +15,33 @@ const ProfilePage = () => {
     languagesKnown: [{ language: "", level: "" }],
     languagesToLearn: [{ language: "", level: "" }],
     languagesTeach: [],
-    selectedStyle: "",
+    stilPoducavanja: "",
+    ciljeviUcenja: "",
+    iskustvo: "",
+    kvalifikacije: "",
+    satnica: "",
   });
 
+  // preko Reactovog useState pratimo je li modal otvoren ili zatvoren
+  // na pocetku je zatvoren
   const [isEditModalOpen, setEditModalOpen] = useState(false);
+
+  // stvaramo stanje koje pohranjuje privremene podatke korisnika kad uredujemo profil
   const [editedUser, setEditedUser] = useState(user);
 
   // useEffect je hook koji upravlja stvarima poput dohvacanja podataka, manipulacije DOM-a itd...
   // sastoji se od funkcije, i od polja ovisnosti koje nareduje kada ce se funkcija izvrsiti
-  // u ovom primjeru, polje ovisnosti je prazno (nalazi se na samom kraju hooka), sto znaci da ce se hook izvrsiti prilikom ucitavanja stranice
+  // u ovom primjeru, polje ovisnosti je prazno (nalazi se na samom kraju hooka),
+  // sto znaci da ce se hook izvrsiti prilikom ucitavanja stranice
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
         const response = await axios.get(
-          "https://lingualinkbackend.onrender.com/api/moj-profil",
+          "http://localhost:8080/api/moj-profil",
           {
             headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`, // slanje upita prema backendu, u headerima se salje token
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+              // slanje upita prema backendu, u headerima se salje token
             },
           }
         );
@@ -45,11 +55,14 @@ const ProfilePage = () => {
             languagesKnown,
             languagesToLearn,
             languagesTeach,
-            selectedStyle,
-            learningGoals,
+            stilPoducavanja,
+            ciljeviUcenja,
+            iskustvo,
+            kvalifikacije,
+            satnica,
           } = response.data; // iz odgovora uzimamo navedene varijable
 
-          // azuriramo podatke
+          // azuriramo podatke s onima iz backenda
           setUser({
             ime: ime || "",
             prezime: prezime || "",
@@ -58,8 +71,11 @@ const ProfilePage = () => {
             languagesKnown: languagesKnown || [],
             languagesToLearn: languagesToLearn || [],
             languagesTeach: languagesTeach || [],
-            selectedStyle: selectedStyle || "",
-            learningGoals: learningGoals || "",
+            stilPoducavanja: stilPoducavanja || "",
+            ciljeviUcenja: ciljeviUcenja || "",
+            iskustvo: iskustvo || "",
+            kvalifikacije: kvalifikacije || "",
+            satnica: satnica || "",
           });
         }
       } catch (error) {
@@ -89,8 +105,8 @@ const ProfilePage = () => {
       );
 
       if (response.data === 200) {
-        setUser(editedUser);
-        setEditModalOpen(false);
+        setUser(editedUser); // spremili smo promjene
+        setEditModalOpen(false); // zatvaramo prozor za uredivanje
         alert("Profil uspjesno spremljen");
       } else {
         alert("Doslo je do greske prilikom spremanja profila");
@@ -101,15 +117,24 @@ const ProfilePage = () => {
     }
   };
 
+  // funkciju koristimo za mijenjanje postojećih vrijednosti, a ne stvaranje novih
   const handleInputChange = (field, index, value, listType) => {
-    if (listType === "selectedStyle" || listType === "learningGoals") {
-      setEditedUser({ ...editedUser, [listType]: value });
+    // field = naziv polja unutar objekta (language ili level)
+    // index = indeks u listi koju uredujem (liste su languagesToLearn i languagesTeach)
+    // value = nova vrijednost koju korisnik unosi
+    // listType = odreduje koju listu uredujemo
+
+    // azuriranje za ime, prezime, email, uloga, stilPoducavanja, ciljeviUcenja,
+    // iskustvo, kvalifikacije, satnica
+
+    if (!listType) {
+      setEditedUser({ ...editedUser, [field]: value });
     } else if (listType === "languagesTeach") {
       const updatedList = [...editedUser[listType]];
       updatedList[index] = value;
       setEditedUser({ ...editedUser, [listType]: updatedList });
     } else if (editedUser[listType]) {
-      const updatedList = [...editedUser[listType]]; // kopira listu iz objekta editedUser
+      const updatedList = [...editedUser[listType]];
       updatedList[index][field] = value;
       setEditedUser({ ...editedUser, [listType]: updatedList });
     } else {
@@ -117,21 +142,17 @@ const ProfilePage = () => {
     }
   };
 
+  // funkciju koristimo za dodavanje jezika
   const handleAddLanguage = (listType) => {
-    const updatedList = [
-      ...editedUser[listType],
-      { language: "", level: "početna" },
-    ];
+    const newElement =
+      listType === "languagesTeach" ? "" : { language: "", level: "" };
+    const updatedList = [...editedUser[listType], newElement];
     setEditedUser({ ...editedUser, [listType]: updatedList });
   };
 
-  const handleRemoveLanguage = (index, listType) => {
+  // funkciju koristimo za uklanjanje jezika
+  const handleRemoveLanguage = (listType, index) => {
     const updatedList = editedUser[listType].filter((_, i) => i !== index); // izostavlja element na danom indexu
-    setEditedUser({ ...editedUser, [listType]: updatedList });
-  };
-
-  const handleAddLanguageTeacher = (listType) => {
-    const updatedList = [...editedUser[listType], ""];
     setEditedUser({ ...editedUser, [listType]: updatedList });
   };
 
@@ -139,7 +160,7 @@ const ProfilePage = () => {
     <div className="profile-page">
       <div className="profile-sidebar">
         <div className="profile-podaci">
-          <span>Osobni podaci:</span>
+          <span>Osobni podaci</span>
           <p>
             <strong>Ime:</strong> {user.ime}
           </p>
@@ -150,28 +171,83 @@ const ProfilePage = () => {
             <strong>Email:</strong> {user.email}
           </p>
           <p>
-            <strong>Uloga:</strong> {user.uloga || "nepoznato"}
+            <strong>Uloga:</strong> {user.uloga}
           </p>
         </div>
-        <div className="profile-jezici">
-          <span>Jezici koje znam:</span>
-          <ul>
-            {user.languagesKnown.map((lang, index) => (
-              <li key={index}>
-                {lang.language} - {lang.level}
-              </li>
-            ))}
-          </ul>
+        {user.uloga === "Učenik" && (
+          <div className="profile-jezici">
+            <span>Jezici koje znam</span>
+            {user.languagesKnown && user.languagesKnown.length > 0 ? (
+              <ul>
+                {user.languagesKnown.map((lang, index) => (
+                  <li key={index}>
+                    {lang.language} - {lang.level}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>Nema unesenih podataka o jezicima koje znate.</p>
+            )}
 
-          <span>Jezici koje želim naučiti:</span>
-          <ul>
-            {user.languagesToLearn.map((lang, index) => (
-              <li key={index}>
-                {lang.language} - {lang.level}
-              </li>
-            ))}
-          </ul>
-        </div>
+            <span>Jezici koje želim naučiti</span>
+            {user.languagesToLearn && user.languagesToLearn > 0 ? (
+              <ul>
+                {user.languagesToLearn.map((lang, index) => (
+                  <li key={index}>
+                    {lang.language} - {lang.level}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>Nema unesenih podataka o jezicima koje želite naučiti.</p>
+            )}
+
+            <span>Preferirani stil podučavanja</span>
+            <p>
+              {user.stilPoducavanja ||
+                "Nema unesenih podataka o preferiranom stilu podučavanja."}
+            </p>
+
+            <span>Ciljevi učenja</span>
+            <p>
+              {user.ciljeviUcenja ||
+                "Nema unesenih podataka o ciljevima učenja."}
+            </p>
+          </div>
+        )}
+
+        {user.uloga === "Učitelj" && (
+          <div className="profile-jezici">
+            <span>Jezici koje podučavam</span>
+            {user.languagesTeach && user.languagesTeach.length > 0 ? (
+              <ul>
+                {user.languagesTeach.map((lang, index) => (
+                  <li key={index}>{lang.language}</li>
+                ))}
+              </ul>
+            ) : (
+              <p>Nema unesenih podataka o jezicima.</p>
+            )}
+
+            <span>Iskustvo</span>
+            <p>{user.iskustvo || "Nema unesenih podataka o iskustvu."}</p>
+
+            <span>Kvalifikacije</span>
+            <p>
+              {user.kvalifikacije ||
+                "Nema unesenih podataka o kvalifikacijama."}
+            </p>
+
+            <span>Stil podučavanja</span>
+            <p>
+              {user.stilPoducavanja ||
+                "Nema unesenih podataka o stilu podučavanja."}
+            </p>
+
+            <span>Satnica</span>
+            <p>{user.satnica || "Nema unesenih podataka o satnici."}</p>
+          </div>
+        )}
       </div>
 
       <div className="profile-header">
@@ -244,7 +320,7 @@ const ProfilePage = () => {
                       </select>
                       <button
                         onClick={() =>
-                          handleRemoveLanguage(index, "languagesKnown")
+                          handleRemoveLanguage("languagesKnown", index)
                         }
                       >
                         Ukloni
@@ -306,13 +382,13 @@ const ProfilePage = () => {
                   <h3>Stilovi podučavanja jezika</h3>
                   <div className="tooltip-container">
                     <select
-                      value={editedUser.selectedStyle || ""}
+                      value={editedUser.stilPoducavanja || ""}
                       onChange={(e) =>
                         handleInputChange(
-                          null,
+                          "stilPoducavanja",
                           null,
                           e.target.value,
-                          "selectedStyle"
+                          null
                         )
                       }
                     >
@@ -321,13 +397,13 @@ const ProfilePage = () => {
                       </option>
                       <option
                         value="style1"
-                        title="Osobe sklone vizualnom učenju vole čitati jer uživaju gledati riječi i slova ispred sebe. Također vole stvarati jezične poveznice pomoću kartica s riječima ili fotografija"
+                        title="Osobe sklone vizualnom učenju vole čitati jer uživaju gledati riječi i slova ispred sebe. Također vole stvarati jezične poveznice pomoću kartica s riječima ili fotografija."
                       >
                         Vizualni
                       </option>
                       <option
                         value="style2"
-                        title="Kao što ime sugerira, auditorni učenici vole učiti kroz zvuk. Jako uživaju u interakciji i razgovoru s drugima te im nije nužno vidjeti riječi napisane"
+                        title="Kao što ime sugerira, auditorni učenici vole učiti kroz zvuk. Jako uživaju u interakciji i razgovoru s drugima te im nije nužno vidjeti riječi napisane."
                       >
                         Auditorni
                       </option>
@@ -339,7 +415,7 @@ const ProfilePage = () => {
                       </option>
                       <option
                         value="style4"
-                        title="Ovaj tip učenika voli uzimati duže pauze i biti fizički aktivan dok uči engleski. Ne vole dugo sjediti za stolom te uživaju u kretanju tijekom učenja"
+                        title="Ovaj tip učenika voli uzimati duže pauze i biti fizički aktivan dok uči engleski. Ne vole dugo sjediti za stolom te uživaju u kretanju tijekom učenja."
                       >
                         Kinestetički
                       </option>
@@ -351,7 +427,7 @@ const ProfilePage = () => {
                       </option>
                       <option
                         value="style6"
-                        title="Oni ne vole ulaziti u sitnice jezika niti ih zanima kako jezik funkcionira “iznutra”. Usmjereni su na širu sliku i ono što jezik predstavlja te žele prenositi ideje, ne opterećujući se savršenom gramatikom"
+                        title="Oni ne vole ulaziti u sitnice jezika niti ih zanima kako jezik funkcionira “iznutra”. Usmjereni su na širu sliku i ono što jezik predstavlja te žele prenositi ideje, ne opterećujući se savršenom gramatikom."
                       >
                         Globalni
                       </option>
@@ -375,11 +451,11 @@ const ProfilePage = () => {
                   <h3>Ciljevi učenja</h3>
                   <div className="learning-goals-box">
                     <textarea
-                      value={editedUser.learningGoals || ""}
+                      value={editedUser.ciljeviUcenja || ""}
                       onChange={(e) => {
                         setEditedUser({
                           ...editedUser,
-                          learningGoals: e.target.value,
+                          ciljeviUcenja: e.target.value,
                         });
                       }}
                       placeholder="Koji su vaši ciljevi učenja?"
@@ -390,9 +466,9 @@ const ProfilePage = () => {
             )}
             {user.uloga === "Učitelj" && (
               <div className="scrollable-content">
-                <div className="jezici-koje-poducavam">
+                <div className="jezici-koje-znam">
                   <h3>Jezici koje podučavam</h3>
-                  {editedUser[listType].map((lang, index) => (
+                  {editedUser.languagesTeach.map((lang, index) => (
                     <div key={index}>
                       <input
                         type="text"
@@ -400,99 +476,67 @@ const ProfilePage = () => {
                         onChange={(e) =>
                           handleInputChange(
                             null,
+                            index,
                             e.target.value,
-                            listType,
-                            index
+                            "languagesTeach"
                           )
                         }
                         placeholder="Jezik"
                       />
-                      <select
-                        value={lang.level}
-                        onChange={(e) =>
-                          handleInputChange(
-                            "level",
-                            index,
-                            e.target.value,
-                            "languagesKnown"
-                          )
-                        }
-                      >
-                        <option value="početna">Početna</option>
-                        <option value="srednja">Srednja</option>
-                        <option value="napredna">Napredna</option>
-                      </select>
                       <button
                         onClick={() =>
-                          handleRemoveLanguage(index, "languagesKnown")
+                          handleRemoveLanguage(index, "languagesTeach")
                         }
                       >
                         Ukloni
                       </button>
                     </div>
                   ))}
-                  <button onClick={() => handleAddLanguage("languagesKnown")}>
+                  <button onClick={() => handleAddLanguage("languagesTeach")}>
                     Dodaj jezik
                   </button>
                 </div>
-
-                <div className="jezici-koje-zelim-nauciti">
-                  <h3>Jezici koje želim naučiti</h3>
-                  {editedUser.languagesToLearn.map((lang, index) => (
-                    <div key={index}>
-                      <input
-                        type="text"
-                        value={lang.language}
-                        onChange={(e) =>
-                          handleInputChange(
-                            "language",
-                            index,
-                            e.target.value,
-                            "languagesToLearn"
-                          )
-                        }
-                        placeholder="Jezik"
-                      />
-                      <select
-                        value={lang.level}
-                        onChange={(e) =>
-                          handleInputChange(
-                            "level",
-                            index,
-                            e.target.value,
-                            "languagesToLearn"
-                          )
-                        }
-                      >
-                        <option value="početna">Početna</option>
-                        <option value="srednja">Srednja</option>
-                        <option value="napredna">Napredna</option>
-                      </select>
-                      <button
-                        onClick={() =>
-                          handleRemoveLanguage(index, "languagesToLearn")
-                        }
-                      >
-                        Ukloni
-                      </button>
-                    </div>
-                  ))}
-                  <button onClick={() => handleAddLanguage("languagesToLearn")}>
-                    Dodaj jezik
-                  </button>
+                <div className="ciljevi-ucenja-section">
+                  <h3>Iskustvo</h3>
+                  <div className="learning-goals-box">
+                    <textarea
+                      value={editedUser.iskustvo || ""}
+                      onChange={(e) => {
+                        setEditedUser({
+                          ...editedUser,
+                          iskustvo: e.target.value,
+                        });
+                      }}
+                      placeholder="Koje je vaše iskustvo?"
+                    ></textarea>
+                  </div>
                 </div>
-
+                <div className="ciljevi-ucenja-section">
+                  <h3>Kvalifikacije</h3>
+                  <div className="learning-goals-box">
+                    <textarea
+                      value={editedUser.kvalifikacije || ""}
+                      onChange={(e) => {
+                        setEditedUser({
+                          ...editedUser,
+                          kvalifikacije: e.target.value,
+                        });
+                      }}
+                      placeholder="Koje su vaše kvalifikacije?"
+                    ></textarea>
+                  </div>
+                </div>
                 <div className="styles-section">
                   <h3>Stilovi podučavanja jezika</h3>
                   <div className="tooltip-container">
                     <select
-                      value={editedUser.selectedStyle || ""}
+                      value={editedUser.stilPoducavanja || ""}
                       onChange={(e) =>
                         handleInputChange(
-                          null,
+                          "stilPoducavanja",
                           null,
                           e.target.value,
-                          "selectedStyle"
+                          null
                         )
                       }
                     >
@@ -501,13 +545,13 @@ const ProfilePage = () => {
                       </option>
                       <option
                         value="style1"
-                        title="Osobe sklone vizualnom učenju vole čitati jer uživaju gledati riječi i slova ispred sebe. Također vole stvarati jezične poveznice pomoću kartica s riječima ili fotografija"
+                        title="Osobe sklone vizualnom učenju vole čitati jer uživaju gledati riječi i slova ispred sebe. Također vole stvarati jezične poveznice pomoću kartica s riječima ili fotografija."
                       >
                         Vizualni
                       </option>
                       <option
                         value="style2"
-                        title="Kao što ime sugerira, auditorni učenici vole učiti kroz zvuk. Jako uživaju u interakciji i razgovoru s drugima te im nije nužno vidjeti riječi napisane"
+                        title="Kao što ime sugerira, auditorni učenici vole učiti kroz zvuk. Jako uživaju u interakciji i razgovoru s drugima te im nije nužno vidjeti riječi napisane."
                       >
                         Auditorni
                       </option>
@@ -519,7 +563,7 @@ const ProfilePage = () => {
                       </option>
                       <option
                         value="style4"
-                        title="Ovaj tip učenika voli uzimati duže pauze i biti fizički aktivan dok uči engleski. Ne vole dugo sjediti za stolom te uživaju u kretanju tijekom učenja"
+                        title="Ovaj tip učenika voli uzimati duže pauze i biti fizički aktivan dok uči engleski. Ne vole dugo sjediti za stolom te uživaju u kretanju tijekom učenja."
                       >
                         Kinestetički
                       </option>
@@ -531,7 +575,7 @@ const ProfilePage = () => {
                       </option>
                       <option
                         value="style6"
-                        title="Oni ne vole ulaziti u sitnice jezika niti ih zanima kako jezik funkcionira “iznutra”. Usmjereni su na širu sliku i ono što jezik predstavlja te žele prenositi ideje, ne opterećujući se savršenom gramatikom"
+                        title="Oni ne vole ulaziti u sitnice jezika niti ih zanima kako jezik funkcionira “iznutra”. Usmjereni su na širu sliku i ono što jezik predstavlja te žele prenositi ideje, ne opterećujući se savršenom gramatikom."
                       >
                         Globalni
                       </option>
@@ -548,22 +592,6 @@ const ProfilePage = () => {
                         Impulzivni
                       </option>
                     </select>
-                  </div>
-                </div>
-
-                <div className="ciljevi-ucenja-section">
-                  <h3>Ciljevi učenja</h3>
-                  <div className="learning-goals-box">
-                    <textarea
-                      value={editedUser.learningGoals || ""}
-                      onChange={(e) => {
-                        setEditedUser({
-                          ...editedUser,
-                          learningGoals: e.target.value,
-                        });
-                      }}
-                      placeholder="Koji su vaši ciljevi učenja?"
-                    ></textarea>
                   </div>
                 </div>
               </div>
