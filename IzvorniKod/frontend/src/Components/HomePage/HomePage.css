@@ -1,0 +1,101 @@
+/* Navbar stilovi */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #613c78;
+    color: #fff;
+}
+
+.navbar-logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.navbar-links {
+    list-style: none;
+    display: flex;
+    gap: 15px;
+}
+
+.navbar-link {
+    color: #fff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.navbar-link:hover {
+    color: #cccccc;
+}
+
+/* Hero sekcija */
+.hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 50vh;
+    background-color: #f9f9f9;
+}
+
+.hero-title {
+    font-size: 2.5rem;
+    color: #613c78;
+}
+
+.hero-subtitle {
+    font-size: 1.2rem;
+    color: #3297D8;
+    font-weight:bold;
+    margin: 15px 0;
+}
+
+.hero-button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    background-color: #613c78;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    margin: 10px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.hero-button:hover {
+    background-color: #4a2f5b;
+}
+
+/* Features sekcija */
+.features {
+    padding: 40px 20px;
+    background-color: #f9f9f9;
+}
+
+.features-heading {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #613c78;
+}
+
+.feature-list {
+    display: flex;
+    justify-content: space-around;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.feature-card {
+    background-color: #fff;
+    color: #3297D8;
+    border: 1px solid #3297D8;
+    border-radius: 5px;
+    padding: 20px;
+    width: 300px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
