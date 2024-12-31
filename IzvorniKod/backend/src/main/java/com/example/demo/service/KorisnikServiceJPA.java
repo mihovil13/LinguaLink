@@ -6,8 +6,10 @@ import com.example.demo.model.Ucitelj;
 import com.example.demo.repository.KorisnikRepository;
 import com.example.demo.repository.UcenikRepository;
 import com.example.demo.repository.UciteljRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
 import java.util.Optional;
 
 
@@ -16,11 +18,15 @@ public class KorisnikServiceJPA implements KorisnikService {
     private final KorisnikRepository korisnikRepository;
     private final UcenikRepository ucenikRepository;
     private final UciteljRepository uciteljRepository;
+    private final UcenikServiceJPA ucenikServiceJPA;
+    private final UciteljServiceJPA uciteljServiceJPA;
 
-    public KorisnikServiceJPA(KorisnikRepository korisnikRepository, UcenikRepository ucenikRepository, UciteljRepository uciteljRepository) {
+    public KorisnikServiceJPA(KorisnikRepository korisnikRepository, UcenikRepository ucenikRepository, UciteljRepository uciteljRepository, UcenikServiceJPA ucenikServiceJPA, UciteljServiceJPA uciteljServiceJPA) {
         this.korisnikRepository = korisnikRepository;
         this.ucenikRepository = ucenikRepository;
         this.uciteljRepository = uciteljRepository;
+        this.ucenikServiceJPA = ucenikServiceJPA;
+        this.uciteljServiceJPA = uciteljServiceJPA;
     }
 
 
@@ -61,6 +67,26 @@ public class KorisnikServiceJPA implements KorisnikService {
         return korisnikRepository.findByEmail(email);
     }
 
+    @Override
+    public Korisnik getKorisnikByEmail(String email) {
+        return korisnikRepository.getKorisnikByEmail(email);
+    }
+
+    @Override
+    public ResponseEntity<?> updateKorisnik(Korisnik korisnik, Map<String, Object> body) {
+
+        if(korisnik.getUloga().equals("Učitelj")){
+            Ucitelj ucitelj = uciteljServiceJPA.getUciteljiByEmail(korisnik.getEmail());
+            return uciteljServiceJPA.updateUcitelj(ucitelj,body);
+
+        }
+        if(korisnik.getUloga().equals("Učenik")){
+            Ucenik ucenik = ucenikServiceJPA.getUcenik(korisnik.getEmail());
+            return ucenikServiceJPA.updateUcenik(ucenik,body);
+
+        }
+        return ResponseEntity.notFound().build();   
+    }
 
 
     /**

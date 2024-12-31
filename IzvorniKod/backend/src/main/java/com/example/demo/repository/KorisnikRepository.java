@@ -9,6 +9,7 @@ import java.util.Optional;
 public interface KorisnikRepository extends CrudRepository<Korisnik, Long> {
     Optional<Korisnik> findByEmail(String email);
     Optional<Korisnik> findByEmailAndLozinka(String email, String lozinka);
+    Korisnik getKorisnikByEmail(String email);
 
 
 }

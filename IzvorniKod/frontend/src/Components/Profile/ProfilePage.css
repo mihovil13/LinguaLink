@@ -37,6 +37,7 @@
    flex: 1;
    padding: 10px;
    border-radius: 30px;
+   overflow-y: auto;
 }
 .profile-sidebar span {
    background-color: #613c78;
@@ -82,7 +83,7 @@ ul {
 }
 ul li {
    padding: 5px 0;
-   font-size: 1.2rem; 
+   font-size: 1.2rem;
 }
 p {
    padding: 1px 0px;
@@ -99,6 +100,7 @@ p {
    margin-top: 20px;
    height: 10vh;
 }
+
 .odjava-button:hover,
 .teachers-button:hover,
 .edit-profile-button:hover,

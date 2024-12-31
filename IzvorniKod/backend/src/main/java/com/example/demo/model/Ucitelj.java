@@ -11,9 +11,12 @@ public class Ucitelj extends Korisnik {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-//    private Integer godine_iskustva;
-//    private String kvalifikacije;
-//    private String satnica;
+
+
+    private String iskustvo;
+    private String kvalifikacije;
+    private String satnica;
+    private String stilPoducavanja;
 
     public Ucitelj(String ime, String prezime, String email, String lozinka) {
         super(ime, prezime, email, lozinka);
@@ -27,8 +30,37 @@ public class Ucitelj extends Korisnik {
 
     }
 
+    public String getIskustvo() {
+        return iskustvo;
+    }
+
+    public void setIskustvo(String iskustvo) {
+        this.iskustvo = iskustvo;
+    }
+
+    public String getKvalifikacije() {
+        return kvalifikacije;
+    }
+
+    public void setKvalifikacije(String kvalifikacije) {
+        this.kvalifikacije = kvalifikacije;
+    }
+
+    public String getSatnica() {
+        return satnica;
+    }
+
+    public void setSatnica(String satnica) {
+        this.satnica = satnica;
+    }
+    public String getStilPoducavanja() {
+        return stilPoducavanja;
+    }
+
+    public void setStilPoducavanja(String stilPoducavanja) {
+        this.stilPoducavanja = stilPoducavanja;
+    }
 }
-//
 //    public Ucitelj(String ime, String prezime, String email, String lozinka) {
 //        super(ime, prezime, email, lozinka);
 //    }

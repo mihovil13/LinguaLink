@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UcenikRepository extends CrudRepository<Ucenik, Long> {
+    public Ucenik getUcenikByEmail(String email);
 }
