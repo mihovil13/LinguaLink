@@ -74,7 +74,7 @@ public class KorisnikServiceJPA implements KorisnikService {
 
     @Override
     public ResponseEntity<?> updateKorisnik(Korisnik korisnik, Map<String, Object> body) {
-
+        System.out.println(korisnik.getUloga());
         if(korisnik.getUloga().equals("Učitelj")){
             Ucitelj ucitelj = uciteljServiceJPA.getUciteljiByEmail(korisnik.getEmail());
             return uciteljServiceJPA.updateUcitelj(ucitelj,body);

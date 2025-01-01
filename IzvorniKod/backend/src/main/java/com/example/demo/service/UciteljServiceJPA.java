@@ -38,10 +38,18 @@ public class UciteljServiceJPA implements UciteljService {
             ucitelj.setIme(body.get("ime").toString());
             ucitelj.setPrezime(body.get("prezime").toString());
             ucitelj.setEmail(body.get("email").toString());
-            ucitelj.setKvalifikacije(body.get("kvalifikacije").toString());
-            ucitelj.setIskustvo(body.get("iskustvo").toString());
-            ucitelj.setSatnica(body.get("satnica").toString());
-            ucitelj.setStilPoducavanja(body.get("stilPoducavana").toString());
+            if (body.containsKey("kvalifikacije")) {
+                ucitelj.setKvalifikacije((String) body.get("kvalifikacije"));
+            }
+            if (body.containsKey("iskustvo")) {
+                ucitelj.setIskustvo((String) body.get("iskustvo"));
+            }
+            if (body.containsKey("satnica")) {
+                ucitelj.setSatnica((String) body.get("satnica"));
+            }
+            if (body.containsKey("stilPoducavanja")) {
+                ucitelj.setStilPoducavanja((String) body.get("stilPoducavanja"));
+            }
             return ResponseEntity.ok( uciteljRepository.save(ucitelj));
     }
 }
