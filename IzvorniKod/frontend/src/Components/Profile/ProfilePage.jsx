@@ -140,6 +140,7 @@ const ProfilePage = () => {
       );
 
       if (response.status === 200) {
+
         setUser(editedUser); // spremili smo promjene
         setEditModalOpen(false); // zatvaramo prozor za uredivanje
         alert("Profil uspjesno spremljen");

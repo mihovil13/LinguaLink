@@ -2,7 +2,9 @@ package com.example.demo.service;
 
 import com.example.demo.model.Korisnik;
 import com.example.demo.model.Role;
+import com.example.demo.model.Ucenik;
 import com.example.demo.repository.KorisnikRepository;
+import com.example.demo.repository.UcenikRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,8 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
     private KorisnikRepository korisnikRepository;
 
     private final RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
+    @Autowired
+    private UcenikRepository ucenikRepository;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -56,13 +60,16 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
                 .ime(fullname.split(" ")[0])
                 .prezime(fullname.split(" ")[1])
                 .email(email)
-                .uloga("Učenik")
+                .uloga(null)
                 .lozinka("default_lozinka_za_oauth2") // Note: Consider a more secure password handling method
                 .role(Role.USER)
                 .build();
 
         // Save the new user to the database
         korisnikRepository.save(newUser);
+        //Ucenik ucenik = new Ucenik(newUser.getIme(),newUser.getPrezime(),newUser.getEmail(),newUser.getLozinka(), newUser.getUloga());
+        //ucenikRepository.save(ucenik);
+
 
         // Return the new user with the authorities
         return new DefaultOAuth2User(

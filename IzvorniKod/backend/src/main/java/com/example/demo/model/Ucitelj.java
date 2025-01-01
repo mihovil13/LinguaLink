@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 
 @Entity
 @AllArgsConstructor
+@Table(name="ucitelji")
 public class Ucitelj extends Korisnik {
     @Column(name = "ucitelj_id")
     private Long ucitelj_id;

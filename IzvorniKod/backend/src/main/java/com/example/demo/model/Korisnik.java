@@ -133,7 +133,5 @@ public class Korisnik implements UserDetails {
     }
 
 
-    public Object getRole() {
-        return role;
-    }
+    public Object getRole() {return role;}
 }
