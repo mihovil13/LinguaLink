@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./ProfilePage.css";
-import {useLocation, useNavigate} from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const ProfilePage = () => {
@@ -25,6 +25,9 @@ const ProfilePage = () => {
   // preko Reactovog useState pratimo je li modal otvoren ili zatvoren
   // na pocetku je zatvoren
   const [isEditModalOpen, setEditModalOpen] = useState(false);
+
+  //stanje za modal odabira uloge
+  const [isRoleModalOpen, setRoleModalOpen] = useState(false);
 
   // stvaramo stanje koje pohranjuje privremene podatke korisnika kad uredujemo profil
   const [editedUser, setEditedUser] = useState(user);
@@ -83,8 +86,12 @@ const ProfilePage = () => {
               kvalifikacije: kvalifikacije || "",
               satnica: satnica || "",
             });
+
+            if (!response.data.uloga) { //ako korisnilk nema definiranu ulogu, prikazuje se modal za odabir uloge
+              setRoleModalOpen(true);
+            }
           }
-        }else {
+        } else {
           navigate("/login");
         }
       } catch (error) {
@@ -127,6 +134,30 @@ const ProfilePage = () => {
     setEditModalOpen(true); // otvara modal
   };
 
+  //modal za odabir uloge
+  const handleRoleSelection = (role) => {
+    const updatedUser = { ...user, uloga: role };
+    setUser(updatedUser); //update varijable korisnika s odabranom ulogom
+    setRoleModalOpen(false); //zatvaranje modala
+
+    //slanje podataka u updajtanom korisniku na backend
+    axios
+        .put("http://localhost:8080/api/moj-profil", updatedUser, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((response) => {
+          if (response.status === 200) {
+            alert("Uloga uspješno postavljena!");
+          }
+        })
+        .catch((error) => {
+          console.error("Error saving role:", error);
+          alert("Došlo je do greške pri spremanju uloge.");
+        });
+  };
+
   const handleSaveProfile = async () => {
     try {
       const response = await axios.put(
@@ -140,7 +171,6 @@ const ProfilePage = () => {
       );
 
       if (response.status === 200) {
-
         setUser(editedUser); // spremili smo promjene
         setEditModalOpen(false); // zatvaramo prozor za uredivanje
         alert("Profil uspjesno spremljen");
@@ -194,6 +224,29 @@ const ProfilePage = () => {
 
   return (
       <div className="profile-page">
+        {/* Modal za odabir uloge */}
+        {isRoleModalOpen && (
+            <div className="role-modal">
+              <div className="role-modal-content">
+                <h2>Upozorenje</h2>
+                <p>Vaša uloga nije definirana. Molimo odaberite svoju ulogu:</p>
+                <div className="role-buttons">
+                  <button
+                      className="role-button"
+                      onClick={() => handleRoleSelection("Učenik")}
+                  >
+                    Učenik
+                  </button>
+                  <button
+                      className="role-button"
+                      onClick={() => handleRoleSelection("Učitelj")}
+                  >
+                    Učitelj
+                  </button>
+                </div>
+              </div>
+            </div>
+        )}
         <div className="profile-sidebar">
           <div className="profile-podaci">
             <span>Osobni podaci</span>
