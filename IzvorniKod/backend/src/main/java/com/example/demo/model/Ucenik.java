@@ -50,8 +50,10 @@ public class Ucenik extends Korisnik{
         return languagesToLearn;
     }
 
-    public void setLanguagesToLearn(String languagesToLearn) {
-        this.languagesToLearn = languagesToLearn;
+    public void setLanguagesToLearn(List<Map<String, String>> languages) {
+        this.languagesToLearn = languages.stream()
+                .map(lang -> (String) lang.get("language"))
+                .collect(Collectors.joining(", "));
     }
 
     public String getCiljeviUcenja() {
@@ -69,35 +71,7 @@ public class Ucenik extends Korisnik{
     public void setStilPoducavanja(String stilPoducavanja) {
         this.stilPoducavanja = stilPoducavanja;
     }
-/*
-    public void setLanguagesKnownFromList(List<Map<String, String>> languages) {
-        this.languagesKnown = languages.stream()
-                .map(lang -> lang.get("language") + "-" + lang.get("level"))
-                .collect(Collectors.joining(", "));
-    }
 
-    public List<Map<String, String>> getLanguagesToLearnAsList() {
-        return Stream.of(languagesToLearn.split(", "))
-                .map(entry -> {
-                    String[] parts = entry.split("-");
-                    return Map.of("language", parts[0], "level", parts[1]);
-                })
-                .collect(Collectors.toList());
-    }
-    public void setLanguagesToLearnFromList(List<Map<String, String>> languages) {
-        this.languagesToLearn = languages.stream()
-                .map(lang -> lang.get("language") + "-" + lang.get("level"))
-                .collect(Collectors.joining(", "));
-    }
-
-    public List<Map<String, String>> getLanguagesKnownAsList() {
-        return Stream.of(languagesKnown.split(", "))
-                .map(entry -> {
-                    String[] parts = entry.split("-");
-                    return Map.of("language", parts[0], "level", parts[1]);
-                })
-                .collect(Collectors.toList());
-    }*/
 
 
 }
