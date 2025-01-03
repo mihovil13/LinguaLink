@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Entity
 @AllArgsConstructor
@@ -20,8 +23,8 @@ public class Ucenik extends Korisnik{
 
 
 
-    private List<String> languagesKnown;
-    private List<String> languagesToLearn;
+    private String languagesKnown;
+    private String languagesToLearn;
     private String ciljeviUcenja;
     private String stilPoducavanja;
 
@@ -32,19 +35,22 @@ public class Ucenik extends Korisnik{
     public Ucenik() {
 
     }
-    public List<String> getLanguagesKnown() {
+
+    public String getLanguagesKnown() {
         return languagesKnown;
     }
 
-    public void setLanguagesKnown(List<String> languagesKnown) {
-        this.languagesKnown = languagesKnown;
+    public void setLanguagesKnown(List<Map<String, String>> languages ) {
+        this.languagesKnown = languages.stream()
+                .map(lang -> lang.get("language") + "-" + lang.get("level"))
+                .collect(Collectors.joining(", "));
     }
 
-    public List<String> getLanguagesToLearn() {
+    public String getLanguagesToLearn() {
         return languagesToLearn;
     }
 
-    public void setLanguagesToLearn(List<String> languagesToLearn) {
+    public void setLanguagesToLearn(String languagesToLearn) {
         this.languagesToLearn = languagesToLearn;
     }
 
@@ -63,6 +69,35 @@ public class Ucenik extends Korisnik{
     public void setStilPoducavanja(String stilPoducavanja) {
         this.stilPoducavanja = stilPoducavanja;
     }
+/*
+    public void setLanguagesKnownFromList(List<Map<String, String>> languages) {
+        this.languagesKnown = languages.stream()
+                .map(lang -> lang.get("language") + "-" + lang.get("level"))
+                .collect(Collectors.joining(", "));
+    }
+
+    public List<Map<String, String>> getLanguagesToLearnAsList() {
+        return Stream.of(languagesToLearn.split(", "))
+                .map(entry -> {
+                    String[] parts = entry.split("-");
+                    return Map.of("language", parts[0], "level", parts[1]);
+                })
+                .collect(Collectors.toList());
+    }
+    public void setLanguagesToLearnFromList(List<Map<String, String>> languages) {
+        this.languagesToLearn = languages.stream()
+                .map(lang -> lang.get("language") + "-" + lang.get("level"))
+                .collect(Collectors.joining(", "));
+    }
+
+    public List<Map<String, String>> getLanguagesKnownAsList() {
+        return Stream.of(languagesKnown.split(", "))
+                .map(entry -> {
+                    String[] parts = entry.split("-");
+                    return Map.of("language", parts[0], "level", parts[1]);
+                })
+                .collect(Collectors.toList());
+    }*/
 
 
 }
