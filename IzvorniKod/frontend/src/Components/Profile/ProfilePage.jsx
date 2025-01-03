@@ -12,7 +12,7 @@ const ProfilePage = () => {
     prezime: "",
     email: "",
     uloga: "",
-    languagesKnown: [{ language: "", level: "" }],
+    languagesKnown: [{ language: "", level: "početna" }],
     languagesToLearn: [{ language: "" }],
     languagesTeach: [{ language: "" }],
     stilPoducavanja: "",
@@ -197,14 +197,32 @@ const ProfilePage = () => {
 
     if (!listType) {
       setEditedUser({ ...editedUser, [field]: value });
-    } else if (listType === "languagesTeach") {
+    } else if (
+      listType === "languagesTeach" ||
+      listType === "languagesToLearn"
+    ) {
       const updatedList = [...editedUser[listType]];
-      updatedList[index] = value;
-      setEditedUser({ ...editedUser, [listType]: updatedList });
-    } else if (editedUser[listType]) {
+      const duplicate = updatedList.some((item) => item.language === value);
+      if (duplicate) {
+        alert(`Jezik ${value} se već nalazi u listi`);
+      } else {
+        updatedList[index][field] = value;
+        setEditedUser({ ...editedUser, [listType]: updatedList });
+      }
+    } else if (listType === "languagesKnown") {
       const updatedList = [...editedUser[listType]];
-      updatedList[index][field] = value;
-      setEditedUser({ ...editedUser, [listType]: updatedList });
+      const duplicate = updatedList.some((item) => item.language === value);
+      if (duplicate) {
+        alert(`Jezik ${value} se već nalazi u listi`);
+      } else {
+        updatedList[index][field] = value;
+        //ako jezik nema level postavljam ga na početnu
+        const correctList = updatedList.map((item) => ({
+          ...item,
+          level: item.level || "početna",
+        }));
+        setEditedUser({ ...editedUser, [listType]: correctList });
+      }
     } else {
       console.error("Invalid listType:", listType);
     }
@@ -213,7 +231,9 @@ const ProfilePage = () => {
   // funkciju koristimo za dodavanje jezika
   const handleAddLanguage = (listType) => {
     const newElement =
-      listType === "languagesTeach" ? "" : { language: "", level: "" };
+      listType === "languagesKnown"
+        ? { language: "", level: "" }
+        : { language: "" };
     const updatedList = [...editedUser[listType], newElement];
     setEditedUser({ ...editedUser, [listType]: updatedList });
   };
