@@ -3,6 +3,10 @@ package com.example.demo.model;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 @Entity
 @AllArgsConstructor
 @Table(name="ucitelji")
@@ -17,6 +21,7 @@ public class Ucitelj extends Korisnik {
     private String iskustvo;
     private String kvalifikacije;
     private String satnica;
+    private String languagesTeach;
     private String stilPoducavanja;
 
     public Ucitelj(String ime, String prezime, String email, String lozinka) {
@@ -60,6 +65,16 @@ public class Ucitelj extends Korisnik {
 
     public void setStilPoducavanja(String stilPoducavanja) {
         this.stilPoducavanja = stilPoducavanja;
+    }
+
+    public String getLanguagesTeach() {
+        return languagesTeach;
+    }
+
+    public void setLanguagesTeach(List<Map<String, String>> languages) {
+        this.languagesTeach = languages.stream()
+                .map(lang -> (String) lang.get("language"))
+                .collect(Collectors.joining(", "));
     }
 }
 //    public Ucitelj(String ime, String prezime, String email, String lozinka) {

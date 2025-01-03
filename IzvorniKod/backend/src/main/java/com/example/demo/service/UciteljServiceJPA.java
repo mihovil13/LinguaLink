@@ -44,6 +44,9 @@ public class UciteljServiceJPA implements UciteljService {
             if (body.containsKey("iskustvo")) {
                 ucitelj.setIskustvo((String) body.get("iskustvo"));
             }
+            if (body.containsKey("languagesTeach")) {
+                ucitelj.setLanguagesTeach((List<Map<String, String>>) body.get("languagesTeach"));
+            }
             if (body.containsKey("satnica")) {
                 ucitelj.setSatnica((String) body.get("satnica"));
             }

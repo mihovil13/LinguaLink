@@ -56,7 +56,7 @@ const ProfilePage = () => {
           );
 
           if (response.status === 200) {
-            const {
+            let {
               ime,
               prezime,
               email,
@@ -70,6 +70,22 @@ const ProfilePage = () => {
               kvalifikacije,
               satnica,
             } = response.data; // iz odgovora uzimamo navedene varijable
+            if(languagesKnown){
+              languagesKnown = languagesKnown.split(", ").map((entry) => {
+                const [language, level] = entry.split("-");
+                return { language: language.trim(), level: level.trim() };
+              });
+            }
+            if(languagesToLearn){
+              languagesToLearn = languagesToLearn.split(", ").map((entry) => {
+                return { language: entry.trim() };
+              });
+            }
+            if(languagesTeach){
+              languagesTeach = languagesTeach.split(", ").map((entry) => {
+                return { language: entry.trim() };
+              });
+            }
 
             // azuriramo podatke s onima iz backenda
             setUser({

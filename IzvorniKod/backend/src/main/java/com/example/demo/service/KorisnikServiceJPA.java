@@ -80,11 +80,9 @@ public class KorisnikServiceJPA implements KorisnikService {
             if(korisnik.getUloga().equals("Učitelj")){
                 Ucitelj ucitelj = new Ucitelj(korisnik.getIme(),korisnik.getPrezime(),korisnik.getEmail(),korisnik.getLozinka(), korisnik.getUloga());
                 korisnikRepository.delete(korisnik);
-
                 uciteljRepository.save(ucitelj);
             }
             if(korisnik.getUloga().equals("Učenik")){
-
                 Ucenik ucenik = new Ucenik(korisnik.getIme(),korisnik.getPrezime(),korisnik.getEmail(),korisnik.getLozinka(), korisnik.getUloga());
                 korisnikRepository.delete(korisnik);
                 ucenikRepository.save(ucenik);

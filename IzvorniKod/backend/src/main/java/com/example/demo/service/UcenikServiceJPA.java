@@ -30,12 +30,12 @@ public class UcenikServiceJPA implements UcenikService {
         ucenik.setIme(body.get("ime").toString());
         ucenik.setPrezime(body.get("prezime").toString());
         ucenik.setEmail(body.get("email").toString());
-        /*if (body.containsKey("languagesKnown")) {
-            ucenik.setLanguagesKnown((List<String>) body.get("languagesKnown"));
+        if (body.containsKey("languagesKnown")) {
+            ucenik.setLanguagesKnown((List<Map<String, String>>) body.get("languagesKnown"));
         }
         if (body.containsKey("languagesToLearn")) {
-            ucenik.setLanguagesToLearn((List<String>) body.get("languagesToLearn"));
-        }*/
+            ucenik.setLanguagesToLearn((List<Map<String, String>>) body.get("languagesToLearn"));
+        }
         if (body.containsKey("ciljeviUcenja")) {
             ucenik.setCiljevi((String) body.get("ciljeviUcenja"));
         }
