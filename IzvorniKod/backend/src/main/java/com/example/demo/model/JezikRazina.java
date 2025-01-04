@@ -1,32 +1,66 @@
 package com.example.demo.model;
 
-import jakarta.persistence.Embeddable;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 
-@Embeddable
-public class JezikRazina {
-    private Integer jezik_id;
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
+@Table(name = "ucenik_jezik_razina")
+public class JezikRazina  {
+    @Enumerated(EnumType.STRING)
     private Razina razina;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long jezik_razina_id;
 
-    public JezikRazina(Jezik jezik, Razina razina) {
-        this.jezik_id = jezik_id;
+    public JezikRazina(Razina razina) {
         this.razina = razina;
     }
+    @ManyToOne
+    private Jezik jezik;
+
+    @ManyToOne
+    private Ucenik ucenik;
 
     public JezikRazina() {
 
     }
 
-    public Integer getJezikID() { return jezik_id;}
+    public JezikRazina(Ucenik ucenik, Jezik jezik, Razina razina) {
+        this.ucenik = ucenik;
+        this.jezik = jezik;
+        this.razina = razina;
+    }
+
+    public Jezik getJezik() {
+        return jezik;
+    }
+
+    public void setJezik(Jezik jezik) {
+        this.jezik = jezik;
+    }
+
+    public Ucenik getUcenik() {
+        return ucenik;
+    }
+
+    public void setUcenik(Ucenik ucenik) {
+        this.ucenik = ucenik;
+    }
 
     public Razina getRazina() { return razina;}
 
-    public void setJezik(Integer jezik_id) {
-        this.jezik_id = jezik_id;
-    }
 
     public void setRazina(Razina razina) {
         this.razina = razina;
+    }
+
+    public void setJezik_razina_id(Long jezikRazinaId) {
+        this.jezik_razina_id = jezikRazinaId;
+    }
+
+    public Long getJezik_razina_id() {
+        return jezik_razina_id;
     }
 }

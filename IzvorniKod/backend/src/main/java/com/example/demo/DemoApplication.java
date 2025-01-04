@@ -1,8 +1,10 @@
 package com.example.demo;
 
 import com.example.demo.model.Korisnik;
+import com.example.demo.repository.JezikRepository;
 import com.example.demo.repository.KorisnikRepository;
 import com.example.demo.config.ApplicationConfig;
+import com.example.demo.service.JezikServiceJPA;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -19,9 +21,10 @@ public class DemoApplication {
 	}
 
 	@Bean
-	CommandLineRunner comanndLineRunner(KorisnikRepository repository, PasswordEncoder passwordEncoder){
+	CommandLineRunner comanndLineRunner(KorisnikRepository repository, JezikServiceJPA jezikServiceJPA, PasswordEncoder passwordEncoder){
 		return args -> {
 			//add some data
+			jezikServiceJPA.saveLanguages();
 			repository.save(new Korisnik("Ivica", "Maric","ivica.maric@gmail.com", passwordEncoder.encode("pass123"),"Učenik"));
 			repository.save(new Korisnik("Perica",  "Peric","perica.peric@gmail.com", passwordEncoder.encode("nogomet123"),"Učitelj"));
 			repository.save(new Korisnik("Ana",  "Katic","ana.katic@gmail.com", passwordEncoder.encode("volimpse123"),"Učenik"));

@@ -1,21 +1,26 @@
 package com.example.demo.service;
 
+import com.example.demo.model.Jezik;
 import com.example.demo.model.Ucenik;
 import com.example.demo.model.Ucitelj;
 import com.example.demo.repository.UciteljRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
-public class UciteljServiceJPA implements UciteljService {
+public class  UciteljServiceJPA implements UciteljService {
 
     private final UciteljRepository uciteljRepository;
+    private final JezikServiceJPA jezikServiceJPA;
 
-    public UciteljServiceJPA(UciteljRepository uciteljRepository) {
+    public UciteljServiceJPA(UciteljRepository uciteljRepository, JezikServiceJPA jezikServiceJPA) {
         this.uciteljRepository = uciteljRepository;
+        this.jezikServiceJPA = jezikServiceJPA;
     }
 
     @Override
@@ -45,6 +50,18 @@ public class UciteljServiceJPA implements UciteljService {
                 ucitelj.setIskustvo((String) body.get("iskustvo"));
             }
             if (body.containsKey("languagesTeach")) {
+                List<Map<String,String>> jezici =(List<Map<String,String>>) body.get("languagesTeach");
+                List<String> jezikOdvojeno = jezici.stream()
+                        .map(lang -> (String) lang.get("language")).toList();
+                List<Jezik> dobraLista = new ArrayList<Jezik>();
+                for(String jezik:jezikOdvojeno){
+                    Jezik jezik1 = jezikServiceJPA.getJezikByNazivJezika(jezik);
+                    dobraLista.add(jezik1);
+                }
+                ucitelj.setJezici2(dobraLista);
+
+
+
                 ucitelj.setLanguagesTeach((List<Map<String, String>>) body.get("languagesTeach"));
             }
             if (body.containsKey("satnica")) {

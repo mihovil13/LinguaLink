@@ -3,6 +3,7 @@ package com.example.demo.model;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -11,12 +12,18 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Table(name="ucitelji")
 public class Ucitelj extends Korisnik {
-    @Column(name = "ucitelj_id")
-    private Long ucitelj_id;
+
+
     @Enumerated(EnumType.STRING)
     private Role role;
 
-
+    @ManyToMany
+    @JoinTable(
+            name = "UciteljJezik",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "jezik_id")
+    )
+    private List<Jezik> jezici2 = new ArrayList<>();
 
     private String iskustvo;
     private String kvalifikacije;
@@ -34,6 +41,14 @@ public class Ucitelj extends Korisnik {
 
     public Ucitelj() {
 
+    }
+
+    public List<Jezik> getJezici2() {
+        return jezici2;
+    }
+
+    public void setJezici2(List<Jezik> jezici2) {
+        this.jezici2 = jezici2;
     }
 
     public String getIskustvo() {
