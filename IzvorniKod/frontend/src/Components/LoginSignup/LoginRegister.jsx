@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 
 const LoginRegister = () => {
   const navigate = useNavigate();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     ime: "",
     prezime: "",
@@ -17,6 +18,8 @@ const LoginRegister = () => {
   });
 
   const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
@@ -29,6 +32,7 @@ const LoginRegister = () => {
       );
 
       if (registerResponse.status === 200) {
+        const token = registerResponse.data.token;
         const token = registerResponse.data.token;
         localStorage.setItem("token", token);
 

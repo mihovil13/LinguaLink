@@ -140,9 +140,12 @@ const ProfilePage = () => {
       } catch (error) {
         console.error("Error fetching user profile:", error);
         alert("Došlo je do greške prilikom dohvaćanja korisničkog profila.");
+        navigate("/login");
       }
     };
 
+    fetchUserProfile();
+  }, [location, navigate]);
     fetchUserProfile(); // pozivanje funkcije koja se nalazi unutar hooka
   }, [location.search, navigate]);
 
@@ -196,6 +199,10 @@ const ProfilePage = () => {
         alert("Doslo je do greske prilikom spremanja profila");
       }
     } catch (error) {
+      console.error("Error during logout:", error);
+      alert("Došlo je do greške prilikom odjave.");
+    }
+  };
       console.error("Error saving profile:", error);
       alert("Doslo je do pogreske prilikom spremanja profila");
     }
@@ -759,3 +766,4 @@ const ProfilePage = () => {
 };
 
 export default ProfilePage;
+
