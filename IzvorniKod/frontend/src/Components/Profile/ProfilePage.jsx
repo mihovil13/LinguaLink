@@ -5,6 +5,32 @@ import axios from "axios";
 
 const ProfilePage = () => {
   const navigate = useNavigate();
+  const handleLogout = async () => {
+    try {
+      const token = localStorage.getItem("token");
+
+      if (token) {
+        await axios.post(
+          "http://localhost:8080/api/auth/logout",
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+      }
+
+      // Ukloni token iz localStorage
+      localStorage.removeItem("token");
+
+      // Preusmjeri korisnika na login stranicu
+      navigate("/login");
+    } catch (error) {
+      console.error("Error during logout:", error);
+      alert("Došlo je do greške prilikom odjave.");
+    }
+  };
   const location = useLocation();
   // definiramo podatke u korisniku
   const [user, setUser] = useState({
@@ -116,35 +142,9 @@ const ProfilePage = () => {
         alert("Došlo je do greške prilikom dohvaćanja korisničkog profila.");
       }
     };
-    const handleLogout = async () => {
-      try {
-        const token = localStorage.getItem("token");
-
-        if (token) {
-          await axios.post(
-            "http://localhost:8080/api/auth/logout",
-            {},
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          );
-        }
-
-        // Ukloni token iz localStorage
-        localStorage.removeItem("token");
-
-        // Preusmjeri korisnika na login stranicu
-        navigate("/login");
-      } catch (error) {
-        console.error("Error during logout:", error);
-        alert("Došlo je do greške prilikom odjave.");
-      }
-    };
 
     fetchUserProfile(); // pozivanje funkcije koja se nalazi unutar hooka
-  }, []);
+  }, [location.search, navigate]);
 
   const handleEditProfile = () => {
     setEditedUser(user); // postavlja trenutno stanje korisnika u stanje uredivanja
@@ -400,7 +400,7 @@ const ProfilePage = () => {
             >
               Prikaz učitelja
             </button>
-            <button className="odjava-button" onClick={() => navigate("/")}>
+            <button className="odjava-button" onClick={handleLogout}>
               Odjava
             </button>
           </div>
