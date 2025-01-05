@@ -28,6 +28,17 @@ body {
     color: 676767;
 }
 
+.github-avatar {
+    width: 30px;
+    /* Promijenite veličinu slike prema potrebi */
+    height: 30px;
+    background-color: white;
+    border-radius: 50%;
+    /* Ako želite da slika bude okrugla */
+    margin-right: 10px;
+    /* Razmak između slike i teksta */
+}
+
 @media only screen and (max-width: 768px) {
     .container {
         padding: 20px;
