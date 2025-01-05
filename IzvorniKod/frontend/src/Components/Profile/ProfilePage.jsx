@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from "react";
 import "./ProfilePage.css";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const ProfilePage = () => {
   const navigate = useNavigate();
-
+  const location = useLocation();
   // definiramo podatke u korisniku
   const [user, setUser] = useState({
     ime: "",
     prezime: "",
     email: "",
     uloga: "",
-    languagesKnown: [{ language: "", level: "" }],
-    languagesToLearn: [{ language: "", level: "" }],
-    languagesTeach: [],
+    languagesKnown: [{ language: "", level: "početna" }],
+    languagesToLearn: [{ language: "" }],
+    languagesTeach: [{ language: "" }],
     stilPoducavanja: "",
     ciljeviUcenja: "",
     iskustvo: "",
@@ -26,6 +26,9 @@ const ProfilePage = () => {
   // na pocetku je zatvoren
   const [isEditModalOpen, setEditModalOpen] = useState(false);
 
+  //stanje za modal odabira uloge
+  const [isRoleModalOpen, setRoleModalOpen] = useState(false);
+
   // stvaramo stanje koje pohranjuje privremene podatke korisnika kad uredujemo profil
   const [editedUser, setEditedUser] = useState(user);
 
@@ -36,51 +39,107 @@ const ProfilePage = () => {
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:8080/api/moj-profil",
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-              // slanje upita prema backendu, u headerima se salje token
-            },
+        const params = new URLSearchParams(location.search);
+        const token = params.get("token") || localStorage.getItem("token");
+
+        if (token) {
+          localStorage.setItem("token", token);
+
+          const response = await axios.get(
+            "http://localhost:8080/api/moj-profil",
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                // slanje upita prema backendu, u headerima se salje token
+              },
+            }
+          );
+
+          if (response.status === 200) {
+            let {
+              ime,
+              prezime,
+              email,
+              uloga,
+              languagesKnown,
+              languagesToLearn,
+              languagesTeach,
+              stilPoducavanja,
+              ciljeviUcenja,
+              iskustvo,
+              kvalifikacije,
+              satnica,
+            } = response.data; // iz odgovora uzimamo navedene varijable
+            if (languagesKnown) {
+              languagesKnown = languagesKnown.split(", ").map((entry) => {
+                const [language, level] = entry.split("-");
+                return { language: language.trim(), level: level.trim() };
+              });
+            }
+            if (languagesToLearn) {
+              languagesToLearn = languagesToLearn.split(", ").map((entry) => {
+                return { language: entry.trim() };
+              });
+            }
+            if (languagesTeach) {
+              languagesTeach = languagesTeach.split(", ").map((entry) => {
+                return { language: entry.trim() };
+              });
+            }
+
+            // azuriramo podatke s onima iz backenda
+            setUser({
+              ime: ime || "",
+              prezime: prezime || "",
+              email: email || "",
+              uloga: uloga || "",
+              languagesKnown: languagesKnown || [],
+              languagesToLearn: languagesToLearn || [],
+              languagesTeach: languagesTeach || [],
+              stilPoducavanja: stilPoducavanja || "",
+              ciljeviUcenja: ciljeviUcenja || "",
+              iskustvo: iskustvo || "",
+              kvalifikacije: kvalifikacije || "",
+              satnica: satnica || "",
+            });
+
+            if (!response.data.uloga) {
+              //ako korisnilk nema definiranu ulogu, prikazuje se modal za odabir uloge
+              setRoleModalOpen(true);
+            }
           }
-        );
-
-        if (response.status === 200) {
-          const {
-            ime,
-            prezime,
-            email,
-            uloga,
-            languagesKnown,
-            languagesToLearn,
-            languagesTeach,
-            stilPoducavanja,
-            ciljeviUcenja,
-            iskustvo,
-            kvalifikacije,
-            satnica,
-          } = response.data; // iz odgovora uzimamo navedene varijable
-
-          // azuriramo podatke s onima iz backenda
-          setUser({
-            ime: ime || "",
-            prezime: prezime || "",
-            email: email || "",
-            uloga: uloga || "",
-            languagesKnown: languagesKnown || [],
-            languagesToLearn: languagesToLearn || [],
-            languagesTeach: languagesTeach || [],
-            stilPoducavanja: stilPoducavanja || "",
-            ciljeviUcenja: ciljeviUcenja || "",
-            iskustvo: iskustvo || "",
-            kvalifikacije: kvalifikacije || "",
-            satnica: satnica || "",
-          });
+        } else {
+          navigate("/login");
         }
       } catch (error) {
         console.error("Error fetching user profile:", error);
         alert("Došlo je do greške prilikom dohvaćanja korisničkog profila.");
+      }
+    };
+    const handleLogout = async () => {
+      try {
+        const token = localStorage.getItem("token");
+
+        if (token) {
+          await axios.post(
+            "http://localhost:8080/api/auth/logout",
+            {},
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+        }
+
+        // Ukloni token iz localStorage
+        localStorage.removeItem("token");
+
+        // Preusmjeri korisnika na login stranicu
+        navigate("/login");
+      } catch (error) {
+        console.error("Error during logout:", error);
+        alert("Došlo je do greške prilikom odjave.");
       }
     };
 
@@ -92,11 +151,36 @@ const ProfilePage = () => {
     setEditModalOpen(true); // otvara modal
   };
 
-  const handleSaveProfile = async () => {
+  //modal za odabir uloge
+  const handleRoleSelection = (role) => {
+    const updatedUser = { ...user, uloga: role };
+    setUser(updatedUser); //update varijable korisnika s odabranom ulogom
+    setRoleModalOpen(false); //zatvaranje modala
+
+    //slanje podataka u updajtanom korisniku na backend
+    axios
+      .put("http://localhost:8080/api/moj-profil", updatedUser, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+      .then((response) => {
+        if (response.status === 200) {
+          alert("Uloga uspješno postavljena!");
+        }
+      })
+      .catch((error) => {
+        console.error("Error saving role:", error);
+        alert("Došlo je do greške pri spremanju uloge.");
+      });
+  };
+
+  const handleSaveProfile = async (updatedProfile = editedUser) => {
     try {
+      console.log(updatedProfile);
       const response = await axios.put(
         "http://localhost:8080/api/moj-profil",
-        editedUser,
+        updatedProfile,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -104,7 +188,7 @@ const ProfilePage = () => {
         }
       );
 
-      if (response.data === 200) {
+      if (response.status === 200) {
         setUser(editedUser); // spremili smo promjene
         setEditModalOpen(false); // zatvaramo prozor za uredivanje
         alert("Profil uspjesno spremljen");
@@ -129,14 +213,32 @@ const ProfilePage = () => {
 
     if (!listType) {
       setEditedUser({ ...editedUser, [field]: value });
-    } else if (listType === "languagesTeach") {
+    } else if (
+      listType === "languagesTeach" ||
+      listType === "languagesToLearn"
+    ) {
       const updatedList = [...editedUser[listType]];
-      updatedList[index] = value;
-      setEditedUser({ ...editedUser, [listType]: updatedList });
-    } else if (editedUser[listType]) {
+      const duplicate = updatedList.some((item) => item.language === value);
+      if (duplicate) {
+        alert(`Jezik ${value} se već nalazi u listi`);
+      } else {
+        updatedList[index][field] = value;
+        setEditedUser({ ...editedUser, [listType]: updatedList });
+      }
+    } else if (listType === "languagesKnown") {
       const updatedList = [...editedUser[listType]];
-      updatedList[index][field] = value;
-      setEditedUser({ ...editedUser, [listType]: updatedList });
+      const duplicate = updatedList.some((item) => item.language === value);
+      if (duplicate) {
+        alert(`Jezik ${value} se već nalazi u listi`);
+      } else {
+        updatedList[index][field] = value;
+        //ako jezik nema level postavljam ga na početnu
+        const correctList = updatedList.map((item) => ({
+          ...item,
+          level: item.level || "početna",
+        }));
+        setEditedUser({ ...editedUser, [listType]: correctList });
+      }
     } else {
       console.error("Invalid listType:", listType);
     }
@@ -145,7 +247,9 @@ const ProfilePage = () => {
   // funkciju koristimo za dodavanje jezika
   const handleAddLanguage = (listType) => {
     const newElement =
-      listType === "languagesTeach" ? "" : { language: "", level: "" };
+      listType === "languagesKnown"
+        ? { language: "", level: "" }
+        : { language: "" };
     const updatedList = [...editedUser[listType], newElement];
     setEditedUser({ ...editedUser, [listType]: updatedList });
   };
@@ -158,6 +262,29 @@ const ProfilePage = () => {
 
   return (
     <div className="profile-page">
+      {/* Modal za odabir uloge */}
+      {isRoleModalOpen && (
+        <div className="role-modal">
+          <div className="role-modal-content">
+            <h2>Upozorenje</h2>
+            <p>Vaša uloga nije definirana. Molimo odaberite svoju ulogu:</p>
+            <div className="role-buttons">
+              <button
+                className="role-button"
+                onClick={() => handleRoleSelection("Učenik")}
+              >
+                Učenik
+              </button>
+              <button
+                className="role-button"
+                onClick={() => handleRoleSelection("Učitelj")}
+              >
+                Učitelj
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       <div className="profile-sidebar">
         <div className="profile-podaci">
           <span>Osobni podaci</span>
@@ -190,12 +317,10 @@ const ProfilePage = () => {
             )}
 
             <span>Jezici koje želim naučiti</span>
-            {user.languagesToLearn && user.languagesToLearn > 0 ? (
+            {user.languagesToLearn && user.languagesToLearn.length > 0 ? (
               <ul>
                 {user.languagesToLearn.map((lang, index) => (
-                  <li key={index}>
-                    {lang.language} - {lang.level}
-                  </li>
+                  <li key={index}>{lang.language}</li>
                 ))}
               </ul>
             ) : (
@@ -290,8 +415,7 @@ const ProfilePage = () => {
                   <h3>Jezici koje znam</h3>
                   {editedUser.languagesKnown.map((lang, index) => (
                     <div key={index}>
-                      <input
-                        type="text"
+                      <select
                         value={lang.language}
                         onChange={(e) =>
                           handleInputChange(
@@ -301,8 +425,22 @@ const ProfilePage = () => {
                             "languagesKnown"
                           )
                         }
-                        placeholder="Jezik"
-                      />
+                      >
+                        <option value="" disabled>
+                          Odaberi jezik
+                        </option>
+                        <option value="Engleski">Engleski</option>
+                        <option value="Njemački">Njemački</option>
+                        <option value="Francuski">Francuski</option>
+                        <option value="Španjolski">Španjolski</option>
+                        <option value="Talijanski">Talijanski</option>
+                        <option value="Portugalski">Portugalski</option>
+                        <option value="Ruski">Ruski</option>
+                        <option value="Hindi">Hindi</option>
+                        <option value="Arapski">Arapski</option>
+                        <option value="Mandarinski">Mandarinski</option>
+                        <option value="Japanski">Japanski</option>
+                      </select>
                       <select
                         value={lang.level}
                         onChange={(e) =>
@@ -336,8 +474,7 @@ const ProfilePage = () => {
                   <h3>Jezici koje želim naučiti</h3>
                   {editedUser.languagesToLearn.map((lang, index) => (
                     <div key={index}>
-                      <input
-                        type="text"
+                      <select
                         value={lang.language}
                         onChange={(e) =>
                           handleInputChange(
@@ -347,26 +484,25 @@ const ProfilePage = () => {
                             "languagesToLearn"
                           )
                         }
-                        placeholder="Jezik"
-                      />
-                      <select
-                        value={lang.level}
-                        onChange={(e) =>
-                          handleInputChange(
-                            "level",
-                            index,
-                            e.target.value,
-                            "languagesToLearn"
-                          )
-                        }
                       >
-                        <option value="početna">Početna</option>
-                        <option value="srednja">Srednja</option>
-                        <option value="napredna">Napredna</option>
+                        <option value="" disabled>
+                          Odaberi jezik
+                        </option>
+                        <option value="Engleski">Engleski</option>
+                        <option value="Njemački">Njemački</option>
+                        <option value="Francuski">Francuski</option>
+                        <option value="Španjolski">Španjolski</option>
+                        <option value="Talijanski">Talijanski</option>
+                        <option value="Portugalski">Portugalski</option>
+                        <option value="Ruski">Ruski</option>
+                        <option value="Hindi">Hindi</option>
+                        <option value="Arapski">Arapski</option>
+                        <option value="Mandarinski">Mandarinski</option>
+                        <option value="Japanski">Japanski</option>
                       </select>
                       <button
                         onClick={() =>
-                          handleRemoveLanguage(index, "languagesToLearn")
+                          handleRemoveLanguage("languagesToLearn", index)
                         }
                       >
                         Ukloni
@@ -396,49 +532,49 @@ const ProfilePage = () => {
                         Odaberi stil podučavanja
                       </option>
                       <option
-                        value="style1"
+                        value="Vizualni"
                         title="Osobe sklone vizualnom učenju vole čitati jer uživaju gledati riječi i slova ispred sebe. Također vole stvarati jezične poveznice pomoću kartica s riječima ili fotografija."
                       >
                         Vizualni
                       </option>
                       <option
-                        value="style2"
+                        value="Auditorni"
                         title="Kao što ime sugerira, auditorni učenici vole učiti kroz zvuk. Jako uživaju u interakciji i razgovoru s drugima te im nije nužno vidjeti riječi napisane."
                       >
                         Auditorni
                       </option>
                       <option
-                        value="style3"
+                        value="Taktilni"
                         title="Oni koji imaju sklonost taktilnom učenju uživaju manipulirati raznim nastavnim materijalima dok uče jezik. Obožavaju praktične aktivnosti koje uključuju rad rukama."
                       >
                         Taktilni
                       </option>
                       <option
-                        value="style4"
+                        value="Kinestetički"
                         title="Ovaj tip učenika voli uzimati duže pauze i biti fizički aktivan dok uči engleski. Ne vole dugo sjediti za stolom te uživaju u kretanju tijekom učenja."
                       >
                         Kinestetički
                       </option>
                       <option
-                        value="style5"
+                        value="Analitički"
                         title="Ove osobe vole usmjeriti svu pažnju na sitne detalje jezika. Uživaju učiti gramatička pravila i razbijati jezik na manje dijelove. Zbog fokusa na detalje, ponekad ne vide širu sliku pri učenju jezika."
                       >
                         Analitički
                       </option>
                       <option
-                        value="style6"
+                        value="Globalni"
                         title="Oni ne vole ulaziti u sitnice jezika niti ih zanima kako jezik funkcionira “iznutra”. Usmjereni su na širu sliku i ono što jezik predstavlja te žele prenositi ideje, ne opterećujući se savršenom gramatikom."
                       >
                         Globalni
                       </option>
                       <option
-                        value="style7"
+                        value="Refleksivni"
                         title="Ovi učenici vole razmišljati o jeziku, promišljati kako točno prenijeti svoje misli te analizirati svoj napredak u učenju jezika. Skloni su činiti manje pogrešaka, ali im je potrebno više vremena da prenesu poruku."
                       >
                         Refleksivni
                       </option>
                       <option
-                        value="style8"
+                        value="Impulzivni"
                         title="Ovi učenici su rođeni da riskiraju pri učenju engleskog. Žele govoriti, komunicirati i ne brinu se previše o gramatici. Stalno isprobavaju nove stvari, griješe i uče iz tih pogrešaka."
                       >
                         Impulzivni
@@ -470,22 +606,35 @@ const ProfilePage = () => {
                   <h3>Jezici koje podučavam</h3>
                   {editedUser.languagesTeach.map((lang, index) => (
                     <div key={index}>
-                      <input
-                        type="text"
+                      <select
                         value={lang.language}
                         onChange={(e) =>
                           handleInputChange(
-                            null,
+                            "language",
                             index,
                             e.target.value,
                             "languagesTeach"
                           )
                         }
-                        placeholder="Jezik"
-                      />
+                      >
+                        <option value="" disabled>
+                          Odaberi jezik
+                        </option>
+                        <option value="Engleski">Engleski</option>
+                        <option value="Njemački">Njemački</option>
+                        <option value="Francuski">Francuski</option>
+                        <option value="Španjolski">Španjolski</option>
+                        <option value="Talijanski">Talijanski</option>
+                        <option value="Portugalski">Portugalski</option>
+                        <option value="Ruski">Ruski</option>
+                        <option value="Hindi">Hindi</option>
+                        <option value="Arapski">Arapski</option>
+                        <option value="Mandarinski">Mandarinski</option>
+                        <option value="Japanski">Japanski</option>
+                      </select>
                       <button
                         onClick={() =>
-                          handleRemoveLanguage(index, "languagesTeach")
+                          handleRemoveLanguage("languagesTeach", index)
                         }
                       >
                         Ukloni
@@ -544,49 +693,49 @@ const ProfilePage = () => {
                         Odaberi stil podučavanja
                       </option>
                       <option
-                        value="style1"
+                        value="Vizualni"
                         title="Osobe sklone vizualnom učenju vole čitati jer uživaju gledati riječi i slova ispred sebe. Također vole stvarati jezične poveznice pomoću kartica s riječima ili fotografija."
                       >
                         Vizualni
                       </option>
                       <option
-                        value="style2"
+                        value="Auditorni"
                         title="Kao što ime sugerira, auditorni učenici vole učiti kroz zvuk. Jako uživaju u interakciji i razgovoru s drugima te im nije nužno vidjeti riječi napisane."
                       >
                         Auditorni
                       </option>
                       <option
-                        value="style3"
+                        value="Taktilni"
                         title="Oni koji imaju sklonost taktilnom učenju uživaju manipulirati raznim nastavnim materijalima dok uče jezik. Obožavaju praktične aktivnosti koje uključuju rad rukama."
                       >
                         Taktilni
                       </option>
                       <option
-                        value="style4"
+                        value="Kinestetički"
                         title="Ovaj tip učenika voli uzimati duže pauze i biti fizički aktivan dok uči engleski. Ne vole dugo sjediti za stolom te uživaju u kretanju tijekom učenja."
                       >
                         Kinestetički
                       </option>
                       <option
-                        value="style5"
+                        value="Analitički"
                         title="Ove osobe vole usmjeriti svu pažnju na sitne detalje jezika. Uživaju učiti gramatička pravila i razbijati jezik na manje dijelove. Zbog fokusa na detalje, ponekad ne vide širu sliku pri učenju jezika."
                       >
                         Analitički
                       </option>
                       <option
-                        value="style6"
+                        value="Globalni"
                         title="Oni ne vole ulaziti u sitnice jezika niti ih zanima kako jezik funkcionira “iznutra”. Usmjereni su na širu sliku i ono što jezik predstavlja te žele prenositi ideje, ne opterećujući se savršenom gramatikom."
                       >
                         Globalni
                       </option>
                       <option
-                        value="style7"
+                        value="Refleksivni"
                         title="Ovi učenici vole razmišljati o jeziku, promišljati kako točno prenijeti svoje misli te analizirati svoj napredak u učenju jezika. Skloni su činiti manje pogrešaka, ali im je potrebno više vremena da prenesu poruku."
                       >
                         Refleksivni
                       </option>
                       <option
-                        value="style8"
+                        value="Impulzivni"
                         title="Ovi učenici su rođeni da riskiraju pri učenju engleskog. Žele govoriti, komunicirati i ne brinu se previše o gramatici. Stalno isprobavaju nove stvari, griješe i uče iz tih pogrešaka."
                       >
                         Impulzivni
@@ -597,7 +746,9 @@ const ProfilePage = () => {
               </div>
             )}
             <div className="spremi-zatvori">
-              <button onClick={handleSaveProfile}>Spremi</button>
+              <button onClick={() => handleSaveProfile(editedUser)}>
+                Spremi
+              </button>
               <button onClick={() => setEditModalOpen(false)}>Zatvori</button>
             </div>
           </div>

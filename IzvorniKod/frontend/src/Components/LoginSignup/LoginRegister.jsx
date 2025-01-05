@@ -7,7 +7,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const LoginRegister = () => {
-  const navigate = useNavigate(); //za preusmjeravanje na login page ili profile page
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     ime: "",
     prezime: "",
@@ -17,77 +17,31 @@ const LoginRegister = () => {
   });
 
   const handleInputChange = (e) => {
-    const name = e.target.name; //ime objekta kojeg korisnik mijenja
-    const value = e.target.value; // vrijednost koju korisnik unosi
-
-    // azuriranje podataka
-    if (name === "ime") {
-      setFormData({
-        ime: value,
-        prezime: formData.prezime,
-        email: formData.email,
-        lozinka: formData.lozinka,
-        uloga: formData.uloga,
-      });
-    } else if (name === "prezime") {
-      setFormData({
-        ime: formData.ime,
-        prezime: value,
-        email: formData.email,
-        lozinka: formData.lozinka,
-        uloga: formData.uloga,
-      });
-    } else if (name === "email") {
-      setFormData({
-        ime: formData.ime,
-        prezime: formData.prezime,
-        email: value,
-        lozinka: formData.lozinka,
-        uloga: formData.uloga,
-      });
-    } else if (name === "lozinka") {
-      setFormData({
-        ime: formData.ime,
-        prezime: formData.prezime,
-        email: formData.email,
-        lozinka: value,
-        uloga: formData.uloga,
-      });
-    } else if (name === "uloga") {
-      setFormData({
-        ime: formData.ime,
-        prezime: formData.prezime,
-        email: formData.email,
-        lozinka: formData.lozinka,
-        uloga: value,
-      });
-    }
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleRegister = async () => {
     try {
-      //slanje post zahtjeva prema backendu
       const registerResponse = await axios.post(
         "http://localhost:8080/api/korisnici/register",
         formData
       );
-      //ako je zahtjev uspio
+
       if (registerResponse.status === 200) {
-        const token = registerResponse.data.token; //dohvacamo token i spremamo ga
+        const token = registerResponse.data.token;
         localStorage.setItem("token", token);
 
         const profileResponse = await axios.get(
           "http://localhost:8080/api/moj-profil",
           {
-            //slanje get zahtjeva prema backendu
             headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`, //u headerima saljemo token
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
           }
-        ); //slanje get zahtjeva prema backendu
+        );
 
         if (profileResponse.status === 200) {
-          // alert(profileResponse.data);
           navigate("/profile");
         }
       }
@@ -181,6 +135,12 @@ const LoginRegister = () => {
           Registriraj se
         </div>
       </div>
+      <a
+        href="http://localhost:8080/oauth2/authorization/github"
+        className="oauth2-btn"
+      >
+        Ulogiraj se uz pomoć GitHuba!
+      </a>
       <div className="ima_racun" onClick={() => navigate("/login")}>
         Imaš račun? <span>Prijavi se!</span>
       </div>
