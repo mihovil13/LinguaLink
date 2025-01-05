@@ -146,8 +146,6 @@ const ProfilePage = () => {
 
     fetchUserProfile();
   }, [location, navigate]);
-    fetchUserProfile(); // pozivanje funkcije koja se nalazi unutar hooka
-  }, [location.search, navigate]);
 
   const handleEditProfile = () => {
     setEditedUser(user); // postavlja trenutno stanje korisnika u stanje uredivanja
@@ -201,10 +199,6 @@ const ProfilePage = () => {
     } catch (error) {
       console.error("Error during logout:", error);
       alert("Došlo je do greške prilikom odjave.");
-    }
-  };
-      console.error("Error saving profile:", error);
-      alert("Doslo je do pogreske prilikom spremanja profila");
     }
   };
 
@@ -766,4 +760,3 @@ const ProfilePage = () => {
 };
 
 export default ProfilePage;
-
