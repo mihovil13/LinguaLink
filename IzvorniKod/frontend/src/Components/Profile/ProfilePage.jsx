@@ -197,8 +197,8 @@ const ProfilePage = () => {
         alert("Doslo je do greske prilikom spremanja profila");
       }
     } catch (error) {
-      console.error("Error during logout:", error);
-      alert("Došlo je do greške prilikom odjave.");
+      console.error("Error during profile saving:", error);
+      alert("Došlo je do greške prilikom spremanja profila.");
     }
   };
 

@@ -1,9 +1,62 @@
+.parent-container {
+   display: flex;
+   flex-direction: row;
+   width: 65vw;
+   justify-content: space-between;
+}
+
+.parent-container.logged-out {
+   justify-content: center;
+   align-items: center;
+}
+
+.parent-container.logged-in {
+   justify-content: space-between;
+}
+
 .container {
    display: flex;
-   flex-direction: column;
-   width: 60vw;
-   overflow-y: auto;
+   justify-content: space-between;
+   background-color: white;
    overflow-x: hidden;
+}
+
+.main-content {
+   display: flex;
+   flex-direction: column;
+   width: 35vw;
+   overflow-y: auto;
+   margin-right: 10px;
+}
+
+.filtered-teachers-container {
+   align-self: center;
+   width: 20vw;
+   height: 65vh;
+   padding: 20px;
+   background-color: white;
+   border-radius: 10px;
+}
+
+footer {
+   display: grid;
+}
+
+.text {
+   color: #613c78;
+   font-size: 30px;
+   font-weight: 700;
+   text-align: center;
+}
+
+.underline {
+   justify-self: center;
+   width: 8vw;
+   height: 6px;
+   background: #613c78;
+   border-radius: 9px;
+   margin-top: 10px;
+   margin-bottom: 15px;
 }
 
 .teacher-container {
@@ -17,7 +70,7 @@
    align-items: center;
 }
 
-.teacher-container > img{
+.teacher-container>img {
    width: 70px;
    height: 70px;
    border-radius: 50%;
@@ -28,9 +81,27 @@ p {
    font-weight: 400;
 }
 
+
+
+.sidebar h2 {
+   font-size: 1.5rem;
+   font-weight: 600;
+}
+
 @media (max-width: 768px) {
    .container {
+      flex-direction: column;
+   }
+
+   .main-content {
       width: 80vw;
+   }
+
+   .sidebar {
+      width: 80vw;
+      border-left: none;
+      border-top: 3px solid gray;
+      margin-top: 20px;
    }
 
    .teacher-container {
@@ -39,7 +110,7 @@ p {
       padding: 10px;
    }
 
-   .teacher-container > img {
+   .teacher-container>img {
       margin-top: 10px;
       width: 60px;
       height: 60px;
