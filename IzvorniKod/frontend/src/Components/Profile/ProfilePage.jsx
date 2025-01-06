@@ -5,6 +5,32 @@ import axios from "axios";
 
 const ProfilePage = () => {
   const navigate = useNavigate();
+  const handleLogout = async () => {
+    try {
+      const token = localStorage.getItem("token");
+
+      if (token) {
+        await axios.post(
+          "http://localhost:8080/api/auth/logout",
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+      }
+
+      // Ukloni token iz localStorage
+      localStorage.removeItem("token");
+
+      // Preusmjeri korisnika na login stranicu
+      navigate("/");
+    } catch (error) {
+      console.error("Error during logout:", error);
+      alert("Došlo je do greške prilikom odjave.");
+    }
+  };
   const location = useLocation();
   // definiramo podatke u korisniku
   const [user, setUser] = useState({
@@ -18,7 +44,7 @@ const ProfilePage = () => {
     stilPoducavanja: "",
     ciljeviUcenja: "",
     iskustvo: "",
-    kvalifikacije: "",
+    qualifications: [{ kvalifikacije: "" }],
     satnica: "",
   });
 
@@ -67,23 +93,28 @@ const ProfilePage = () => {
               stilPoducavanja,
               ciljeviUcenja,
               iskustvo,
-              kvalifikacije,
+              qualifications,
               satnica,
             } = response.data; // iz odgovora uzimamo navedene varijable
-            if(languagesKnown){
+            if (languagesKnown) {
               languagesKnown = languagesKnown.split(", ").map((entry) => {
                 const [language, level] = entry.split("-");
                 return { language: language.trim(), level: level.trim() };
               });
             }
-            if(languagesToLearn){
+            if (languagesToLearn) {
               languagesToLearn = languagesToLearn.split(", ").map((entry) => {
                 return { language: entry.trim() };
               });
             }
-            if(languagesTeach){
+            if (languagesTeach) {
               languagesTeach = languagesTeach.split(", ").map((entry) => {
                 return { language: entry.trim() };
+              });
+            }
+            if (qualifications) {
+              qualifications = qualifications.split(", ").map((entry) => {
+                return { kvalifikacije: entry.trim() };
               });
             }
 
@@ -99,7 +130,7 @@ const ProfilePage = () => {
               stilPoducavanja: stilPoducavanja || "",
               ciljeviUcenja: ciljeviUcenja || "",
               iskustvo: iskustvo || "",
-              kvalifikacije: kvalifikacije || "",
+              qualifications: qualifications || [],
               satnica: satnica || "",
             });
 
@@ -114,37 +145,12 @@ const ProfilePage = () => {
       } catch (error) {
         console.error("Error fetching user profile:", error);
         alert("Došlo je do greške prilikom dohvaćanja korisničkog profila.");
-      }
-    };
-    const handleLogout = async () => {
-      try {
-        const token = localStorage.getItem("token");
-
-        if (token) {
-          await axios.post(
-            "http://localhost:8080/api/auth/logout",
-            {},
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          );
-        }
-
-        // Ukloni token iz localStorage
-        localStorage.removeItem("token");
-
-        // Preusmjeri korisnika na login stranicu
         navigate("/login");
-      } catch (error) {
-        console.error("Error during logout:", error);
-        alert("Došlo je do greške prilikom odjave.");
       }
     };
 
-    fetchUserProfile(); // pozivanje funkcije koja se nalazi unutar hooka
-  }, []);
+    fetchUserProfile();
+  }, [location, navigate]);
 
   const handleEditProfile = () => {
     setEditedUser(user); // postavlja trenutno stanje korisnika u stanje uredivanja
@@ -176,6 +182,11 @@ const ProfilePage = () => {
   };
 
   const handleSaveProfile = async (updatedProfile = editedUser) => {
+    if (isNaN(updatedProfile.satnica) || updatedProfile.satnica < 0) {
+      alert("Molimo unesite ispravnu satnicu.");
+      return;
+    }
+
     try {
       console.log(updatedProfile);
       const response = await axios.put(
@@ -196,15 +207,15 @@ const ProfilePage = () => {
         alert("Doslo je do greske prilikom spremanja profila");
       }
     } catch (error) {
-      console.error("Error saving profile:", error);
-      alert("Doslo je do pogreske prilikom spremanja profila");
+      console.error("Error during profile saving:", error);
+      alert("Došlo je do greške prilikom spremanja profila.");
     }
   };
 
   // funkciju koristimo za mijenjanje postojećih vrijednosti, a ne stvaranje novih
   const handleInputChange = (field, index, value, listType) => {
-    // field = naziv polja unutar objekta (language ili level)
-    // index = indeks u listi koju uredujem (liste su languagesToLearn i languagesTeach)
+    // field = naziv polja unutar objekta (language, level ili kvalifikacije)
+    // index = indeks u listi koju uredujem (liste su languagesToLearn, languagesKnown, languagesTeach i qualifications)
     // value = nova vrijednost koju korisnik unosi
     // listType = odreduje koju listu uredujemo
 
@@ -239,6 +250,18 @@ const ProfilePage = () => {
         }));
         setEditedUser({ ...editedUser, [listType]: correctList });
       }
+    } else if (listType === "qualifications") {
+      const updatedList = [...editedUser[listType]];
+      const duplicate = updatedList.some(
+        (item) => item.kvalifikacije === value
+      );
+      if (duplicate) {
+        alert(`Već ste naveli ovu kvalifikaciju: ${value}`);
+      } else {
+        updatedList[index][field] = value;
+        console.log("Updated qualifications list:", updatedList);
+        setEditedUser({ ...editedUser, [listType]: updatedList });
+      }
     } else {
       console.error("Invalid listType:", listType);
     }
@@ -257,6 +280,19 @@ const ProfilePage = () => {
   // funkciju koristimo za uklanjanje jezika
   const handleRemoveLanguage = (listType, index) => {
     const updatedList = editedUser[listType].filter((_, i) => i !== index); // izostavlja element na danom indexu
+    setEditedUser({ ...editedUser, [listType]: updatedList });
+  };
+
+  // funkciju koristimo za dodavanje kvalifikacije
+  const handleAddQualification = (listType) => {
+    const newElement = { kvalifikacije: "" };
+    const updatedList = [...editedUser[listType], newElement];
+    setEditedUser({ ...editedUser, [listType]: updatedList });
+  };
+
+  // funkciju koristimo za uklanjanje kvalifikacije
+  const handleRemoveQualification = (listType, index) => {
+    const updatedList = editedUser[listType].filter((_, i) => i !== index);
     setEditedUser({ ...editedUser, [listType]: updatedList });
   };
 
@@ -358,10 +394,15 @@ const ProfilePage = () => {
             <p>{user.iskustvo || "Nema unesenih podataka o iskustvu."}</p>
 
             <span>Kvalifikacije</span>
-            <p>
-              {user.kvalifikacije ||
-                "Nema unesenih podataka o kvalifikacijama."}
-            </p>
+            {user.qualifications && user.qualifications.length > 0 ? (
+              <ul>
+                {user.qualifications.map((item, index) => (
+                  <li key={index}>{item.kvalifikacije}</li>
+                ))}
+              </ul>
+            ) : (
+              <p>Nema unesenih podataka o kvalifikacijama.</p>
+            )}
 
             <span>Stil podučavanja</span>
             <p>
@@ -370,7 +411,11 @@ const ProfilePage = () => {
             </p>
 
             <span>Satnica</span>
-            <p>{user.satnica || "Nema unesenih podataka o satnici."}</p>
+            <p>
+              {user.satnica
+                ? `${user.satnica}€/h`
+                : "Nema unesenih podataka o satnici."}
+            </p>
           </div>
         )}
       </div>
@@ -400,7 +445,7 @@ const ProfilePage = () => {
             >
               Prikaz učitelja
             </button>
-            <button className="odjava-button" onClick={() => navigate("/")}>
+            <button className="odjava-button" onClick={handleLogout}>
               Odjava
             </button>
           </div>
@@ -660,20 +705,44 @@ const ProfilePage = () => {
                     ></textarea>
                   </div>
                 </div>
-                <div className="ciljevi-ucenja-section">
+                <div className="jezici-koje-znam">
                   <h3>Kvalifikacije</h3>
-                  <div className="learning-goals-box">
-                    <textarea
-                      value={editedUser.kvalifikacije || ""}
-                      onChange={(e) => {
-                        setEditedUser({
-                          ...editedUser,
-                          kvalifikacije: e.target.value,
-                        });
-                      }}
-                      placeholder="Koje su vaše kvalifikacije?"
-                    ></textarea>
-                  </div>
+                  {editedUser.qualifications.map((kval, index) => (
+                    <div key={index}>
+                      <select
+                        value={kval.kvalifikacije}
+                        onChange={(e) =>
+                          handleInputChange(
+                            "kvalifikacije",
+                            index,
+                            e.target.value,
+                            "qualifications"
+                          )
+                        }
+                      >
+                        <option value="" disabled>
+                          Odaberi
+                        </option>
+                        <option value="Profesor">Profesor</option>
+                        <option value="Izvorni govornik">
+                          Izvorni govornik
+                        </option>
+                        <option value="Certifikat">Certifikat</option>
+                      </select>
+                      <button
+                        onClick={() =>
+                          handleRemoveQualification("qualifications", index)
+                        }
+                      >
+                        Ukloni
+                      </button>
+                    </div>
+                  ))}
+                  <button
+                    onClick={() => handleAddQualification("qualifications")}
+                  >
+                    Dodaj kvalifikaciju
+                  </button>
                 </div>
                 <div className="styles-section">
                   <h3>Stilovi podučavanja jezika</h3>
@@ -742,6 +811,25 @@ const ProfilePage = () => {
                       </option>
                     </select>
                   </div>
+                </div>
+                <div className="satnica-section">
+                  <h3>Satnica (cijena po satu)</h3>
+                  <input
+                    type="number"
+                    value={editedUser.satnica || ""}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      if (/^\d*\.?\d*$/.test(value)) {
+                        handleInputChange(
+                          "satnica",
+                          null,
+                          e.target.value,
+                          null
+                        );
+                      }
+                    }}
+                    placeholder="Unesite satnicu(€/h)"
+                  />
                 </div>
               </div>
             )}

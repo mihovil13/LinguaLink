@@ -1,105 +1,105 @@
 .profile-page {
-   display: flex;
-   align-items: flex-start;
-   /* horizontalno: poravna ih na pocetku */
-   height: 70vh;
-   /* viewport height */
-   width: 80vw;
-   background-color: #f9f9f9;
-   border: 3px solid #ddd;
-   border-radius: 10px;
+  display: flex;
+  align-items: flex-start;
+  /* horizontalno: poravna ih na pocetku */
+  height: 70vh;
+  /* viewport height */
+  width: 80vw;
+  background-color: #f9f9f9;
+  border: 3px solid #ddd;
+  border-radius: 10px;
 }
 .profile-sidebar {
-   display: flex;
-   flex: 3;
-   padding: 20px;
-   background-color: #f9f9f9;
-   border-right: 1px solid #ddd;
-   height: 60vh;
-   width: 50vw;
-   font-size: 1.2rem;
-   margin-top: 20px;
+  display: flex;
+  flex: 3;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-right: 1px solid #ddd;
+  height: 60vh;
+  width: 50vw;
+  font-size: 1.2rem;
+  margin-top: 20px;
 }
 .profile-header {
-   display: flex;
-   flex: 1;
-   height: 90%;
-   flex-direction: column;
-   align-items: center;
-   padding: 20px;
+  display: flex;
+  flex: 1;
+  height: 90%;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
 }
 .profile-podaci {
-   flex: 1;
-   padding: 10px;
-   border-radius: 30px;
+  flex: 1;
+  padding: 10px;
+  border-radius: 30px;
 }
 .profile-jezici {
-   flex: 1;
-   padding: 10px;
-   border-radius: 30px;
-   overflow-y: auto;
+  flex: 1;
+  padding: 10px;
+  border-radius: 30px;
+  overflow-y: auto;
 }
 .profile-sidebar span {
-   background-color: #613c78;
-   color: white;
-   font-size: 1.4rem;
-   font-weight: 450;
-   margin: 20px 0px;
-   padding: 8px;
-   border-radius: 10px;
+  background-color: #613c78;
+  color: white;
+  font-size: 1.4rem;
+  font-weight: 450;
+  margin: 20px 0px;
+  padding: 8px;
+  border-radius: 10px;
 }
 .profile-imagetext {
-   display: flex;
-   flex-direction: column;
-   align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .profile-picture-large {
-   width: 150px;
-   height: 150px;
-   border-radius: 50%;
-   object-fit: cover;
-   margin: 20px 0px;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 20px 0px;
 }
 .profile-name,
 .profile-surname {
-   font-size: 2em;
-   text-align: center;
-   margin: 0px;
+  font-size: 2em;
+  text-align: center;
+  margin: 0px;
 }
 .profile-buttons {
-   display: flex;
-   flex: 1;
-   align-items: flex-end;
-   width: 100%;
-   gap: 10px;
+  display: flex;
+  flex: 1;
+  align-items: flex-end;
+  width: 100%;
+  gap: 10px;
 }
 .edit-button {
-   display: flex;
-   justify-content: center;
-   margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
 }
 ul {
-   list-style: none;
-   padding: 0;
+  list-style: none;
+  padding: 0;
 }
 ul li {
-   padding: 5px 0;
-   font-size: 1.2rem;
+  padding: 5px 0;
+  font-size: 1.2rem;
 }
 p {
-   padding: 1px 0px;
+  padding: 1px 0px;
 }
 .odjava-button,
 .teachers-button {
-   background-color: #613c78;
-   color: #fff;
-   font-size: 1rem;
-   padding: 15px 30px;
-   border: none;
-   border-radius: 5px;
-   cursor: pointer;
-   margin-top: 20px;
-   height: 10vh;
+  background-color: #613c78;
+  color: #fff;
+  font-size: 1rem;
+  padding: 15px 30px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 20px;
+  height: 10vh;
 }
 
 .odjava-button:hover,
@@ -110,55 +110,55 @@ p {
 .jezici-koje-zelim-nauciti > button:hover,
 .jezici-koje-zelim-nauciti > div > button:hover,
 .spremi-zatvori > button:hover {
-   background-color: #4a2c5f;
+  background-color: #4a2c5f;
 }
 
 .edit-profile-button {
-   background-color: #613c78;
-   color: #fff;
-   font-size: 1rem;
-   padding: 15px 30px;
-   border: none;
-   border-radius: 5px;
-   cursor: pointer;
-   height: 8vh;
+  background-color: #613c78;
+  color: #fff;
+  font-size: 1rem;
+  padding: 15px 30px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  height: 8vh;
 }
 
 .modal {
-   display: flex;
-   position: fixed;
-   padding: 10px 0px;
-   width: 58%;
-   height: 67%;
-   background-color: rgba(0, 0, 0, 0.8);
-   border-radius: 8px;
-   justify-content: center;
-   /* align-items: center; */
-   z-index: 999;
+  display: flex;
+  position: fixed;
+  padding: 10px 0px;
+  width: 58%;
+  height: 67%;
+  background-color: rgba(0, 0, 0, 0.8);
+  border-radius: 8px;
+  justify-content: center;
+  /* align-items: center; */
+  z-index: 999;
 }
 
 .modal-content {
-   background-color: white;
-   padding: 10px 20px;
-   border-radius: 8px;
-   width: 400px;
-   max-width: 80%;
-   max-height: 80vh;
-   display: flex;
-   flex-direction: column;
+  background-color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  width: 400px;
+  max-width: 80%;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .modal-content > .scrollable-content {
-   padding: 10px 20px;
-   overflow-y: auto;
-   flex: 1;
+  padding: 10px 20px;
+  overflow-y: auto;
+  flex: 1;
 }
 
 .jezici-koje-znam > div,
 .jezici-koje-zelim-nauciti > div {
-   display: flex;
-   gap: 7px;
-   padding: 4px 0px;
+  display: flex;
+  gap: 7px;
+  padding: 4px 0px;
 }
 
 .jezici-koje-znam > button,
@@ -166,219 +166,227 @@ p {
 .jezici-koje-zelim-nauciti > button,
 .jezici-koje-zelim-nauciti > div > button,
 .tooltip-container > :nth-child(1) {
-   background-color: #613c78;
-   padding: 5px 8px;
-   color: #fff;
-   border: none;
-   border-radius: 5px;
-   cursor: pointer;
+  background-color: #613c78;
+  padding: 5px 8px;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
 .spremi-zatvori {
-   padding: 10px 20px;
-   background: white;
-   border-top: 1px solid #ddd;
-   display: flex;
-   justify-content: center;
-   gap: 10px;
+  padding: 10px 20px;
+  background: white;
+  border-top: 1px solid #ddd;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
 }
 
 .spremi-zatvori > button {
-   background-color: #613c78;
-   color: #fff;
-   font-size: 1rem;
-   padding: 10px;
-   border: none;
-   border-radius: 5px;
-   cursor: pointer;
-   height: 5vh;
+  background-color: #613c78;
+  color: #fff;
+  font-size: 1rem;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  height: 5vh;
 }
 
 @keyframes fadeIn {
-   from {
-      opacity: 0;
-   }
+  from {
+    opacity: 0;
+  }
 
-   to {
-      opacity: 1;
-   }
+  to {
+    opacity: 1;
+  }
 }
 
 .modal.open {
-   display: flex;
-   animation: fadeIn 0.3s ease-out;
+  display: flex;
+  animation: fadeIn 0.3s ease-out;
 }
 
 .modal-close {
-   cursor: pointer;
-   position: absolute;
-   top: 10px;
-   right: 10px;
-   background: transparent;
-   border: none;
-   font-size: 20px;
-   color: #333;
+  cursor: pointer;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  color: #333;
 }
 
 .styles-section {
-   margin-top: 20px;
-   padding: 10px 0;
-   display: flex;
-   flex-direction: column;
-   gap: 10px;
+  margin-top: 20px;
+  padding: 10px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .styles-section h3 {
-   margin: 0;
-   font-size: 1.2rem;
-   color: #333;
+  margin: 0;
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.satnica-section input {
+  padding: 10px;
+  margin-top: 5px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
 .tooltip-container {
-   width: 100%;
-   border-radius: 5px;
-   font-size: 1rem;
-   cursor: pointer;
+  width: 100%;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
 }
 
 .learning-goals-section {
-   margin-top: 20px;
+  margin-top: 20px;
 }
 
 .learning-goals-box {
-   margin-top: 10px;
-   padding: 10px;
-   border: 1px solid #ccc;
-   border-radius: 5px;
-   background-color: #f9f9f9;
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
 }
 
 .learning-goals-box textarea {
-   width: 100%;
-   height: 150px;
-   padding: 10px;
-   font-size: 1rem;
-   border: none;
-   border-radius: 5px;
-   resize: none;
-   outline: none;
-   box-sizing: border-box;
-   background-color: #fff;
-   color: #333;
+  width: 100%;
+  height: 150px;
+  padding: 10px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 5px;
+  resize: none;
+  outline: none;
+  box-sizing: border-box;
+  background-color: #fff;
+  color: #333;
 }
 
 @media (max-width: 768px) {
-   .profile-page {
-      flex-direction: column;
-      height: auto;
-      width: 90vw;
-      padding: 10px;
-   }
+  .profile-page {
+    flex-direction: column;
+    height: auto;
+    width: 90vw;
+    padding: 10px;
+  }
 
-   .profile-sidebar {
-      flex: 1;
-      width: 100%;
-      border-right: none;
-      margin-top: 10px;
-      padding: 10px;
-   }
+  .profile-sidebar {
+    flex: 1;
+    width: 100%;
+    border-right: none;
+    margin-top: 10px;
+    padding: 10px;
+  }
 
-   .profile-header {
-      flex: 1;
-      align-items: flex-start;
-      width: 100%;
-      padding: 10px;
-   }
+  .profile-header {
+    flex: 1;
+    align-items: flex-start;
+    width: 100%;
+    padding: 10px;
+  }
 
-   .profile-name,
-   .profile-surname {
-      font-size: 1.5em;
-   }
+  .profile-name,
+  .profile-surname {
+    font-size: 1.5em;
+  }
 
-   .profile-picture-large {
-      width: 120px;
-      height: 120px;
-   }
+  .profile-picture-large {
+    width: 120px;
+    height: 120px;
+  }
 
-   .profile-buttons {
-      flex-direction: column;
-      align-items: stretch;
-   }
+  .profile-buttons {
+    flex-direction: column;
+    align-items: stretch;
+  }
 
-   .odjava-button,
-   .teachers-button {
-      width: 100%;
-      margin-top: 10px;
-      padding: 12px;
-   }
+  .odjava-button,
+  .teachers-button {
+    width: 100%;
+    margin-top: 10px;
+    padding: 12px;
+  }
 
-   .profile-sidebar span {
-      font-size: 1.2rem;
-      margin: 15px 0;
-   }
+  .profile-sidebar span {
+    font-size: 1.2rem;
+    margin: 15px 0;
+  }
 }
 
 @media (max-width: 480px) {
-   .profile-name,
-   .profile-surname {
-      font-size: 1.2em;
-   }
+  .profile-name,
+  .profile-surname {
+    font-size: 1.2em;
+  }
 
-   .profile-picture-large {
-      width: 100px;
-      height: 100px;
-   }
+  .profile-picture-large {
+    width: 100px;
+    height: 100px;
+  }
 
-   .odjava-button,
-   .teachers-button {
-      padding: 10px 20px;
-   }
+  .odjava-button,
+  .teachers-button {
+    padding: 10px 20px;
+  }
 
-   .profile-sidebar {
-      padding: 5px;
-   }
+  .profile-sidebar {
+    padding: 5px;
+  }
 
-   .profile-header {
-      padding: 5px;
-   }
+  .profile-header {
+    padding: 5px;
+  }
 }
 
 .role-modal {
-   position: fixed;
-   top: 0;
-   left: 0;
-   width: 100%;
-   height: 100%;
-   background: rgba(0, 0, 0, 0.5);
-   display: flex;
-   justify-content: center;
-   align-items: center;
-   z-index: 1000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
 }
 
 .role-modal-content {
-   background: white;
-   padding: 20px;
-   border-radius: 8px;
-   text-align: center;
-   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .role-buttons {
-   display: flex;
-   justify-content: space-around;
-   margin-top: 20px;
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
 }
 
 .role-button {
-   padding: 10px 20px;
-   background-color: #007bff;
-   color: white;
-   border: none;
-   border-radius: 5px;
-   cursor: pointer;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
 .role-button:hover {
-   background-color: #0056b3;
+  background-color: #0056b3;
 }
