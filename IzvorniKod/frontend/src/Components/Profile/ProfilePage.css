@@ -1,9 +1,7 @@
 .profile-page {
   display: flex;
   align-items: flex-start;
-  /* horizontalno: poravna ih na pocetku */
   height: 70vh;
-  /* viewport height */
   width: 80vw;
   background-color: #f9f9f9;
   border: 3px solid #ddd;
