@@ -157,12 +157,11 @@ const TeacherList = () => {
       <div className="filter-notification">Filtri primijenjeni</div>
 
       <div className="container">
+        <footer>
+          <div className="text">Lista učitelja</div>
+          <div className="underline"></div>
+        </footer>
         <div className="main-content">
-          <footer>
-            <div className="text">Lista učitelja</div>
-            <div className="underline"></div>
-          </footer>
-
           {filteredTeachers.length > 0 ? (
             filteredTeachers.map((teacher, index) => (
               <div className="teacher-container" key={index}>
@@ -170,9 +169,15 @@ const TeacherList = () => {
                   src="https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"
                   alt=""
                 />
-                <p>
-                  {teacher.ime} {teacher.prezime}
-                </p>
+                <div className="teacher-info">
+                  <p>
+                    {teacher.ime} {teacher.prezime}
+                  </p>
+                </div>
+
+                <div className="teacher-languages">
+                  <p>{teacher.languagesTeach.join(", ")}</p>
+                </div>
               </div>
             ))
           ) : (
@@ -241,9 +246,11 @@ const TeacherList = () => {
               </div>
             </div>
           </div>
-          <button onClick={applyFilters}>Primijeni filtre</button>
-          <div className="clear-filters">
-            <button onClick={clearFilters}>Poništi filtre</button>
+          <div className=" filter-buttons">
+            <button onClick={applyFilters}>Primijeni filtre</button>
+            <div className="clear-filters">
+              <button onClick={clearFilters}>Poništi filtre</button>
+            </div>
           </div>
         </div>
       )}
