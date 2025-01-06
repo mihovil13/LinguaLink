@@ -94,7 +94,7 @@ const TeacherList = () => {
       const matchesQualification =
         qualificationFilters.length === 0 ||
         qualificationFilters.some((qualification) =>
-          teacher.qualification.includes(qualification)
+          teacher.qualifications.includes(qualification)
         );
 
       //vracamo ucitelje koji ispunjavaju oba filter uvjeta
