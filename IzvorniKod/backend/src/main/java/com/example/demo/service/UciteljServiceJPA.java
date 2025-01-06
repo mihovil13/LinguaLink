@@ -44,7 +44,7 @@ public class  UciteljServiceJPA implements UciteljService {
             ucitelj.setPrezime(body.get("prezime").toString());
             ucitelj.setEmail(body.get("email").toString());
             if (body.containsKey("kvalifikacije")) {
-                ucitelj.setKvalifikacije((String) body.get("kvalifikacije"));
+                ucitelj.setQualifications((String) body.get("kvalifikacije"));
             }
             if (body.containsKey("iskustvo")) {
                 ucitelj.setIskustvo((String) body.get("iskustvo"));

@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 
@@ -17,6 +18,12 @@ public class Ucitelj extends Korisnik {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    private String iskustvo;
+    private String qualifications;
+    private String satnica;
+    private String languagesTeach;
+    private String stilPoducavanja;
+
     @ManyToMany
     @JoinTable(
             name = "UciteljJezik",
@@ -24,12 +31,6 @@ public class Ucitelj extends Korisnik {
             inverseJoinColumns = @JoinColumn(name = "jezik_id")
     )
     private List<Jezik> jezici2 = new ArrayList<>();
-
-    private String iskustvo;
-    private String kvalifikacije;
-    private String satnica;
-    private String languagesTeach;
-    private String stilPoducavanja;
 
     public Ucitelj(String ime, String prezime, String email, String lozinka) {
         super(ime, prezime, email, lozinka);
@@ -59,12 +60,12 @@ public class Ucitelj extends Korisnik {
         this.iskustvo = iskustvo;
     }
 
-    public String getKvalifikacije() {
-        return kvalifikacije;
+    public String getQualifications() {
+        return qualifications;
     }
 
-    public void setKvalifikacije(String kvalifikacije) {
-        this.kvalifikacije = kvalifikacije;
+    public void setQualifications(String qualifications) {
+        this.qualifications = qualifications;
     }
 
     public String getSatnica() {
@@ -84,6 +85,10 @@ public class Ucitelj extends Korisnik {
 
     public String getLanguagesTeach() {
         return languagesTeach;
+    }
+
+    public void setLanguagesTeach(String languagesTeach) {
+        this.languagesTeach = languagesTeach;
     }
 
     public void setLanguagesTeach(List<Map<String, String>> languages) {
@@ -124,4 +129,4 @@ public class Ucitelj extends Korisnik {
 //        this.satnica = satnica;
 //    }
 //}
-//
+//```
