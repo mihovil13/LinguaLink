@@ -63,6 +63,9 @@ public class UciteljServiceJPA implements UciteljService {
 
 
                 //ucitelj.setLanguagesTeach((List<Map<String, String>>) body.get("languagesTeach"));
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
             }
             if (body.containsKey("satnica")) {

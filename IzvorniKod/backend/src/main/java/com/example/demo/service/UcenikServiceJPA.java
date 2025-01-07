@@ -24,6 +24,9 @@ public class UcenikServiceJPA implements UcenikService {
         this.uciteljServiceJPA = uciteljServiceJPA;
         this.jezikServiceJPA = jezikServiceJPA;
         this.jezikRazinaRepository= jezikRazinaRepository;
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
     }
     @Override
@@ -80,6 +83,9 @@ public class UcenikServiceJPA implements UcenikService {
             ucenik.setJezici(dobraLista);
             System.out.println("DobraLista: ");
             System.out.println(dobraLista);
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
             ucenik.setLanguagesToLearn((List<Map<String, String>>) body.get("languagesToLearn"));
         }
@@ -97,5 +103,8 @@ public class UcenikServiceJPA implements UcenikService {
 =======
 
 
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 }

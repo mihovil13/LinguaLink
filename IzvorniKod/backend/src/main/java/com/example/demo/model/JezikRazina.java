@@ -1,10 +1,13 @@
 package com.example.demo.model;
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 =======
+=======
+>>>>>>> Stashed changes
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 >>>>>>> Stashed changes
@@ -15,11 +18,14 @@ public class JezikRazina {
     private Razina razina;
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     public JezikRazina(Jezik jezik, Razina razina) {
         this.jezik_id = jezik_id;
         this.razina = razina;
     }
 =======
+=======
+>>>>>>> Stashed changes
     @ManyToOne
     @JsonBackReference
     private Jezik jezik;

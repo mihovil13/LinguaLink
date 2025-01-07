@@ -11,6 +11,10 @@ public interface UcenikService {
     public Ucenik getUcenik(String email);
     public ResponseEntity<?> updateUcenik(Ucenik ucenik, Map<String, Object> body);
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 =======
 
 >>>>>>> Stashed changes

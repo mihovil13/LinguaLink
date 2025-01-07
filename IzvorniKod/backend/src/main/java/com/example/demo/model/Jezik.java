@@ -17,7 +17,10 @@ public class Jezik {
     private String nazivJezika;
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
     @JsonIgnore
     @ManyToMany(mappedBy = "jezici")
     private List<Ucenik> ucenikList = new ArrayList<>();

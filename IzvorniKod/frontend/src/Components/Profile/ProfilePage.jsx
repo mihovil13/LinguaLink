@@ -72,8 +72,11 @@ const ProfilePage = () => {
 
             } = response.data; // iz odgovora uzimamo navedene varijable
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
             if(languagesKnown){
 =======
+=======
+>>>>>>> Stashed changes
             console.log(response.data)
             if (languagesKnown) {
 >>>>>>> Stashed changes
@@ -82,6 +85,7 @@ const ProfilePage = () => {
                 return { language: language.trim(), level: level.trim() };
               });
             }
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
             if(languagesToLearn){
               languagesToLearn = languagesToLearn.split(", ").map((entry) => {
@@ -94,6 +98,15 @@ const ProfilePage = () => {
 =======
             if (response.data.jezici) {
               languagesToLearn = response.data.jezici.map((entry) => {
+=======
+            if (response.data.jezici) {
+              languagesToLearn = response.data.jezici.map((entry) => {
+                return { language: entry.nazivJezika };
+              });
+            }
+            if (response.data.jezici2) {
+              languagesTeach = response.data.jezici2.map((entry) => {
+>>>>>>> Stashed changes
                 return { language: entry.nazivJezika };
               });
             }

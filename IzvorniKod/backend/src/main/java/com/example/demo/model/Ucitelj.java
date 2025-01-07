@@ -25,7 +25,10 @@ public class Ucitelj extends Korisnik {
     private String stilPoducavanja;
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "UciteljJezik",
@@ -79,6 +82,7 @@ public class Ucitelj extends Korisnik {
     }
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     public String getLanguagesTeach() {
         return languagesTeach;
     }
@@ -88,6 +92,8 @@ public class Ucitelj extends Korisnik {
                 .map(lang -> (String) lang.get("language"))
                 .collect(Collectors.joining(", "));
     }
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 }
