@@ -28,6 +28,57 @@ public class Ucenik extends Korisnik{
     private String ciljeviUcenja;
     private String stilPoducavanja;
 
+<<<<<<< Updated upstream
+=======
+    @ManyToMany
+    @JoinTable(
+            name = "UcenikJezik",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "jezik_id")
+    )
+    private List<Jezik> jezici = new ArrayList<>();
+
+    @OneToMany(mappedBy = "ucenik", fetch = FetchType.EAGER)
+    private List<JezikRazina> jeziciRazine = new ArrayList<>();
+
+    public void setCiljeviUcenja(String ciljeviUcenja) {
+        this.ciljeviUcenja = ciljeviUcenja;
+    }
+
+    public List<JezikRazina> getJeziciRazine() {
+        return jeziciRazine;
+    }
+
+    public void setJeziciRazine(List<JezikRazina> jeziciRazine) {
+        this.jeziciRazine = jeziciRazine;
+    }
+
+    public List<Jezik> getJezici() {
+        return jezici;
+    }
+
+    public void setJezici(List<Jezik> jezici) {
+        this.jezici = jezici;
+    }
+
+    public void setLanguagesToLearn(String languagesToLearn) {
+        this.languagesToLearn = languagesToLearn;
+    }
+
+    public void setLanguagesKnown(String languagesKnown) {
+        this.languagesKnown = languagesKnown;
+    }
+
+    @Override
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+>>>>>>> Stashed changes
     public Ucenik(String ime, String prezime, String email, String lozinka, String uloga) {
         super(ime, prezime, email, lozinka, uloga);
     }

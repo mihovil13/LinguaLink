@@ -45,7 +45,25 @@ public class UciteljServiceJPA implements UciteljService {
                 ucitelj.setIskustvo((String) body.get("iskustvo"));
             }
             if (body.containsKey("languagesTeach")) {
+<<<<<<< Updated upstream
                 ucitelj.setLanguagesTeach((List<Map<String, String>>) body.get("languagesTeach"));
+=======
+                List<Map<String,String>> jezici =(List<Map<String,String>>) body.get("languagesTeach");
+                List<String> jezikOdvojeno = jezici.stream()
+                        .map(lang -> (String) lang.get("language")).toList();
+                List<Jezik> dobraLista = new ArrayList<Jezik>();
+                for(String jezik:jezikOdvojeno){
+                    Jezik jezik1 = jezikServiceJPA.getJezikByNazivJezika(jezik);
+                    dobraLista.add(jezik1);
+                }
+                ucitelj.setJezici2(dobraLista);
+                System.out.println(ucitelj.getJezici2());
+                System.out.println("dobra");
+                System.out.println(dobraLista);
+
+
+                //ucitelj.setLanguagesTeach((List<Map<String, String>>) body.get("languagesTeach"));
+>>>>>>> Stashed changes
             }
             if (body.containsKey("satnica")) {
                 ucitelj.setSatnica((String) body.get("satnica"));

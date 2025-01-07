@@ -21,9 +21,20 @@ public class Ucitelj extends Korisnik {
     private String iskustvo;
     private String kvalifikacije;
     private String satnica;
-    private String languagesTeach;
+
     private String stilPoducavanja;
 
+<<<<<<< Updated upstream
+=======
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "UciteljJezik",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "jezik_id")
+    )
+    private List<Jezik> jezici2 = new ArrayList<Jezik>();
+
+>>>>>>> Stashed changes
     public Ucitelj(String ime, String prezime, String email, String lozinka) {
         super(ime, prezime, email, lozinka);
     }
@@ -67,6 +78,7 @@ public class Ucitelj extends Korisnik {
         this.stilPoducavanja = stilPoducavanja;
     }
 
+<<<<<<< Updated upstream
     public String getLanguagesTeach() {
         return languagesTeach;
     }
@@ -76,6 +88,8 @@ public class Ucitelj extends Korisnik {
                 .map(lang -> (String) lang.get("language"))
                 .collect(Collectors.joining(", "));
     }
+=======
+>>>>>>> Stashed changes
 }
 //    public Ucitelj(String ime, String prezime, String email, String lozinka) {
 //        super(ime, prezime, email, lozinka);

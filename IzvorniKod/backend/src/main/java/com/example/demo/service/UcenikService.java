@@ -10,4 +10,8 @@ public interface UcenikService {
     public void saveUcenik(Ucenik ucenik);
     public Ucenik getUcenik(String email);
     public ResponseEntity<?> updateUcenik(Ucenik ucenik, Map<String, Object> body);
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 }

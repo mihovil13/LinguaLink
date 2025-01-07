@@ -69,13 +69,20 @@ const ProfilePage = () => {
               iskustvo,
               kvalifikacije,
               satnica,
+
             } = response.data; // iz odgovora uzimamo navedene varijable
+<<<<<<< Updated upstream
             if(languagesKnown){
+=======
+            console.log(response.data)
+            if (languagesKnown) {
+>>>>>>> Stashed changes
               languagesKnown = languagesKnown.split(", ").map((entry) => {
                 const [language, level] = entry.split("-");
                 return { language: language.trim(), level: level.trim() };
               });
             }
+<<<<<<< Updated upstream
             if(languagesToLearn){
               languagesToLearn = languagesToLearn.split(", ").map((entry) => {
                 return { language: entry.trim() };
@@ -84,6 +91,16 @@ const ProfilePage = () => {
             if(languagesTeach){
               languagesTeach = languagesTeach.split(", ").map((entry) => {
                 return { language: entry.trim() };
+=======
+            if (response.data.jezici) {
+              languagesToLearn = response.data.jezici.map((entry) => {
+                return { language: entry.nazivJezika };
+              });
+            }
+            if (response.data.jezici2) {
+              languagesTeach = response.data.jezici2.map((entry) => {
+                return { language: entry.nazivJezika };
+>>>>>>> Stashed changes
               });
             }
 
