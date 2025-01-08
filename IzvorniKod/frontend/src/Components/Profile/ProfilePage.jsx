@@ -96,6 +96,7 @@ const ProfilePage = () => {
               qualifications,
               satnica,
             } = response.data; // iz odgovora uzimamo navedene varijable
+            console.log(response.data);
             if (languagesKnown) {
               languagesKnown = languagesKnown.split(", ").map((entry) => {
                 const [language, level] = entry.split("-");

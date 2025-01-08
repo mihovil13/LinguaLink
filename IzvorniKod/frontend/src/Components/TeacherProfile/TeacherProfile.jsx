@@ -4,6 +4,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
 const TeacherProfile = () => {
+  const backend = "http://localhost:8080/";
   const { teacherId } = useParams(); //izvlacimo teacherId iz url-a
   const navigate = useNavigate();
   const location = useLocation();
@@ -27,9 +28,10 @@ const TeacherProfile = () => {
         const token = params.get("token") || localStorage.getItem("token");
 
         if (token) {
+          console.log("Token dobar");
           localStorage.setItem("token", token);
           const response = await axios.get(
-            `http://localhost:8080/ucitelj/${teacherId}`,
+            `${backend}ucitelj/${teacherId}`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -50,6 +52,7 @@ const TeacherProfile = () => {
               qualifications,
               satnica,
             } = response.data; // iz odgovora uzimamo navedene varijable
+            console.log(response.data);
             if (languagesTeach) {
               languagesTeach = languagesTeach.split(", ").map((entry) => {
                 return { language: entry.trim() };
@@ -72,6 +75,7 @@ const TeacherProfile = () => {
               qualifications: qualifications || [],
               satnica: satnica || "",
             });
+            console.log(teacher);
           }
         } else {
           navigate("/login");
