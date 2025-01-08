@@ -22,3 +22,6 @@ logs/
 *.temp
 
 *.class
+
+/backend/target/
+*.class
