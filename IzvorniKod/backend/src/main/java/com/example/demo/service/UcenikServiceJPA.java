@@ -81,15 +81,5 @@ public class UcenikServiceJPA implements UcenikService {
         return ResponseEntity.ok(ucenikRepository.save(ucenik));
     }
 
-    @Override
-    public ResponseEntity<List<Ucitelj>> filterData(Ucenik ucenik, Map<String, Object> body) {
-        String languagesToLearn = ucenik.getLanguagesToLearn();
-        List<Ucitelj> listaUcitelja = uciteljServiceJPA.getUcitelji();
-        for (Ucitelj ucitelj : listaUcitelja) {
-            if(!ucitelj.getLanguagesTeach().equals(languagesToLearn)){
-                listaUcitelja.remove(ucitelj);
-            }
-        }
-        return ResponseEntity.ok(listaUcitelja);
-    }
+
 }

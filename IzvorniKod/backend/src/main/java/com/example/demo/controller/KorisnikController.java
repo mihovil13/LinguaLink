@@ -45,21 +45,7 @@ public class KorisnikController {
             // Ako je korisnik autentificiran putem JWT tokena
             token = token.substring(7); // Ukloni "Bearer " prefix
             String email = jwtService.extractUsername(token);
-
             Optional<Korisnik> korisnik  = korisnikServiceJPA.getKorisnik(email);
-            Korisnik korisnik1 = korisnikServiceJPA.getKorisnikByEmail(email);
-            /*
-            if(korisnik1.getUloga().equals("Učitelj")){
-                Ucitelj ucitelj = uciteljServiceJPA.getUciteljiByEmail(email);
-                System.out.println(ucitelj.getIskustvo());
-                return korisnik.map(ResponseEntity::ok)
-                        .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
-            }
-            if(korisnik1.getUloga().equals("Učenik")){
-                Ucenik ucenik = ucenikServiceJPA.getUcenik(email);
-                return ResponseEntity.status(HttpStatus.OK).body(ucenik);
-            }*/
-
             return korisnik.map(ResponseEntity::ok)
                     .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
             //return ResponseEntity.status(HttpStatus.NOT_FOUND).build();

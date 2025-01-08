@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 
@@ -36,6 +37,7 @@ public class Ucenik extends Korisnik{
     private List<Jezik> jezici = new ArrayList<>();
 
     @OneToMany(mappedBy = "ucenik",cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<JezikRazina> jeziciRazine = new ArrayList<JezikRazina>();
 
     public void setCiljeviUcenja(String ciljeviUcenja) {
