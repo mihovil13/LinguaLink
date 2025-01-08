@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -18,9 +19,11 @@ public class JezikRazina  {
         this.razina = razina;
     }
     @ManyToOne
+    @JsonBackReference
     private Jezik jezik;
 
     @ManyToOne
+    @JsonBackReference
     private Ucenik ucenik;
 
     public JezikRazina() {

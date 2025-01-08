@@ -19,7 +19,7 @@ import java.util.List;
 @Entity
 @Builder
 @Table(name = "Korisnici")
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Inheritance(strategy = InheritanceType.JOINED)
 @AllArgsConstructor
 public class Korisnik implements UserDetails {
     @Id

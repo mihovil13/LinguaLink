@@ -16,30 +16,8 @@ import java.util.Map;
 
 @RestController
 public class UcenikController {
-    @Autowired
-    private final JwtService jwtService;
-
-    @Autowired
-    private final UcenikServiceJPA ucenikServiceJPA;
-
-    public UcenikController(JwtService jwtService, UcenikServiceJPA ucenikServiceJPA) {
-        this.jwtService = jwtService;
-        this.ucenikServiceJPA = ucenikServiceJPA;
-    }
-
-    @PostMapping
-    public ResponseEntity<?> filterData(@RequestHeader(value = "Authorization", required = false) String token, Authentication authentication
-    ,@RequestBody Map<String, Object> body) {
-        if(token!= null && token.startsWith("Bearer ")) {
-            token = token.substring(7); // Ukloni "Bearer " prefix
-            String email = jwtService.extractUsername(token);
-            Ucenik ucenik = ucenikServiceJPA.getUcenik(email);
-            return ucenikServiceJPA.filterData(ucenik,body);
-        }
 
 
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Korisnik nije autentificiran.");
-    }
 
 
 }

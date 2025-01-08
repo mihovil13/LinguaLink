@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -30,6 +31,7 @@ public class Ucitelj extends Korisnik {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "jezik_id")
     )
+    @JsonManagedReference
     private List<Jezik> jezici2 = new ArrayList<>();
 
     public Ucitelj(String ime, String prezime, String email, String lozinka) {
