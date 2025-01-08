@@ -35,6 +35,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if (path.equals("/teachers")) {
             filterChain.doFilter(request, response); // Preskoči filter za ovu rutu
             return;
+        } else if (path.contains("/ucitelj")) {
+            filterChain.doFilter(request, response);
         }
         final String authHeader = request.getHeader("Authorization");
         final String jwt;
