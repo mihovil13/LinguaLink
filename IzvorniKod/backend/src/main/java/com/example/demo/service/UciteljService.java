@@ -11,5 +11,6 @@ public interface UciteljService {
     public Ucitelj getUciteljiByEmail(String email);
     public void saveUcitelj(Ucitelj ucitelj);
     public ResponseEntity<?> updateUcitelj(Ucitelj ucitelj, Map<String, Object> body);
+    public Ucitelj getUciteljById(Long id);
 
 }

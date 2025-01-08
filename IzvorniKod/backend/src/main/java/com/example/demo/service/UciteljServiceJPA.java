@@ -1,7 +1,6 @@
 package com.example.demo.service;
 
 import com.example.demo.model.Jezik;
-import com.example.demo.model.Ucenik;
 import com.example.demo.model.Ucitelj;
 import com.example.demo.repository.UciteljRepository;
 import org.springframework.http.ResponseEntity;
@@ -10,10 +9,9 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
-public class  UciteljServiceJPA implements UciteljService {
+public class UciteljServiceJPA implements UciteljService {
 
     private final UciteljRepository uciteljRepository;
     private final JezikServiceJPA jezikServiceJPA;
@@ -72,4 +70,8 @@ public class  UciteljServiceJPA implements UciteljService {
             }
             return ResponseEntity.ok( uciteljRepository.save(ucitelj));
     }
+
+    @Override
+    public Ucitelj getUciteljById(Long id) {
+        return uciteljRepository.getUciteljById(id);    }
 }

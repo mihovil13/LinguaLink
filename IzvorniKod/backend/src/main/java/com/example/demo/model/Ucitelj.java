@@ -98,6 +98,10 @@ public class Ucitelj extends Korisnik {
                 .map(lang -> (String) lang.get("language"))
                 .collect(Collectors.joining(", "));
     }
+
+    public Integer getId() {
+        return super.getUser_id();
+    }
 }
 //    public Ucitelj(String ime, String prezime, String email, String lozinka) {
 //        super(ime, prezime, email, lozinka);
