@@ -72,4 +72,7 @@ public class  UciteljServiceJPA implements UciteljService {
             }
             return ResponseEntity.ok( uciteljRepository.save(ucitelj));
     }
+    @Override
+    public Ucitelj getUciteljById(Long id) {
+        return uciteljRepository.getUciteljById(id);    }
 }
