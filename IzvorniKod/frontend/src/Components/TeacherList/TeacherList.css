@@ -178,6 +178,11 @@ button:hover {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
+.teacher-container:hover {
+  cursor: pointer;
+  background-color: #dad7d9;
+}
+
 .teacher-info {
   flex: 1;
   display: flex;

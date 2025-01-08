@@ -150,6 +150,10 @@ const TeacherList = () => {
     );
   };
 
+  const handleTeacherClick = (teacherId) => {
+    navigate(`/teacher/${teacherId}`)
+  }
+
   return (
     <div
       className={`parent-container ${isLoggedIn ? "logged-in" : "logged-out"}`}
@@ -164,7 +168,8 @@ const TeacherList = () => {
         <div className="main-content">
           {filteredTeachers.length > 0 ? (
             filteredTeachers.map((teacher, index) => (
-              <div className="teacher-container" key={index}>
+              <div className="teacher-container" key={index}
+              onClick={() => handleTeacherClick(teacher.user_id)}>
                 <img
                   src="https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"
                   alt=""
