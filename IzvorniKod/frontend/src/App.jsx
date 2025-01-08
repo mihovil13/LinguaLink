@@ -3,6 +3,7 @@ import LoginRegister from "./Components/LoginSignup/LoginRegister";
 import ProfilePage from "./Components/Profile/ProfilePage";
 import TeacherList from "./Components/TeacherList/TeacherList";
 import React from "react";
+import Calendar from "./Components/Calendar/Calendar";
 import { BrowserRouter } from "react-router-dom";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
@@ -16,6 +17,7 @@ function App() {
           <Route path="/login" element={<LoginSignup />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/teachers" element = {<TeacherList/>} />
+          <Route path="/calendar" element={<Calendar/>} />
         </Routes>
       </Router>
     </div>
