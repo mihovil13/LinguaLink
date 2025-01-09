@@ -3,12 +3,13 @@ package com.example.demo.controller;
 import com.example.demo.model.Predavanje;
 import com.example.demo.service.PredavanjeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/api/zabiljezi-predavanje")
+@RequestMapping("/api")
 public class PredavanjeController {
 
     private final PredavanjeService predavanjeService;
@@ -18,18 +19,15 @@ public class PredavanjeController {
         this.predavanjeService = predavanjeService;
     }
 
-    @PostMapping
+    @PostMapping("/zabiljezi-predavanje")
     public ResponseEntity<String> savePredavanje(@RequestBody Predavanje predavanje) {
         predavanjeService.savePredavanje(predavanje);
-        // Vraća HTTP status 200 (OK) s odgovarajućom porukom
-        return new ResponseEntity<>("Predavanje uspješno spremljeno", HttpStatus.OK);
+        return ResponseEntity.ok("Predavanje uspješno spremljeno");
     }
 
-    //ZASAD NETREBA
-    /*@GetMapping("/{id}")
-    public Predavanje getPredavanje(@PathVariable int id) {
-        return predavanjeService.getPredavanjeById(id);
-    }*/
-
-
+    @GetMapping("/dohvati-predavanja/{id}")
+    public ResponseEntity<List<Predavanje>> getPredavanjaByUciteljId(@PathVariable int id) {
+        List<Predavanje> predavanja = predavanjeService.getPredavanjaByUciteljId(id);
+        return ResponseEntity.ok(predavanja);
+    }
 }

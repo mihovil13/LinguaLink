@@ -5,6 +5,8 @@ import com.example.demo.repository.PredavanjeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class PredavanjeServiceJPA implements PredavanjeService {
 
@@ -23,5 +25,10 @@ public class PredavanjeServiceJPA implements PredavanjeService {
     @Override
     public void savePredavanje(Predavanje predavanje) {
         predavanjeRepository.save(predavanje);
+    }
+
+    @Override
+    public List<Predavanje> getPredavanjaByUciteljId(int uciteljId) {
+        return predavanjeRepository.findByUciteljId(uciteljId);
     }
 }
