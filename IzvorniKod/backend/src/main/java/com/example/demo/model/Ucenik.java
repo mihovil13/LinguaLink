@@ -23,8 +23,9 @@ public class Ucenik extends Korisnik{
         super(ime, prezime, email, lozinka);
     }
 
-    private String languagesKnown;
+    /*private String languagesKnown;
     private String languagesToLearn;
+    */
     private String ciljeviUcenja;
     private String stilPoducavanja;
 
@@ -34,16 +35,17 @@ public class Ucenik extends Korisnik{
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "jezik_id")
     )
-    private List<Jezik> jezici = new ArrayList<>();
+    @JsonManagedReference
+    private List<Jezik> languagesToLearn = new ArrayList<>();
 
     @OneToMany(mappedBy = "ucenik",cascade = CascadeType.ALL)
     @JsonManagedReference
-    private List<JezikRazina> jeziciRazine = new ArrayList<JezikRazina>();
+    private List<JezikRazina> languagesKnown = new ArrayList<JezikRazina>();
 
     public void setCiljeviUcenja(String ciljeviUcenja) {
         this.ciljeviUcenja = ciljeviUcenja;
     }
-
+/*
     public List<JezikRazina> getJeziciRazine() {
         return jeziciRazine;
     }
@@ -67,7 +69,7 @@ public class Ucenik extends Korisnik{
     public void setLanguagesKnown(String languagesKnown) {
         this.languagesKnown = languagesKnown;
     }
-
+*/
     @Override
     public Role getRole() {
         return role;
@@ -84,7 +86,7 @@ public class Ucenik extends Korisnik{
     public Ucenik() {
 
     }
-
+/*
     public String getLanguagesKnown() {
         return languagesKnown;
     }
@@ -104,7 +106,7 @@ public class Ucenik extends Korisnik{
                 .map(lang -> (String) lang.get("language"))
                 .collect(Collectors.joining(", "));
     }
-
+*/
     public String getCiljeviUcenja() {
         return ciljeviUcenja;
     }
@@ -121,8 +123,21 @@ public class Ucenik extends Korisnik{
         this.stilPoducavanja = stilPoducavanja;
     }
 
+    public List<Jezik> getLanguagesToLearn() {
+        return languagesToLearn;
+    }
 
+    public void setLanguagesToLearn(List<Jezik> languagesToLearn) {
+        this.languagesToLearn = languagesToLearn;
+    }
 
+    public List<JezikRazina> getLanguagesKnown() {
+        return languagesKnown;
+    }
+
+    public void setLanguagesKnown(List<JezikRazina> languagesKnown) {
+        this.languagesKnown = languagesKnown;
+    }
 }
 
 //    @Override

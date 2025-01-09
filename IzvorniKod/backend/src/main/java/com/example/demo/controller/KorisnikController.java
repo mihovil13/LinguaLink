@@ -1,6 +1,8 @@
 package com.example.demo.controller;
 
+import com.example.demo.DTO.KorisnikGetDTO;
 import com.example.demo.config.JwtService;
+import com.example.demo.mapper.KorisnikGetMapper;
 import com.example.demo.model.Korisnik;
 import com.example.demo.model.Ucenik;
 import com.example.demo.model.Ucitelj;
@@ -46,9 +48,13 @@ public class KorisnikController {
             token = token.substring(7); // Ukloni "Bearer " prefix
             String email = jwtService.extractUsername(token);
             Optional<Korisnik> korisnik  = korisnikServiceJPA.getKorisnik(email);
-            return korisnik.map(ResponseEntity::ok)
+            Korisnik korisnik1 = korisnikServiceJPA.getKorisnikByEmail(email);
+            KorisnikGetMapper mapper = new KorisnikGetMapper(ucenikServiceJPA,uciteljServiceJPA);
+            KorisnikGetDTO korisnikGetDTO = mapper.korisnikGetDTO(korisnik1);
+            return ResponseEntity.ok(korisnikGetDTO);
+            /*return korisnik.map(ResponseEntity::ok)
                     .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
-            //return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            //return ResponseEntity.status(HttpStatus.NOT_FOUND).build();*/
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Korisnik nije autentificiran.");
         }

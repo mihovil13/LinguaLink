@@ -60,11 +60,10 @@ const TeacherList = () => {
           const teachersData = response.data.map((teacher) => ({
             ...teacher,
             languagesTeach: teacher.languagesTeach
-              ? teacher.languagesTeach.split(",").map((lang) => lang.trim())
+              ? teacher.languagesTeach.map((lang) => lang.nazivJezika.trim())
               : [], // Pretvorba jezika u niz,
             qualifications: teacher.qualifications
               ? teacher.qualifications
-                  .split(",")
                   .map((qualification) => qualification.trim())
               : [],
           }));

@@ -1,15 +1,14 @@
 package com.example.demo.service;
 
 import com.example.demo.model.Jezik;
+import com.example.demo.model.Qualifications;
 import com.example.demo.model.Ucenik;
 import com.example.demo.model.Ucitelj;
 import com.example.demo.repository.UciteljRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -43,8 +42,16 @@ public class  UciteljServiceJPA implements UciteljService {
             ucitelj.setIme(body.get("ime").toString());
             ucitelj.setPrezime(body.get("prezime").toString());
             ucitelj.setEmail(body.get("email").toString());
-            if (body.containsKey("kvalifikacije")) {
-                ucitelj.setQualifications((String) body.get("kvalifikacije"));
+            if (body.containsKey("qualifications")) {
+                List<Map<String,String>> qualifications = (List<Map<String,String>>) body.get("qualifications");
+                List<String> qualOdvojeno = qualifications.stream()
+                        .map(lang->(String)lang.get("kvalifikacije")).toList();
+                Set<Qualifications> qualificationsList = new HashSet<>();
+                for (String qualification : qualOdvojeno) {
+                    qualificationsList.add(Enum.valueOf(Qualifications.class, qualification));
+                }
+                ucitelj.setQualifications(qualificationsList);
+                //ucitelj.setQualifications((String) body.get("kvalifikacije"));
             }
             if (body.containsKey("iskustvo")) {
                 ucitelj.setIskustvo((String) body.get("iskustvo"));
@@ -58,11 +65,11 @@ public class  UciteljServiceJPA implements UciteljService {
                     Jezik jezik1 = jezikServiceJPA.getJezikByNazivJezika(jezik);
                     dobraLista.add(jezik1);
                 }
-                ucitelj.setJezici2(dobraLista);
+                ucitelj.setLanguagesTeach(dobraLista);
 
 
 
-                ucitelj.setLanguagesTeach((List<Map<String, String>>) body.get("languagesTeach"));
+                //ucitelj.setLanguagesTeach((List<Map<String, String>>) body.get("languagesTeach"));
             }
             if (body.containsKey("satnica")) {
                 ucitelj.setSatnica((String) body.get("satnica"));

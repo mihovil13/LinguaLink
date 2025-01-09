@@ -54,9 +54,9 @@ public class UcenikServiceJPA implements UcenikService {
             }
             System.out.println("DobraLista: ");
             System.out.println(dobraLista);
-            ucenik.setJeziciRazine(dobraLista);
+            ucenik.setLanguagesKnown(dobraLista);
 
-            ucenik.setLanguagesKnown((List<Map<String, String>>) body.get("languagesKnown"));
+           // ucenik.setLanguagesKnown((List<Map<String, String>>) body.get("languagesKnown"));
         }
         if (body.containsKey("languagesToLearn")) {
             List<Map<String,String>> jezici =(List<Map<String,String>>) body.get("languagesToLearn");
@@ -67,8 +67,8 @@ public class UcenikServiceJPA implements UcenikService {
                 Jezik jezik1 = jezikServiceJPA.getJezikByNazivJezika(jezik);
                 dobraLista.add(jezik1);
             }
-            ucenik.setJezici(dobraLista);
-            ucenik.setLanguagesToLearn((List<Map<String, String>>) body.get("languagesToLearn"));
+            ucenik.setLanguagesToLearn(dobraLista);
+            //ucenik.setLanguagesToLearn((List<Map<String, String>>) body.get("languagesToLearn"));
         }
         if (body.containsKey("ciljeviUcenja")) {
             ucenik.setCiljevi((String) body.get("ciljeviUcenja"));

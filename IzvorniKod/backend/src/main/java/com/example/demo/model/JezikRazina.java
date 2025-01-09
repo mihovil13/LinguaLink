@@ -18,11 +18,11 @@ public class JezikRazina  {
     public JezikRazina(Razina razina) {
         this.razina = razina;
     }
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference
     private Jezik jezik;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference
     private Ucenik ucenik;
 

@@ -5,9 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Entity
@@ -20,9 +18,9 @@ public class Ucitelj extends Korisnik {
     private Role role;
 
     private String iskustvo;
-    private String qualifications;
+    //private String qualifications;
     private String satnica;
-    private String languagesTeach;
+    //private String languagesTeach;
     private String stilPoducavanja;
 
     @ManyToMany
@@ -32,7 +30,13 @@ public class Ucitelj extends Korisnik {
             inverseJoinColumns = @JoinColumn(name = "jezik_id")
     )
     @JsonManagedReference
-    private List<Jezik> jezici2 = new ArrayList<>();
+    private List<Jezik> languagesTeach = new ArrayList<>();
+
+    @ElementCollection(targetClass = Qualifications.class)
+    @CollectionTable(name = "teacher_qualifications", joinColumns = @JoinColumn(name = "user_id"))
+    @Enumerated(EnumType.STRING) // Store the enum as a string in the database
+    private Set<Qualifications> qualifications = new HashSet<>();
+
 
     public Ucitelj(String ime, String prezime, String email, String lozinka) {
         super(ime, prezime, email, lozinka);
@@ -46,14 +50,23 @@ public class Ucitelj extends Korisnik {
 
     }
 
-    public List<Jezik> getJezici2() {
-        return jezici2;
+    public Set<Qualifications> getQualifications() {
+        return qualifications;
     }
 
-    public void setJezici2(List<Jezik> jezici2) {
-        this.jezici2 = jezici2;
+    public void setQualifications(Set<Qualifications> qualifications) {
+        this.qualifications = qualifications;
     }
 
+    /*
+        public List<Jezik> getJezici2() {
+            return jezici2;
+        }
+
+        public void setJezici2(List<Jezik> jezici2) {
+            this.jezici2 = jezici2;
+        }
+    */
     public String getIskustvo() {
         return iskustvo;
     }
@@ -61,7 +74,7 @@ public class Ucitelj extends Korisnik {
     public void setIskustvo(String iskustvo) {
         this.iskustvo = iskustvo;
     }
-
+/*
     public String getQualifications() {
         return qualifications;
     }
@@ -69,7 +82,7 @@ public class Ucitelj extends Korisnik {
     public void setQualifications(String qualifications) {
         this.qualifications = qualifications;
     }
-
+*/
     public String getSatnica() {
         return satnica;
     }
@@ -85,22 +98,28 @@ public class Ucitelj extends Korisnik {
         this.stilPoducavanja = stilPoducavanja;
     }
 
-    public String getLanguagesTeach() {
+    public List<Jezik> getLanguagesTeach() {
         return languagesTeach;
     }
 
-    public void setLanguagesTeach(String languagesTeach) {
+    public void setLanguagesTeach(List<Jezik> languagesTeach) {
         this.languagesTeach = languagesTeach;
     }
+    public Integer getId(){
+        return super.getUser_id();
+    }
 
+
+    /* public void setLanguagesTeach(String languagesTeach) {
+        this.languagesTeach = languagesTeach;
+    }
     public void setLanguagesTeach(List<Map<String, String>> languages) {
         this.languagesTeach = languages.stream()
                 .map(lang -> (String) lang.get("language"))
                 .collect(Collectors.joining(", "));
     }
-    public Integer getId() {
-        return super.getUser_id();
-    }
+
+    */
 }
 //    public Ucitelj(String ime, String prezime, String email, String lozinka) {
 //        super(ime, prezime, email, lozinka);

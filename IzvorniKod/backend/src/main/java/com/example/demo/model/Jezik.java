@@ -1,6 +1,7 @@
 package com.example.demo.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import jakarta.persistence.*;
 
@@ -18,14 +19,16 @@ public class Jezik {
 
     private String nazivJezika;
 
-    @ManyToMany(mappedBy = "jezici")
+    @ManyToMany(mappedBy = "languagesToLearn")
+    @JsonBackReference
     private List<Ucenik> ucenikList = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "jezici2")
+    @ManyToMany(mappedBy = "languagesTeach")
     @JsonBackReference
     private List<Ucitelj> uciteljList = new ArrayList<>();
 
     @OneToMany(mappedBy = "jezik", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<JezikRazina> jeziciRazine = new ArrayList<>();
 
     public Jezik() {

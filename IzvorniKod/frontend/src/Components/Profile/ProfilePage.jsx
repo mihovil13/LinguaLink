@@ -96,25 +96,33 @@ const ProfilePage = () => {
               qualifications,
               satnica,
             } = response.data; // iz odgovora uzimamo navedene varijable
-            console.log(response.data);
+            console.log("cilj:",ciljeviUcenja);
+            console.log(stilPoducavanja);
             if (languagesKnown) {
-              languagesKnown = languagesKnown.split(", ").map((entry) => {
-                const [language, level] = entry.split("-");
+
+              languagesKnown = languagesKnown.map((entry) => {
+               const [language, level] = entry.split("-");
                 return { language: language.trim(), level: level.trim() };
               });
+              console.log(languagesKnown)
+
             }
             if (languagesToLearn) {
-              languagesToLearn = languagesToLearn.split(", ").map((entry) => {
-                return { language: entry.trim() };
+              console.log(languagesToLearn)
+              languagesToLearn = languagesToLearn.map((entry) => {
+                return { jezik_id: entry.jezik_id,
+                  nazivJezika: entry.nazivJezika.trim() };
               });
             }
             if (languagesTeach) {
-              languagesTeach = languagesTeach.split(", ").map((entry) => {
-                return { language: entry.trim() };
+              console.log(languagesTeach);
+              languagesTeach = languagesTeach.map((entry) => {
+                return { jezik_id: entry.jezik_id,
+                          nazivJezika: entry.nazivJezika.trim()};
               });
             }
             if (qualifications) {
-              qualifications = qualifications.split(", ").map((entry) => {
+              qualifications = qualifications.map((entry) => {
                 return { kvalifikacije: entry.trim() };
               });
             }
@@ -344,20 +352,20 @@ const ProfilePage = () => {
             {user.languagesKnown && user.languagesKnown.length > 0 ? (
               <ul>
                 {user.languagesKnown.map((lang, index) => (
-                  <li key={index}>
-                    {lang.language} - {lang.level}
-                  </li>
+                    <li key={index}>
+                      {lang.language} - {lang.level}
+                    </li>
                 ))}
               </ul>
             ) : (
-              <p>Nema unesenih podataka o jezicima koje znate.</p>
+                <p>Nema unesenih podataka o jezicima koje znate.</p>
             )}
 
             <span>Jezici koje želim naučiti</span>
             {user.languagesToLearn && user.languagesToLearn.length > 0 ? (
               <ul>
                 {user.languagesToLearn.map((lang, index) => (
-                  <li key={index}>{lang.language}</li>
+                  <li key={lang.jezik_id || index}>{lang.nazivJezika || lang.language}</li>
                 ))}
               </ul>
             ) : (
@@ -384,7 +392,7 @@ const ProfilePage = () => {
             {user.languagesTeach && user.languagesTeach.length > 0 ? (
               <ul>
                 {user.languagesTeach.map((lang, index) => (
-                  <li key={index}>{lang.language}</li>
+                  <li key={lang.jezik_id || index}>{lang.nazivJezika || lang.language}</li>
                 ))}
               </ul>
             ) : (
@@ -725,7 +733,7 @@ const ProfilePage = () => {
                           Odaberi
                         </option>
                         <option value="Profesor">Profesor</option>
-                        <option value="Izvorni govornik">
+                        <option value="Izvorni_govornik">
                           Izvorni govornik
                         </option>
                         <option value="Certifikat">Certifikat</option>
