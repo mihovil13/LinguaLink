@@ -38,9 +38,9 @@ const ProfilePage = () => {
     prezime: "",
     email: "",
     uloga: "",
-    languagesKnown: [{ language: "", level: "početna" }],
-    languagesToLearn: [{ language: "" }],
-    languagesTeach: [{ language: "" }],
+    languagesKnown: [{ nazivJezika: "", razina: "početna" }],
+    languagesToLearn: [{ nazivJezika: "" }],
+    languagesTeach: [{ nazivJezika: "" }],
     stilPoducavanja: "",
     ciljeviUcenja: "",
     iskustvo: "",
@@ -96,29 +96,29 @@ const ProfilePage = () => {
               qualifications,
               satnica,
             } = response.data; // iz odgovora uzimamo navedene varijable
-            console.log("cilj:",ciljeviUcenja);
+            console.log("cilj:", ciljeviUcenja);
             console.log(stilPoducavanja);
             if (languagesKnown) {
-
               languagesKnown = languagesKnown.map((entry) => {
-               const [language, level] = entry.split("-");
-                return { language: language.trim(), level: level.trim() };
+                const [language, level] = entry.split("-");
+                return { nazivJezika: language.trim(), razina: level.trim() };
               });
-              console.log(languagesKnown)
-
+              console.log(languagesKnown);
             }
             if (languagesToLearn) {
-              console.log(languagesToLearn)
+              console.log(languagesToLearn);
               languagesToLearn = languagesToLearn.map((entry) => {
-                return { jezik_id: entry.jezik_id,
-                  nazivJezika: entry.nazivJezika.trim() };
+                return {
+                  nazivJezika: entry.nazivJezika.trim(),
+                };
               });
             }
             if (languagesTeach) {
               console.log(languagesTeach);
               languagesTeach = languagesTeach.map((entry) => {
-                return { jezik_id: entry.jezik_id,
-                          nazivJezika: entry.nazivJezika.trim()};
+                return {
+                  nazivJezika: entry.nazivJezika.trim(),
+                };
               });
             }
             if (qualifications) {
@@ -238,7 +238,7 @@ const ProfilePage = () => {
       listType === "languagesToLearn"
     ) {
       const updatedList = [...editedUser[listType]];
-      const duplicate = updatedList.some((item) => item.language === value);
+      const duplicate = updatedList.some((item) => item.nazivJezika === value);
       if (duplicate) {
         alert(`Jezik ${value} se već nalazi u listi`);
       } else {
@@ -247,7 +247,7 @@ const ProfilePage = () => {
       }
     } else if (listType === "languagesKnown") {
       const updatedList = [...editedUser[listType]];
-      const duplicate = updatedList.some((item) => item.language === value);
+      const duplicate = updatedList.some((item) => item.nazivJezika === value);
       if (duplicate) {
         alert(`Jezik ${value} se već nalazi u listi`);
       } else {
@@ -255,7 +255,7 @@ const ProfilePage = () => {
         //ako jezik nema level postavljam ga na početnu
         const correctList = updatedList.map((item) => ({
           ...item,
-          level: item.level || "početna",
+          razina: item.razina || "početna",
         }));
         setEditedUser({ ...editedUser, [listType]: correctList });
       }
@@ -280,8 +280,8 @@ const ProfilePage = () => {
   const handleAddLanguage = (listType) => {
     const newElement =
       listType === "languagesKnown"
-        ? { language: "", level: "" }
-        : { language: "" };
+        ? { nazivJezika: "", razina: "" }
+        : { nazivJezika: "" };
     const updatedList = [...editedUser[listType], newElement];
     setEditedUser({ ...editedUser, [listType]: updatedList });
   };
@@ -352,20 +352,20 @@ const ProfilePage = () => {
             {user.languagesKnown && user.languagesKnown.length > 0 ? (
               <ul>
                 {user.languagesKnown.map((lang, index) => (
-                    <li key={index}>
-                      {lang.language} - {lang.level}
-                    </li>
+                  <li key={index}>
+                    {lang.nazivJezika} - {lang.razina}
+                  </li>
                 ))}
               </ul>
             ) : (
-                <p>Nema unesenih podataka o jezicima koje znate.</p>
+              <p>Nema unesenih podataka o jezicima koje znate.</p>
             )}
 
             <span>Jezici koje želim naučiti</span>
             {user.languagesToLearn && user.languagesToLearn.length > 0 ? (
               <ul>
                 {user.languagesToLearn.map((lang, index) => (
-                  <li key={lang.jezik_id || index}>{lang.nazivJezika || lang.language}</li>
+                  <li key={lang.jezik_id || index}>{lang.nazivJezika}</li>
                 ))}
               </ul>
             ) : (
@@ -392,7 +392,7 @@ const ProfilePage = () => {
             {user.languagesTeach && user.languagesTeach.length > 0 ? (
               <ul>
                 {user.languagesTeach.map((lang, index) => (
-                  <li key={lang.jezik_id || index}>{lang.nazivJezika || lang.language}</li>
+                  <li key={lang.jezik_id || index}>{lang.nazivJezika}</li>
                 ))}
               </ul>
             ) : (
@@ -470,10 +470,10 @@ const ProfilePage = () => {
                   {editedUser.languagesKnown.map((lang, index) => (
                     <div key={index}>
                       <select
-                        value={lang.language}
+                        value={lang.nazivJezika}
                         onChange={(e) =>
                           handleInputChange(
-                            "language",
+                            "nazivJezika",
                             index,
                             e.target.value,
                             "languagesKnown"
@@ -496,10 +496,10 @@ const ProfilePage = () => {
                         <option value="Japanski">Japanski</option>
                       </select>
                       <select
-                        value={lang.level}
+                        value={lang.razina}
                         onChange={(e) =>
                           handleInputChange(
-                            "level",
+                            "razina",
                             index,
                             e.target.value,
                             "languagesKnown"
@@ -529,10 +529,10 @@ const ProfilePage = () => {
                   {editedUser.languagesToLearn.map((lang, index) => (
                     <div key={index}>
                       <select
-                        value={lang.language}
+                        value={lang.nazivJezika}
                         onChange={(e) =>
                           handleInputChange(
-                            "language",
+                            "nazivJezika",
                             index,
                             e.target.value,
                             "languagesToLearn"
@@ -661,10 +661,10 @@ const ProfilePage = () => {
                   {editedUser.languagesTeach.map((lang, index) => (
                     <div key={index}>
                       <select
-                        value={lang.language}
+                        value={lang.nazivJezika}
                         onChange={(e) =>
                           handleInputChange(
-                            "language",
+                            "nazivJezika",
                             index,
                             e.target.value,
                             "languagesTeach"
