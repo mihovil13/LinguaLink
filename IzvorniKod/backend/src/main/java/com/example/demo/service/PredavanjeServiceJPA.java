@@ -17,10 +17,6 @@ public class PredavanjeServiceJPA implements PredavanjeService {
         this.predavanjeRepository = predavanjeRepository;
     }
 
-    @Override
-    public Predavanje getPredavanjeById(int id) {
-        return predavanjeRepository.getPredavanjeById(id);
-    }
 
     @Override
     public void savePredavanje(Predavanje predavanje) {

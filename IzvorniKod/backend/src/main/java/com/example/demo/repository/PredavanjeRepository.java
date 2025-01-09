@@ -12,5 +12,4 @@ public interface PredavanjeRepository extends JpaRepository<Predavanje, Integer>
     @Query("SELECT p FROM Predavanje p WHERE p.ucitelj.user_id = :uciteljId")
     List<Predavanje> findByUciteljId(@Param("uciteljId") Integer uciteljId);
 
-    Predavanje getPredavanjeById(int id);
 }
