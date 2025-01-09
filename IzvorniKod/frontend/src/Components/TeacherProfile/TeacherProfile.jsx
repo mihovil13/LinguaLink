@@ -108,7 +108,7 @@ const TeacherProfile = () => {
           {teacher.languagesTeach && teacher.languagesTeach.length > 0 ? (
             <ul>
               {teacher.languagesTeach.map((lang, index) => (
-                <li key={index}>{lang.language}</li>
+                <li key={index || lang.jezik_id}>{lang.language || lang.nazivJezika}</li>
               ))}
             </ul>
           ) : (
