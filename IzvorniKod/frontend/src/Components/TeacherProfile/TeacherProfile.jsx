@@ -27,58 +27,52 @@ const TeacherProfile = () => {
         const params = new URLSearchParams(location.search);
         const token = params.get("token") || localStorage.getItem("token");
 
-        if (token) {
-          console.log("Token dobar");
-          localStorage.setItem("token", token);
-          const response = await axios.get(
-            `${backend}ucitelj/${teacherId}`,
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-                // slanje upita prema backendu, u headerima se salje token
-              },
-            }
-          );
+        const response = await axios.get(`${backend}ucitelj/${teacherId}`);
 
-          if (response.status === 200) {
-            let {
-              ime,
-              prezime,
-              email,
-              uloga,
-              languagesTeach,
-              stilPoducavanja,
-              iskustvo,
-              qualifications,
-              satnica,
-            } = response.data; // iz odgovora uzimamo navedene varijable
-            console.log(response.data);
-            if (languagesTeach) {
-              languagesTeach = languagesTeach.split(", ").map((entry) => {
-                return { language: entry.trim() };
-              });
-            }
-            if (qualifications) {
-              qualifications = qualifications.split(", ").map((entry) => {
-                return { kvalifikacije: entry.trim() };
-              });
-            }
-            // azuriramo podatke s onima iz backenda
-            setTeacher({
-              ime: ime || "",
-              prezime: prezime || "",
-              email: email || "",
-              uloga: uloga || "",
-              languagesTeach: languagesTeach || [],
-              stilPoducavanja: stilPoducavanja || "",
-              iskustvo: iskustvo || "",
-              qualifications: qualifications || [],
-              satnica: satnica || "",
+        if (response.status === 200) {
+          const rawData = response.data;
+          const firstJson = rawData.split("}{")[0] + "}";
+
+          const data = JSON.parse(firstJson);
+          let {
+            ime,
+            prezime,
+            email,
+            uloga,
+            languagesTeach,
+            stilPoducavanja,
+            iskustvo,
+            qualifications,
+            satnica,
+          } = data; // iz odgovora uzimamo navedene varijable
+          console.log(data);
+          if (languagesTeach) {
+            console.log(languagesTeach);
+            languagesTeach = languagesTeach.map((entry) => {
+              return {
+                jezik_id: entry.jezik_id,
+                nazivJezika: entry.nazivJezika.trim(),
+              };
             });
-            console.log(teacher);
           }
-        } else {
-          navigate("/login");
+          if (qualifications) {
+            qualifications = qualifications.map((entry) => {
+              return { kvalifikacije: entry.trim() };
+            });
+          }
+          // azuriramo podatke s onima iz backenda
+          setTeacher({
+            ime: ime || "",
+            prezime: prezime || "",
+            email: email || "",
+            uloga: uloga || "",
+            languagesTeach: languagesTeach || [],
+            stilPoducavanja: stilPoducavanja || "",
+            iskustvo: iskustvo || "",
+            qualifications: qualifications || [],
+            satnica: satnica || "",
+          });
+          console.log(teacher);
         }
       } catch (error) {
         console.error("Error fetching teacher profile:", error);
