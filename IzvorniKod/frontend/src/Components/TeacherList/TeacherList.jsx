@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./TeacherList.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "../../UserContext";
 
 const TeacherList = () => {
   const [teachers, setTeachers] = useState([]);
@@ -12,6 +13,7 @@ const TeacherList = () => {
   const [filtersApplied, setFiltersApplied] = useState(false);
   const [qualificationFilters, setQualificationfilters] = useState([]);
   const navigate = useNavigate();
+  const {user} = useUser();
 
   const styles = [
     "Vizualni",
@@ -67,8 +69,20 @@ const TeacherList = () => {
                   .map((qualification) => qualification.trim())
               : [],
           }));
-          setTeachers(teachersData);
-          setFilteredTeachers(teachersData);
+
+        //ako je korisnik prijavljen, filtriraj učitelje prema njegovim jezicima
+        const filteredByUserLanguages = isLoggedIn
+          ? teachersData.filter((teacher) =>
+              teacher.languagesTeach.some((lang) =>
+                user.languagesToLearn
+                  .map((l) => l.nazivJezika.trim())
+                  .includes(lang)
+              )
+            )
+          : teachersData; // ako korisnik nije prijavljen, prikazujemo sve
+
+          setTeachers(filteredByUserLanguages);
+          setFilteredTeachers(filteredByUserLanguages);
         }
       } catch (error) {
         console.error("Error fetching teacher list:", error);
@@ -120,6 +134,17 @@ const TeacherList = () => {
     setQualificationfilters([]);
     setFilteredTeachers(teachers);
     setFiltersApplied(false);
+
+   
+      //resetiraj na učitelje koji podučavaju jezike iz user.languagesToLearn
+      const filteredByUserLanguages = teachers.filter((teacher) =>
+        teacher.languagesTeach.some((lang) =>
+          user.languagesToLearn
+            .map((l) => l.nazivJezika.trim())
+            .includes(lang)
+        )
+      );
+      setFilteredTeachers(filteredByUserLanguages);
   };
 
   //funkcija za izmjenu filtra jezika
