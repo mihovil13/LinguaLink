@@ -19,11 +19,11 @@ public class Jezik {
 
     private String nazivJezika;
 
-    @ManyToMany(mappedBy = "languagesToLearn")
+    @ManyToMany(mappedBy = "languagesToLearn", fetch = FetchType.EAGER)
     @JsonBackReference
     private List<Ucenik> ucenikList = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "languagesTeach")
+    @ManyToMany(mappedBy = "languagesTeach", fetch = FetchType.EAGER)
     @JsonBackReference
     private List<Ucitelj> uciteljList = new ArrayList<>();
 
