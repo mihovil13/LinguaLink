@@ -1,6 +1,7 @@
 import "./LoginSignup.css";
 import email_icon from "../Assets/email.png";
 import password_icon from "../Assets/password.png";
+import logo_icon from "../Assets/logo-prototip3.png"
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -55,13 +56,17 @@ const LoginSignup = () => {
   };
 
   return (
+      
     <div className="container">
+      <a href="/" className="logo-link">
+        <img src={logo_icon} alt="Logo" className="logo" />
+      </a>
       <div className="header">
         <button
           className="teacher-button"
           onClick={() => navigate("/teachers")}
         >
-          Prikaz Učitelja
+          Prikaz učitelja
         </button>
         <div className="text">Prijava</div>
         <div className="underline"></div>
@@ -101,7 +106,7 @@ const LoginSignup = () => {
         <div className="submit">
           <a
             href="http://localhost:8080/oauth2/authorization/github"
-            className="oauth2-btn"
+            className="oauth2-btn2"
           >
             <img
               src="https://cdn-icons-png.flaticon.com/512/25/25231.png"

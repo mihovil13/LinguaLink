@@ -1,13 +1,16 @@
 import React from 'react';
 import './HomePage.css';
-
-//kod za navigacijsku traku na početnoj stranici, linkovi vode na stranice za registraciju,
-//prijavu te na Github wiki
+import logoImage from '../Assets/logo-prototip3.png'; // Dodaj putanju do slike loga
 
 const Navbar = () => {
     return (
         <nav className="navbar">
-            <div className="navbar-logo">LinguaLink</div>
+            <div className="navbar-logo">
+                <a href="/">
+                    <img src={logoImage} alt="LinguaLink logo" className="navbar-logo-img" />
+                </a>
+                <span>LinguaLink</span>
+            </div>
             <ul className="navbar-links">
                 <li><a className="navbar-link" href="/login">Prijava</a></li>
                 <li><a className="navbar-link" href="/register">Registracija</a></li>
