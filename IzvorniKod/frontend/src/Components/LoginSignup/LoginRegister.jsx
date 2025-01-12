@@ -2,6 +2,7 @@ import "./LoginSignup.css";
 import user_icon from "../Assets/person.png";
 import email_icon from "../Assets/email.png";
 import password_icon from "../Assets/password.png";
+import logo_icon from "../Assets/logo-prototip3.png";
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -55,12 +56,15 @@ const LoginRegister = () => {
 
   return (
     <div className="container">
+      <a href="/" className="logo-link">
+        <img src={logo_icon} alt="Logo" className="logo" />
+      </a>
       <div className="header">
         <button
           className="teacher-button"
           onClick={() => navigate("/teachers")}
         >
-          Prikaz Učitelja
+          Prikaz učitelja
         </button>
         <div className="text">Registracija</div>
         <div className="underline"></div>
@@ -135,12 +139,14 @@ const LoginRegister = () => {
           Registriraj se
         </div>
       </div>
-      <a
-        href="http://localhost:8080/oauth2/authorization/github"
-        className="oauth2-btn"
-      >
-        Ulogiraj se uz pomoć GitHuba!
-      </a>
+      <div>
+        <a
+          href="http://localhost:8080/oauth2/authorization/github"
+          className="oauth2-btn"
+        >
+          Registriraj se uz pomoć GitHuba!
+        </a>
+      </div>
       <div className="ima_racun" onClick={() => navigate("/login")}>
         Imaš račun? <span>Prijavi se!</span>
       </div>
