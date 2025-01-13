@@ -139,13 +139,20 @@ const LoginRegister = () => {
           Registriraj se
         </div>
       </div>
-      <div>
-        <a
-          href="http://localhost:8080/oauth2/authorization/github"
-          className="oauth2-btn"
-        >
-          Registriraj se uz pomoć GitHuba!
-        </a>
+      <div className="submit-container">
+        <div className="submit">
+          <a
+            href="http://localhost:8080/oauth2/authorization/github"
+            className="oauth2-btn2"
+          >
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/25/25231.png"
+              alt="GitHub"
+              className="github-avatar"
+            />
+            Registracija
+          </a>
+        </div>
       </div>
       <div className="ima_racun" onClick={() => navigate("/login")}>
         Imaš račun? <span>Prijavi se!</span>

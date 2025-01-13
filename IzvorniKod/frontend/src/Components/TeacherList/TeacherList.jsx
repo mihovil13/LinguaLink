@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./TeacherList.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import logo_icon from "../Assets/logo-prototip3.png";
 
 const TeacherList = () => {
   const [teachers, setTeachers] = useState([]);
@@ -157,6 +158,9 @@ const TeacherList = () => {
     <div
       className={`parent-container ${isLoggedIn ? "logged-in" : "logged-out"}`}
     >
+      <a href="/" className="logo-link">
+                <img src={logo_icon} alt="Logo" className="logo" />
+        </a>
       <div className="filter-notification">Filtri primijenjeni</div>
 
       <div className="container">
