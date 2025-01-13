@@ -108,7 +108,13 @@ const TeacherProfile = () => {
           {teacher.languagesTeach && teacher.languagesTeach.length > 0 ? (
             <ul>
               {teacher.languagesTeach.map((lang, index) => (
+<<<<<<< Updated upstream
                 <li key={index || lang.jezik_id}>{lang.language || lang.nazivJezika}</li>
+=======
+                <li key={index || lang.jezik_id}>
+                  {lang.language || lang.nazivJezika}
+                </li>
+>>>>>>> Stashed changes
               ))}
             </ul>
           ) : (
@@ -158,7 +164,43 @@ const TeacherProfile = () => {
         </div>
         <div className="buttons">
           <div className="edit-button">
+<<<<<<< Updated upstream
             <button className="calendar-button" onClick={() => navigate(``)}>
+=======
+            <button
+              className="calendar-button"
+              onClick={async () => {
+                try {
+                  const requestData = {
+                    ucenikId: 6, // ovo popravit
+                    uciteljId: teacherId,
+                    datumVrijemePocetka: "2025-01-14T15:00:00", // ovo treba biti dinamički
+                  };
+
+                  const response = await axios.post(
+                    `${backend}api/zabiljezi-predavanje`,
+                    requestData,
+                    {
+                      headers: {
+                        Authorization: `Bearer ${localStorage.getItem(
+                          "token"
+                        )}`,
+                      },
+                    }
+                  );
+
+                  if (response.status === 200) {
+                    navigate("/calendar");
+                  } else {
+                    alert("Došlo je do pogreške prilikom slanja podataka.");
+                  }
+                } catch (error) {
+                  console.error("Greška prilikom otvaranja kalendara:", error);
+                  alert("Neuspješno otvaranje kalendara.");
+                }
+              }}
+            >
+>>>>>>> Stashed changes
               Prikaz kalendara
             </button>
           </div>
