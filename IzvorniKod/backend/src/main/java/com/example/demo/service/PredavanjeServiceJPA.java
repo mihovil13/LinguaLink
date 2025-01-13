@@ -17,9 +17,9 @@ public class PredavanjeServiceJPA implements PredavanjeService {
         this.predavanjeRepository = predavanjeRepository;
     }
 
-
     @Override
     public void savePredavanje(Predavanje predavanje) {
+        System.out.println("TU JE OVOOOOOOOOOOOOOOOOOOOOO");
         predavanjeRepository.save(predavanje);
     }
 
