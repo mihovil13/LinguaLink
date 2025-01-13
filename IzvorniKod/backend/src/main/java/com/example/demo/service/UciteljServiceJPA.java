@@ -46,6 +46,8 @@ public class  UciteljServiceJPA implements UciteljService {
                 List<Map<String,String>> qualifications = (List<Map<String,String>>) body.get("qualifications");
                 List<String> qualOdvojeno = qualifications.stream()
                         .map(lang->(String)lang.get("kvalifikacije")).toList();
+                System.out.println("KVALIFIKACIJE");
+                System.out.println(qualOdvojeno);
                 Set<Qualifications> qualificationsList = new HashSet<>();
                 for (String qualification : qualOdvojeno) {
                     qualificationsList.add(Enum.valueOf(Qualifications.class, qualification));
@@ -59,13 +61,34 @@ public class  UciteljServiceJPA implements UciteljService {
             if (body.containsKey("languagesTeach")) {
                 List<Map<String,String>> jezici =(List<Map<String,String>>) body.get("languagesTeach");
                 List<String> jezikOdvojeno = jezici.stream()
-                        .map(lang -> (String) lang.get("language")).toList();
+                        .map(lang -> (String) lang.get("nazivJezika")).toList();
                 List<Jezik> dobraLista = new ArrayList<Jezik>();
                 for(String jezik:jezikOdvojeno){
                     Jezik jezik1 = jezikServiceJPA.getJezikByNazivJezika(jezik);
                     dobraLista.add(jezik1);
                 }
-                ucitelj.setLanguagesTeach(dobraLista);
+                System.out.println("DOBRA LISTA POPRAVAK");
+                System.out.println(dobraLista);
+                    Ucitelj ucitelj2 = uciteljRepository.getUciteljByEmail(ucitelj.getEmail());
+                if(!ucitelj2.getLanguagesTeach().isEmpty() || ucitelj2.getLanguagesTeach().size()==dobraLista.size()){
+                    Integer brojac = 0;
+                    for(Jezik jezik:dobraLista){
+                       if(ucitelj2.getLanguagesTeach().contains(jezik)){
+                           brojac++;
+                       }
+                    }
+
+                    if(brojac!=ucitelj2.getLanguagesTeach().size()){
+                        ucitelj.setLanguagesTeach(dobraLista);
+                    }
+                }
+                else{
+                    ucitelj.setLanguagesTeach(dobraLista);
+                }
+
+
+
+                //ucitelj.setLanguagesTeach(dobraLista);
 
 
 

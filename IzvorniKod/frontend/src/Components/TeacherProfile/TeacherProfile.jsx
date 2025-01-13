@@ -85,136 +85,94 @@ const TeacherProfile = () => {
   }, [location, navigate]);
 
   return (
-    <div className="profile-page">
-      <div className="profile-sidebar">
-        <div className="profile-podaci">
-          <span>Osobni podaci</span>
-          <p>
-            <strong>Ime:</strong> {teacher.ime}
-          </p>
-          <p>
-            <strong>Prezime:</strong> {teacher.prezime}
-          </p>
-          <p>
-            <strong>Email:</strong> {teacher.email}
-          </p>
-          <p>
-            <strong>Uloga:</strong> {teacher.uloga}
-          </p>
+      <div className="profile-page">
+        <div className="profile-sidebar">
+          <div className="profile-podaci">
+            <span>Osobni podaci</span>
+            <p>
+              <strong>Ime:</strong> {teacher.ime}
+            </p>
+            <p>
+              <strong>Prezime:</strong> {teacher.prezime}
+            </p>
+            <p>
+              <strong>Email:</strong> {teacher.email}
+            </p>
+            <p>
+              <strong>Uloga:</strong> {teacher.uloga}
+            </p>
+          </div>
+
+          <div className="profile-jezici">
+            <span>Jezici koje podučavam</span>
+            {teacher.languagesTeach && teacher.languagesTeach.length > 0 ? (
+                <ul>
+                  {teacher.languagesTeach.map((lang, index) => (
+                      <li key={index || lang.jezik_id}>{lang.language || lang.nazivJezika}</li>
+                  ))}
+                </ul>
+            ) : (
+                <p>Nema unesenih podataka o jezicima.</p>
+            )}
+
+            <span>Iskustvo</span>
+            <p>{teacher.iskustvo || "Nema unesenih podataka o iskustvu."}</p>
+
+            <span>Kvalifikacije</span>
+            {teacher.qualifications && teacher.qualifications.length > 0 ? (
+                <ul>
+                  {teacher.qualifications.map((item, index) => (
+                      <li key={index}>{item.kvalifikacije}</li>
+                  ))}
+                </ul>
+            ) : (
+                <p>Nema unesenih podataka o kvalifikacijama.</p>
+            )}
+
+            <span>Stil podučavanja</span>
+            <p>
+              {teacher.stilPoducavanja ||
+                  "Nema unesenih podataka o stilu podučavanja."}
+            </p>
+
+            <span>Satnica</span>
+            <p>
+              {teacher.satnica
+                  ? `${teacher.satnica}€/h`
+                  : "Nema unesenih podataka o satnici."}
+            </p>
+          </div>
         </div>
 
-        <div className="profile-jezici">
-          <span>Jezici koje podučavam</span>
-          {teacher.languagesTeach && teacher.languagesTeach.length > 0 ? (
-            <ul>
-              {teacher.languagesTeach.map((lang, index) => (
-<<<<<<< Updated upstream
-                <li key={index || lang.jezik_id}>{lang.language || lang.nazivJezika}</li>
-=======
-                <li key={index || lang.jezik_id}>
-                  {lang.language || lang.nazivJezika}
-                </li>
->>>>>>> Stashed changes
-              ))}
-            </ul>
-          ) : (
-            <p>Nema unesenih podataka o jezicima.</p>
-          )}
-
-          <span>Iskustvo</span>
-          <p>{teacher.iskustvo || "Nema unesenih podataka o iskustvu."}</p>
-
-          <span>Kvalifikacije</span>
-          {teacher.qualifications && teacher.qualifications.length > 0 ? (
-            <ul>
-              {teacher.qualifications.map((item, index) => (
-                <li key={index}>{item.kvalifikacije}</li>
-              ))}
-            </ul>
-          ) : (
-            <p>Nema unesenih podataka o kvalifikacijama.</p>
-          )}
-
-          <span>Stil podučavanja</span>
-          <p>
-            {teacher.stilPoducavanja ||
-              "Nema unesenih podataka o stilu podučavanja."}
-          </p>
-
-          <span>Satnica</span>
-          <p>
-            {teacher.satnica
-              ? `${teacher.satnica}€/h`
-              : "Nema unesenih podataka o satnici."}
-          </p>
-        </div>
-      </div>
-
-      <div className="profile-header">
-        <div className="profile-imagetext">
-          <img
-            src={
-              "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-teacher-vector.jpg"
-            }
-            alt={`${teacher.ime}'s profile`}
-            className="profile-picture-large"
-          />
-          <h1 className="profile-name">{teacher.ime}</h1>
-          <h1 className="profile-surname">{teacher.prezime}</h1>
-        </div>
-        <div className="buttons">
-          <div className="edit-button">
-<<<<<<< Updated upstream
-            <button className="calendar-button" onClick={() => navigate(``)}>
-=======
-            <button
-              className="calendar-button"
-              onClick={async () => {
-                try {
-                  const requestData = {
-                    ucenikId: 6, // ovo popravit
-                    uciteljId: teacherId,
-                    datumVrijemePocetka: "2025-01-14T15:00:00", // ovo treba biti dinamički
-                  };
-
-                  const response = await axios.post(
-                    `${backend}api/zabiljezi-predavanje`,
-                    requestData,
-                    {
-                      headers: {
-                        Authorization: `Bearer ${localStorage.getItem(
-                          "token"
-                        )}`,
-                      },
-                    }
-                  );
-
-                  if (response.status === 200) {
-                    navigate("/calendar");
-                  } else {
-                    alert("Došlo je do pogreške prilikom slanja podataka.");
-                  }
-                } catch (error) {
-                  console.error("Greška prilikom otvaranja kalendara:", error);
-                  alert("Neuspješno otvaranje kalendara.");
+        <div className="profile-header">
+          <div className="profile-imagetext">
+            <img
+                src={
+                  "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-teacher-vector.jpg"
                 }
-              }}
-            >
->>>>>>> Stashed changes
-              Prikaz kalendara
-            </button>
+                alt={`${teacher.ime}'s profile`}
+                className="profile-picture-large"
+            />
+            <h1 className="profile-name">{teacher.ime}</h1>
+            <h1 className="profile-surname">{teacher.prezime}</h1>
           </div>
-          <div className="profile-buttons">
-            <button
-              className="teachers-button"
-              onClick={() => navigate("/teachers")}
-            >
-              Prikaz učitelja
-            </button>
+          <div className="buttons">
+            <div className="edit-button">
+              <button className="calendar-button" onClick={() => navigate("/calendar")}>
+                Prikaz kalendara
+              </button>
+            </div>
+            <div className="profile-buttons">
+              <button
+                  className="teachers-button"
+                  onClick={() => navigate("/teachers")}
+              >
+                Prikaz učitelja
+              </button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
   );
 };
 

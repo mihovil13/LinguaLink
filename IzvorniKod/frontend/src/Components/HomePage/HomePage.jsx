@@ -4,7 +4,7 @@ import Features from "./Features";
 
 const HomePage = () => {
   return (
-    <div>
+    <div className="home-container"> {/* Dodajemo parent container */}
       <Navbar />
       <Hero />
       <Features />

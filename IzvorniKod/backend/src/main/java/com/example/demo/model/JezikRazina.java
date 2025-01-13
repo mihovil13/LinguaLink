@@ -13,7 +13,7 @@ public class JezikRazina  {
     private Razina razina;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long jezik_razina_id;
+    private Long jezikRazinaID;
 
     public JezikRazina(Razina razina) {
         this.razina = razina;
@@ -60,10 +60,10 @@ public class JezikRazina  {
     }
 
     public void setJezik_razina_id(Long jezikRazinaId) {
-        this.jezik_razina_id = jezikRazinaId;
+        this.jezikRazinaID = jezikRazinaId;
     }
 
     public Long getJezik_razina_id() {
-        return jezik_razina_id;
+        return jezikRazinaID;
     }
 }
