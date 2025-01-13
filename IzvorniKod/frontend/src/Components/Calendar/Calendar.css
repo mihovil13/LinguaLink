@@ -1,0 +1,178 @@
+/* ovo postavlja pozadinske boje buttona month, week, lijevo i desno
+   kada su aktivni, neaktivni i kada se hovera iznad njih */
+:root{
+    --fc-button-text-color: #fff;
+    --fc-button-bg-color: #613c78;
+    --fc-button-hover-bg-color: #482a5c;
+    --fc-button-hover-border-color: #482a5c;
+    --fc-button-active-bg-color: #311f40;
+    --fc-button-active-border-color: #311f40;
+}
+
+/*ovaj dio koda postavlja today button da izgleda isto kao i ostali
+  (pozadinska boja kada nije aktivan, kada se hovera iznad njega i kada je aktivan  */
+.fc-today-button {
+    background-color: #613c78 !important; /* Postavlja istu pozadinsku boju kao ostali gumbi */
+    color: white !important;             /* Bijela boja fonta */
+    opacity: 1 !important;               /* Uklanja prozirnost */
+    border: none;                        /* Bez rubova */
+}
+
+.fc-today-button:hover {
+    background-color: #482a5c !important; /* Hover efekt */
+}
+
+.fc-today-button:active {
+    background-color: #311f40 !important; /* Aktivni efekt */
+}
+
+/* postavlja pozadinsku boju stupca sa današnjim danom u prikazu tjedna na #f2eeed*/
+.fc-day-today .fc-timegrid-col-frame{
+    background-color: #f2eeed;
+}
+
+/* ovo je za bojanje ćelija i stupaca (dana i sati) u kalendaru u bijelo*/
+.fc-day {
+    background-color: #fff;
+}
+
+/*ovo je za bojanje stupca današnjeg dana u week prikazu tjedna u boju #f2eeed */
+.fc-day-today .fc-daygrid-day-frame{
+    background-color: #f2eeed;
+}
+
+/*bojanje header retka iznad stupaca u #613c78, a teksta u bijelu*/
+.fc-col-header-cell {
+    background-color: #613c78;
+    color: #fff;
+}
+
+/*ovo je za bojanje stupca sa satima u bijelo u prikazu tjedna*/
+.fc-timegrid-axis {
+    background-color: white;
+}
+
+.fc {
+    width: 100vh; /* Postavite željenu širinu */
+    margin: 0 auto; /* Centrirajte kalendar, opcionalno */
+}
+
+.fc-previous-month {
+    background-color: transparent;
+    pointer-events: none;
+}
+
+.fc-past-date {
+    background-color: #d3d3d3;
+    color: #808080;
+    pointer-events: none;
+}
+
+/* Stil za dugmad dostupnih termina */
+.time-button {
+    margin: 5px;
+    padding: 10px 15px;
+    background-color: #5c2d91; /* Tamno ljubičasta boja */
+    color: white; /* Bijela boja teksta */
+    border: none; /* Bez okvira */
+    border-radius: 5px; /* Zaobljeni rubovi */
+    cursor: pointer; /* Promjena kursora na pokazivač */
+}
+
+.time-button:hover {
+    background-color: #7a42c3; /* Svjetlija ljubičasta na hover */
+}
+
+/* Stil za sekciju dostupnih termina */
+.timeslots {
+    margin-top: 20px; /* Razmak iznad */
+    text-align: center; /* Centrirani sadržaj */
+    background-color: white;
+}
+
+/* Stil za modalni prozor */
+.modal {
+    position: fixed; /* Osigurava da modal bude iznad ostalih elemenata */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    border-radius: 10px;
+    height: 20vh;
+    width: 30vh;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    display: block;
+    align-content: center;
+}
+
+
+.fc {
+    z-index: 1 !important; /* Niži prioritet */
+}
+
+.fc-daygrid-day {
+    z-index: 0 !important;
+}
+
+body {
+    overflow: visible;
+}
+
+
+
+
+
+.modal h3 {
+    margin-top: 0;
+    color: #613c78; /* Tamnoljubičasta boja naslova */
+}
+
+.modal p {
+    margin: 20px 0;
+    color: #333;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: space-between; /* Ravnomjerno razmakni gumbe */
+    align-items: center; /* Poravnaj vertikalno */
+    margin-top: 20px;
+    padding: 0 10px; /* Dodaj malo prostora sa strane */
+}
+
+
+.confirm-button {
+    background-color: #613c78;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.confirm-button:hover {
+    background-color: #4a2b5c;
+}
+
+.cancel-button {
+    background-color: #ccc;
+    color: black;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.cancel-button:hover {
+    background-color: #bbb;
+}
+
+.selected-datetime {
+    margin: 15px 0; /* Razmak iznad i ispod */
+    font-size: 1rem; /* Veličina teksta */
+    font-weight: bold; /* Podebljan tekst */
+    text-align: center; /* Centrirano */
+    color: #613c78; /* Ljubičasta nijansa, možeš prilagoditi */
+}

@@ -41,4 +41,22 @@ public class PredavanjeController {
         List<Predavanje> predavanja = predavanjeService.getPredavanjaByUciteljId(id);
         return ResponseEntity.ok(predavanja);
     }
+
+    @PutMapping("/prihvati-predavanje/{id}")
+    public ResponseEntity<String> prihvatiPredavanje(@PathVariable Integer id) {
+        predavanjeService.updatePotvrdeno(id, 1);
+        return ResponseEntity.ok("Predavanje uspješno prihvaćeno");
+    }
+
+    @PutMapping("/otkazi-predavanje/{id}")
+    public ResponseEntity<String> otkaziPredavanje(@PathVariable Integer id) {
+        predavanjeService.updatePotvrdeno(id, -1);
+        return ResponseEntity.ok("Predavanje uspješno otkazano");
+    }
+
+    @GetMapping("/dohvati-predavanja-ucenik/{id}")
+    public ResponseEntity<List<Predavanje>> getPredavanjaByUcenikId(@PathVariable int id) {
+        List<Predavanje> predavanja = predavanjeService.getPredavanjaByUcenikId(id);
+        return ResponseEntity.ok(predavanja);
+    }
 }

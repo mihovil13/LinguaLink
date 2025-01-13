@@ -27,6 +27,9 @@ public class Predavanje {
     @Column(name = "datum_vrijeme_pocetka", nullable = false)
     private LocalDateTime datumVrijemePocetka;
 
+    @Column(name = "potvrdeno", nullable = false, columnDefinition = "INTEGER DEFAULT 0")
+    private Integer potvrdeno = 0;
+
     public Predavanje() {
         // Default konstruktor
     }
