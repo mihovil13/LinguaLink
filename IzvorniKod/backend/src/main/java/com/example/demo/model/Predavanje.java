@@ -14,28 +14,26 @@ import java.time.LocalDateTime;
 @Table(name = "predavanja")
 public class Predavanje {
     @Id
-    @Column(name = "predavanje_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "predavanje_id")
     private Integer predavanjeId;
 
-    @ManyToOne
-    @JoinColumn(name = "ucenik_id", referencedColumnName = "user_id", nullable = false)
-    private Ucenik ucenik;
+    @Column(name = "ucenik_id", nullable = false)
+    private Integer ucenikId;
 
-    @ManyToOne
-    @JoinColumn(name = "ucitelj_id", referencedColumnName = "user_id", nullable = false)
-    private Ucitelj ucitelj;
+    @Column(name = "ucitelj_id", nullable = false)
+    private Integer uciteljId;
 
     @Column(name = "datum_vrijeme_pocetka", nullable = false)
     private LocalDateTime datumVrijemePocetka;
 
     public Predavanje() {
-        // Default constructor
+        // Default konstruktor
     }
 
-    public Predavanje(Ucenik ucenik, Ucitelj ucitelj, LocalDateTime datumVrijemePocetka) {
-        this.ucenik = ucenik;
-        this.ucitelj = ucitelj;
+    public Predavanje(Integer ucenikId, Integer uciteljId, LocalDateTime datumVrijemePocetka) {
+        this.ucenikId = ucenikId;
+        this.uciteljId = uciteljId;
         this.datumVrijemePocetka = datumVrijemePocetka;
     }
 }
