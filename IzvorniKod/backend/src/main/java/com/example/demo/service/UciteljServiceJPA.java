@@ -69,26 +69,26 @@ public class  UciteljServiceJPA implements UciteljService {
                 }
                 System.out.println("DOBRA LISTA POPRAVAK");
                 System.out.println(dobraLista);
-                    Ucitelj ucitelj2 = uciteljRepository.getUciteljByEmail(ucitelj.getEmail());
-                if(!ucitelj2.getLanguagesTeach().isEmpty() || ucitelj2.getLanguagesTeach().size()==dobraLista.size()){
-                    Integer brojac = 0;
-                    for(Jezik jezik:dobraLista){
-                       if(ucitelj2.getLanguagesTeach().contains(jezik)){
-                           brojac++;
-                       }
-                    }
+//                    Ucitelj ucitelj2 = uciteljRepository.getUciteljByEmail(ucitelj.getEmail());
+//                if(!ucitelj2.getLanguagesTeach().isEmpty() || ucitelj2.getLanguagesTeach().size()==dobraLista.size()){
+//                    Integer brojac = 0;
+//                    for(Jezik jezik:dobraLista){
+//                       if(ucitelj2.getLanguagesTeach().contains(jezik)){
+//                           brojac++;
+//                       }
+//                    }
+//
+//                    if(brojac!=ucitelj2.getLanguagesTeach().size()){
+//                        ucitelj.setLanguagesTeach(dobraLista);
+//                    }
+//                }
+//                else{
+//                    ucitelj.setLanguagesTeach(dobraLista);
+//                }
 
-                    if(brojac!=ucitelj2.getLanguagesTeach().size()){
-                        ucitelj.setLanguagesTeach(dobraLista);
-                    }
-                }
-                else{
-                    ucitelj.setLanguagesTeach(dobraLista);
-                }
 
 
-
-                //ucitelj.setLanguagesTeach(dobraLista);
+                ucitelj.setLanguagesTeach(dobraLista);
 
 
 

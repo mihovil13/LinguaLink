@@ -130,16 +130,15 @@ public class UcenikServiceJPA implements UcenikService {
             }
             System.out.println("DORA LISTA1");
             System.out.println(dobraLista);
-            Ucenik ucenik1 = ucenikRepository.getUcenikByEmail(ucenik.getEmail());
-            List<Jezik> novaLista = new ArrayList<>();
-            for(Jezik jezik:dobraLista){
-                if(!ucenik1.getLanguagesKnown().contains(jezik)){
-                    novaLista.add(jezik);
-                }
-            }
-            ucenik.setLanguagesToLearn(novaLista);
-            System.out.println(ucenik1.getLanguagesKnown().size());
-            System.out.println(dobraLista.size());
+//            Ucenik ucenik1 = ucenikRepository.getUcenikByEmail(ucenik.getEmail());
+//            List<Jezik> novaLista = new ArrayList<>();
+//            for(Jezik jezik:dobraLista){
+//                if(!ucenik1.getLanguagesKnown().contains(jezik)){
+//                    novaLista.add(jezik);
+//                }
+//            }
+            ucenik.setLanguagesToLearn(dobraLista);
+
 
 
             //ucenik.setLanguagesToLearn(dobraLista);
