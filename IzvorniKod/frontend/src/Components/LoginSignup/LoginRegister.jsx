@@ -9,7 +9,7 @@ import { useUser } from "../../UserContext";
 import { useNavigate } from "react-router-dom";
 
 const LoginRegister = () => {
-  const { user, setUser } = useUser();
+  const { setUser } = useUser();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     ime: "",
@@ -32,16 +32,25 @@ const LoginRegister = () => {
       );
 
       if (registerResponse.status === 200) {
-        const token = registerResponse.data.token;
-        setUser(registerResponse.data);
-        console.log("Trenutni korisnik: ", user);
-        localStorage.setItem("token", token);
+        const userData = registerResponse.data;
+        localStorage.setItem("token", userData.token);
+
+        setUser((prev) => ({
+          ...prev,
+          id: userData.id,
+          ime: userData.ime,
+          prezime: userData.prezime,
+          email: userData.email,
+          uloga: userData.uloga,
+        }));
+
+        console.log("Trenutni korisnik: ", userData);
 
         const profileResponse = await axios.get(
           "http://localhost:8080/api/moj-profil",
           {
             headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
+              Authorization: `Bearer ${userData.token}`,
             },
           }
         );
