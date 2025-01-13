@@ -1,39 +1,15 @@
-package com.example.demo.model;
+package com.example.demo.repository;
 
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import com.example.demo.model.Predavanje;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
-import java.time.LocalDateTime;
+import java.util.List;
 
-@Entity
-@AllArgsConstructor
-@Getter
-@Setter
-@Table(name = "predavanja")
-public class Predavanje {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "predavanje_id")
-    private Integer predavanjeId;
+public interface PredavanjeRepository extends JpaRepository<Predavanje, Integer> {
 
-    @Column(name = "ucenik_id", nullable = false)
-    private Integer ucenikId;
+    @Query("SELECT p FROM Predavanje p WHERE p.uciteljId = :uciteljId")
+    List<Predavanje> findByUciteljId(@Param("uciteljId") Integer uciteljId);
 
-    @Column(name = "ucitelj_id", nullable = false)
-    private Integer uciteljId;
-
-    @Column(name = "datum_vrijeme_pocetka", nullable = false)
-    private LocalDateTime datumVrijemePocetka;
-
-    public Predavanje() {
-        // Default konstruktor
-    }
-
-    public Predavanje(Integer ucenikId, Integer uciteljId, LocalDateTime datumVrijemePocetka) {
-        this.ucenikId = ucenikId;
-        this.uciteljId = uciteljId;
-        this.datumVrijemePocetka = datumVrijemePocetka;
-    }
 }
