@@ -1,10 +1,10 @@
 import React, { createContext, useState, useContext } from "react";
 
-//kreiranje konteksta za spremanje informacija o korisniku
-const UserContext = createContext();
+// kreiramo kontekst za ucitelja
+const TeacherContext = createContext();
 
-export const UserProvider = ({ children }) => {
-  const [user, setUser] = useState({
+export const TeacherProvider = ({ children }) => {
+  const [teacher, setTeacher] = useState({
     id: null,
     ime: "",
     prezime: "",
@@ -18,13 +18,13 @@ export const UserProvider = ({ children }) => {
     iskustvo: "",
     qualifications: [{ kvalifikacije: "" }],
     satnica: "",
-  }); //pocetno stanje korisnika
+  }); //pocetno stanje ucitelja
   return (
-    <UserContext.Provider value={{ user, setUser }}>
+    <TeacherContext.Provider value={{ teacher, setTeacher }}>
       {children}
-    </UserContext.Provider>
+    </TeacherContext.Provider>
   );
 };
 
 //hook za lakši pristup UserContext-u
-export const useUser = () => useContext(UserContext);
+export const useTeacher = () => useContext(TeacherContext);

@@ -5,9 +5,11 @@ import password_icon from "../Assets/password.png";
 import logo_icon from "../Assets/logo-prototip3.png";
 import React, { useState } from "react";
 import axios from "axios";
+import { useUser } from "../../UserContext";
 import { useNavigate } from "react-router-dom";
 
 const LoginRegister = () => {
+  const { user, setUser } = useUser();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     ime: "",
@@ -31,6 +33,8 @@ const LoginRegister = () => {
 
       if (registerResponse.status === 200) {
         const token = registerResponse.data.token;
+        setUser(registerResponse.data);
+        console.log("Trenutni korisnik: ", user);
         localStorage.setItem("token", token);
 
         const profileResponse = await axios.get(

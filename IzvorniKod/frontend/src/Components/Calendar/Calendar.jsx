@@ -6,115 +6,64 @@ import "./Calendar.css";
 import axios from "axios";
 import Modal from "react-modal";
 import { useUser } from "../../UserContext";
-const BACKEND = "http://localhost:8080";
+import { useLocation, useParams, useNavigate } from "react-router-dom";
 
+const backend = "http://localhost:8080";
 
 Modal.setAppElement("#root");
+
+const getToken = () => {
+  return localStorage.getItem("token");
+};
+
 // Funkcija za pronalazak prvog dana trenutnog mjeseca
 const getFirstDayOfCurrentMonth = () => {
   const today = new Date();
   return new Date(today.getFullYear(), today.getMonth(), 1); // Prvi dan trenutnog mjeseca
 };
 
-
-
-
-function Calendar() {
-  const [selectedDate, setSelectedDate] = useState(null);
-  const [availableTimes, setAvailableTimes] = useState([]);
-  const [currentDate, setCurrentDate] = useState(getFirstDayOfCurrentMonth());
-  const [selectedTime, setSelectedTime] = useState(null); // Odabrano vrijeme
-  const [isModalOpen, setIsModalOpen] = useState(false); // Modal state
-  
+const Calendar = () => {
+  const { user } = useUser();
+  const { teacherId } = useParams();
   const calendarRef = useRef(null);
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [currentDate, setCurrentDate] = useState(getFirstDayOfCurrentMonth());
+  const [availableTimes, setAvailableTimes] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedTime, setSelectedTime] = useState(null);
+  const [reservedLessons, setReservedLessons] = useState([]);
+  const navigate = useNavigate();
 
-  var user = useUser();
-  console.log(user);
   useEffect(() => {
-    fetchReservedLessons(); // Dohvati termine prilikom učitavanja komponente
-  }, []);
+    fetchAvailableTimes();
+  }, [teacherId]);
 
-  useEffect(() => {
-    const fetchTeacherProfile = async () => {
-      try {
-        const params = new URLSearchParams(location.search);
-        const token = params.get("token") || localStorage.getItem("token");
-
-        const response = await axios.get(`${BACKEND}/ucitelj/${teacherId}`);
-
-        if (response.status === 200) {
-          const rawData = response.data;
-          const firstJson = rawData.split("}{")[0] + "}";
-
-          const data = JSON.parse(firstJson);
-          let {
-            ime,
-            prezime,
-            email,
-            uloga,
-            languagesTeach,
-            stilPoducavanja,
-            iskustvo,
-            qualifications,
-            satnica,
-          } = data; // iz odgovora uzimamo navedene varijable
-          console.log(data);
-          if (languagesTeach) {
-            console.log(languagesTeach);
-            languagesTeach = languagesTeach.map((entry) => {
-              return {
-                jezik_id: entry.jezik_id,
-                nazivJezika: entry.nazivJezika.trim(),
-              };
-            });
-          }
-          if (qualifications) {
-            qualifications = qualifications.map((entry) => {
-              return { kvalifikacije: entry.trim() };
-            });
-          }
-          // azuriramo podatke s onima iz backenda
-          setTeacher({
-            ime: ime || "",
-            prezime: prezime || "",
-            email: email || "",
-            uloga: uloga || "",
-            languagesTeach: languagesTeach || [],
-            stilPoducavanja: stilPoducavanja || "",
-            iskustvo: iskustvo || "",
-            qualifications: qualifications || [],
-            satnica: satnica || "",
-          });
-          console.log(teacher);
-        }
-      } catch (error) {
-        console.error("Error fetching teacher profile:", error);
-        alert("Došlo je do greške prilikom dohvaćanja profila učitelja.");
-      }
-    };
-
-    fetchTeacherProfile();
-  }, []);
-
-  const fetchReservedLessons = async () => {
+  const fetchAvailableTimes = async () => {
     try {
-      const teacherId = 1; // Ovdje zamijenite s odgovarajućim ID-om učitelja
-      const response = await axios.get(BACKEND + `/api/dohvati-predavanja/${teacherId}`);
+      const token = getToken();
+      const response = await axios.get(
+        `${backend}/api/dohvati-predavanja/${teacherId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       if (response.status === 200) {
-        const events = response.data.map((lesson) => ({
-          id: lesson.predavanjeId,
-          title: "Rezervirano",
-          start: lesson.datumVrijemePocetka,
-          backgroundColor: "#ff0000", // Crvena boja za zauzete termine
-        }));
+        const events = response.data
+          .filter((lesson) => lesson.potvrdeno === 0 || lesson.potvrdeno === -1)
+          .map((lesson) => ({
+            id: lesson.predavanjeId,
+            title: lesson.potvrdeno === -1 ? "Nepotvrđeno" : "Slobodno",
+            start: lesson.datumVrijemePocetka,
+            backgroundColor: lesson.potvrdeno === -1 ? "#ffc107" : "#28a745",
+          }));
 
-        // Dodaj događaje u kalendar
-        const calendarApi = calendarRef.current.getApi();
-        events.forEach((event) => calendarApi.addEvent(event));
+        setReservedLessons(events);
       }
     } catch (error) {
       console.error("Greška prilikom dohvaćanja predavanja:", error);
-      alert("Došlo je do greške prilikom dohvaćanja predavanja.");
+      alert("Provjeri konzolu");
     }
   };
 
@@ -122,81 +71,79 @@ function Calendar() {
     const clickedDate = new Date(info.dateStr);
     const today = new Date();
     today.setHours(1, 0, 0, 0);
-    console.log("Kliknuti "+clickedDate);
-    console.log("Danasnji "+today);
-  
+
     if (clickedDate >= today) {
       setSelectedDate(info.dateStr);
-  
-      const allTimes = ["09:15", "09:30", "10:15", "10:45", "11:15", "15:00"]; // Svi potencijalni termini
-  
+
+      const allTimes = ["09:00", "10:00", "11:00", "12:00", "13:00", "14:00"];
+
+      // ako je odabrani datum danasnji, filtriraj termine prema trenutnom vremenu
       if (clickedDate.getTime() === today.getTime()) {
-        // Ako je odabrani datum današnji, filtriraj termine prema trenutnom vremenu
         const now = new Date();
         const filteredTimes = allTimes.filter((time) => {
           const [hours, minutes] = time.split(":").map(Number);
           const termTime = new Date();
           termTime.setHours(hours, minutes, 0, 0);
-          return termTime > now; // Zadrži samo termine u budućnosti
+          return termTime > now; // zadrzi samo termine u buducnosti
         });
         setAvailableTimes(filteredTimes);
       } else {
-        // Ako nije današnji datum, prikazuj sve termine
         setAvailableTimes(allTimes);
       }
     }
   };
-  
-  
-  
 
+  const handleTimeClick = (time) => {
+    setSelectedTime(time);
+    setIsModalOpen(true);
+  };
 
-const confirmReservation = async () => {
-  if (selectedDate && selectedTime) {
-    const calendarApi = calendarRef.current.getApi();
-    const predavanjeData = {
-      ucenik: {
-        user_id: user.user_id, // ID učenika (možete ga zamijeniti dinamičkim ID-om)
-      },
-      ucitelj: {
-        user_id: 1, // ID učitelja (možete ga zamijeniti dinamičkim ID-om)
-      },
-      datumVrijemePocetka: `${selectedDate}T${selectedTime}:00`, // Datum i vrijeme u ISO formatu
-    };
+  const confirmReservation = async () => {
+    console.log(user.id);
+    console.log(teacherId);
+    if (selectedDate && selectedTime && user.id !== teacherId) {
+      const predavanjeData = {
+        ucenikId: user.id,
+        uciteljId: teacherId,
+        datumVrijemePocetka: `${selectedDate}T${selectedTime}:00`,
+      };
 
-    try {
-      const response = await axios.post(BACKEND + "/api/zabiljezi-predavanje", predavanjeData);
-
-      if (response.status === 200 || response.status === 201) {
-        console.log("Predavanje uspješno spremljeno:", response.data);
-        alert("Rezervacija je uspješno spremljena!");
-
-        // Dodavanje događaja u kalendar
-        calendarApi.addEvent({
-          title: `Rezervirano: ${selectedTime}`,
-          start: `${selectedDate}T${selectedTime}:00`,
-          allDay: false,
-          backgroundColor: "#613c78", // Boja za označavanje rezervacije
-        });
-
-        // Uklanjanje rezerviranog termina iz dostupnih termina
-        setAvailableTimes((prevTimes) =>
-          prevTimes.filter((time) => time !== selectedTime)
+      try {
+        const token = getToken();
+        const response = await axios.post(
+          `${backend}/api/zabiljezi-predavanje`,
+          predavanjeData,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
+        if (response.status === 200 || response.status === 201) {
+          alert("Rezervacija uspješno spremljena");
+          setIsModalOpen(false);
 
-        // Zatvaranje modala
-        setIsModalOpen(false);
-      } else {
-        throw new Error("Greška prilikom spremanja predavanja.");
+          // dodajemo tu rezervaciju u kalendar
+          const calendarApi = calendarRef.current.getApi();
+          calendarApi.addEvent({
+            title: `Rezervirano: ${selectedTime}`,
+            start: `${selectedDate}T${selectedTime}:00`,
+            allDay: false,
+            backgroundColor: "#613c78",
+          });
+
+          // iz slobodnih termina uklanjamo upravo dodani termin
+          setAvailableTimes((prevTimes) =>
+            prevTimes.filter((time) => time !== selectedTime)
+          );
+        }
+      } catch (error) {
+        console.error("Greška prilikom stvaranja rezervacije:", error);
+        alert("Provjeri konzolu");
       }
-    } catch (error) {
-      console.error("Greška prilikom slanja zahtjeva:", error);
-      alert("Došlo je do greške prilikom spremanja rezervacije.");
     }
-  }
-};
+  };
 
-  
   const handleDatesSet = (dateInfo) => {
     const newCurrentDate = new Date(dateInfo.view.currentStart);
     if (newCurrentDate.getTime() !== currentDate.getTime()) {
@@ -204,15 +151,9 @@ const confirmReservation = async () => {
     }
   };
 
-  const handleTimeClick = (time) => {
-    setSelectedTime(time); // Postavlja odabrano vrijeme
-    setIsModalOpen(true); // Otvara modal
-  };
-
   const closeModal = () => {
-    setIsModalOpen(false); // Zatvara modal
+    setIsModalOpen(false);
   };
-  
 
   return (
     <div>
@@ -277,32 +218,32 @@ const confirmReservation = async () => {
         overlayClassName="overlay"
         ariaHideApp={false}
       >
-      <div className="modal">
-        <div className="title">
-        <h3>Potvrda rezervacije</h3>
+        <div className="modal">
+          <div className="title">
+            <h3>Potvrda rezervacije</h3>
+          </div>
+          <div className="text">
+            <p>Želite li potvrditi rezervaciju?</p>
+          </div>
+          <div className="terminTime">
+            {selectedDate && selectedTime && (
+              <p className="selected-datetime">
+                Datum: {selectedDate}, Vrijeme: {selectedTime}
+              </p>
+            )}
+          </div>
+          <div className="modal-actions">
+            <button className="confirm-button" onClick={confirmReservation}>
+              Potvrdi
+            </button>
+            <button className="cancel-button" onClick={closeModal}>
+              Odustani
+            </button>
+          </div>
         </div>
-        <div className="text">
-        <p>Želite li potvrditi rezervaciju?</p>
-        </div>
-        <div className="terminTime">
-        {selectedDate && selectedTime && (
-        <p className="selected-datetime">
-      Datum: {selectedDate}, Vrijeme: {selectedTime}
-        </p>
-         )}
-         </div>
-        <div className="modal-actions">
-          <button className="confirm-button" onClick={confirmReservation}>
-            Potvrdi
-          </button>
-          <button className="cancel-button" onClick={closeModal}>
-            Odustani
-          </button>
-        </div>
-      </div>
       </Modal>
     </div>
   );
-}
+};
 
 export default Calendar;
