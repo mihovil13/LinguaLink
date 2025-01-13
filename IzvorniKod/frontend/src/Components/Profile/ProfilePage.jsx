@@ -50,6 +50,13 @@ const ProfilePage = () => {
   // sastoji se od funkcije, i od polja ovisnosti koje nareduje kada ce se funkcija izvrsiti
   // u ovom primjeru, polje ovisnosti je prazno (nalazi se na samom kraju hooka),
   // sto znaci da ce se hook izvrsiti prilikom ucitavanja stranice
+
+  useEffect(() => {
+    console.log("Doslo s backenda");
+    console.log(user.id);
+    console.log(user);
+  }, [user]);
+
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
@@ -71,6 +78,7 @@ const ProfilePage = () => {
 
           if (response.status === 200) {
             let {
+              id,
               ime,
               prezime,
               email,
@@ -84,6 +92,8 @@ const ProfilePage = () => {
               qualifications,
               satnica,
             } = response.data; // iz odgovora uzimamo navedene varijable
+            console.log("odgovor");
+            console.log(response.data);
             if (languagesKnown) {
               languagesKnown = languagesKnown.map((entry) => {
                 const [language, level] = entry.split("-");
@@ -112,6 +122,7 @@ const ProfilePage = () => {
 
             // azuriramo podatke s onima iz backenda
             setUser({
+              id : id || null,
               ime: ime || "",
               prezime: prezime || "",
               email: email || "",
@@ -125,8 +136,7 @@ const ProfilePage = () => {
               qualifications: qualifications || [],
               satnica: satnica || "",
             });
-            console.log("Doslo s backenda");
-            console.log(user);
+
 
             if (!response.data.uloga) {
               //ako korisnilk nema definiranu ulogu, prikazuje se modal za odabir uloge

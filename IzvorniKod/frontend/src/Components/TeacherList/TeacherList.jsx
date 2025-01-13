@@ -70,8 +70,8 @@ const TeacherList = () => {
               : [],
           }));
 
-        //ako je korisnik prijavljen, filtriraj učitelje prema njegovim jezicima
-        const filteredByUserLanguages = isLoggedIn
+        //ako je korisnik prijavljen, i ima jezike u listi, filtriraj učitelje prema njegovim jezicima
+        const filteredByUserLanguages = isLoggedIn && user.languagesToLearn.length > 0
           ? teachersData.filter((teacher) =>
               teacher.languagesTeach.some((lang) =>
                 user.languagesToLearn
@@ -135,8 +135,8 @@ const TeacherList = () => {
     setFilteredTeachers(teachers);
     setFiltersApplied(false);
 
-   
-      //resetiraj na učitelje koji podučavaju jezike iz user.languagesToLearn
+    
+    if (user.languagesToLearn.length > 0) {
       const filteredByUserLanguages = teachers.filter((teacher) =>
         teacher.languagesTeach.some((lang) =>
           user.languagesToLearn
@@ -145,6 +145,8 @@ const TeacherList = () => {
         )
       );
       setFilteredTeachers(filteredByUserLanguages);
+    }
+
   };
 
   //funkcija za izmjenu filtra jezika

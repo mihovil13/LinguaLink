@@ -36,7 +36,7 @@ const Calendar = () => {
 
   useEffect(() => {
     fetchAvailableTimes();
-  }, [teacherId]);
+  }, []);
 
   const fetchAvailableTimes = async () => {
     try {
@@ -50,13 +50,15 @@ const Calendar = () => {
         }
       );
       if (response.status === 200) {
+        console.log("response");
+        console.log(response.data);
         const events = response.data
           .filter((lesson) => lesson.potvrdeno === 0 || lesson.potvrdeno === -1)
           .map((lesson) => ({
             id: lesson.predavanjeId,
-            title: lesson.potvrdeno === -1 ? "Nepotvrđeno" : "Slobodno",
+            title: lesson.potvrdeno === -1 ? "Nepotvrđeno" : "Rezervirano",
             start: lesson.datumVrijemePocetka,
-            backgroundColor: lesson.potvrdeno === -1 ? "#ffc107" : "#28a745",
+            backgroundColor: lesson.potvrdeno === -1 ? "#ffc107" : "#613c78",
           }));
 
         setReservedLessons(events);
@@ -77,6 +79,16 @@ const Calendar = () => {
 
       const allTimes = ["09:00", "10:00", "11:00", "12:00", "13:00", "14:00"];
 
+      const reservedTimes = reservedLessons
+      .filter((lesson) => lesson.start.startsWith(info.dateStr)) // provjeri rezervacije za odabrani datum
+      .map((lesson) => {
+        const time = new Date(lesson.start).toTimeString().slice(0, 5); // izvuci vrijeme u formatu HH:mm
+        return time;
+      });
+
+      const availableTimes = allTimes.filter((time) => !reservedTimes.includes(time));
+
+
       // ako je odabrani datum danasnji, filtriraj termine prema trenutnom vremenu
       if (clickedDate.getTime() === today.getTime()) {
         const now = new Date();
@@ -88,7 +100,7 @@ const Calendar = () => {
         });
         setAvailableTimes(filteredTimes);
       } else {
-        setAvailableTimes(allTimes);
+        setAvailableTimes(availableTimes);
       }
     }
   };
@@ -159,6 +171,7 @@ const Calendar = () => {
     <div>
       <Fullcalendar
         ref={calendarRef}
+        events={reservedLessons}
         plugins={[dayGridPlugin, interactionPlugin]}
         initialView={"dayGridMonth"}
         initialDate={new Date().toISOString().split("T")[0]} // Prikazuje današnji mjesec

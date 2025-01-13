@@ -150,7 +150,7 @@ const TeacherProfile = () => {
         <div className="profile-imagetext">
           <img
             src={
-              "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-teacher-vector.jpg"
+              "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"
             }
             alt={`${teacher.ime}'s profile`}
             className="profile-picture-large"
