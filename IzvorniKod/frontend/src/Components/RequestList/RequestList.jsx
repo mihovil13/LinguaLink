@@ -28,12 +28,15 @@ const RequestList = () => {
 
   useEffect(() => {
     const fetchRequest = async () => {
+      if (!user.id) {
+        return;
+      }
       try {
         const endpoint =
           user.uloga === "Učenik"
             ? `/api/dohvati-predavanja-ucenik/${user.id}`
             : `/api/dohvati-predavanja/${user.id}`;
-        console.log("TOKEN: ", localStorage.getItem("token"));
+        console.log("USER: ", user);
 
         const response = await axios.get(`${backend}${endpoint}`, {
           headers: {
@@ -46,6 +49,8 @@ const RequestList = () => {
 
           const currentTime = new Date().getTime();
 
+          console.log("response: ", response.data);
+
           const filteredRequests =
             user.uloga === "Učenik"
               ? response.data.filter(
@@ -53,6 +58,8 @@ const RequestList = () => {
                     new Date(req.datumVrijemePocetka).getTime() >= currentTime
                 )
               : response.data.filter((req) => req.potvrdeno !== -1);
+
+          console.log("filtrirani: ", filteredRequests);
 
           setRequests(filteredRequests);
         }
@@ -64,7 +71,7 @@ const RequestList = () => {
     };
 
     fetchRequest();
-  }, []);
+  }, [user]);
 
   const handleAccept = async (id) => {
     try {

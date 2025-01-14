@@ -44,7 +44,6 @@ public class SecurityConfig {
                         .requestMatchers("/h2-console/**", "/oauth2/authorization/**").permitAll() // Allow OAuth2 endpoints
                         .requestMatchers("/teachers").permitAll()
                         .requestMatchers("/ucitelj/**").permitAll()
-                        .requestMatchers("/api/**").permitAll()
                         .anyRequest().authenticated())
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
