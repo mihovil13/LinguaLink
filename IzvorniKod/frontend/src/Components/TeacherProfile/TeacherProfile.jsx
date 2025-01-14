@@ -5,7 +5,7 @@ import axios from "axios";
 import logo_icon from "../Assets/logo-prototip3.png";
 
 const TeacherProfile = () => {
-  const backend = "http://localhost:8080/";
+  const backend = "http://localhost:8080";
   const { teacherId } = useParams(); //izvlacimo teacherId iz url-a
   const navigate = useNavigate();
   const location = useLocation();
@@ -28,7 +28,7 @@ const TeacherProfile = () => {
         const params = new URLSearchParams(location.search);
         const token = params.get("token") || localStorage.getItem("token");
 
-        const response = await axios.get(`${backend}ucitelj/${teacherId}`);
+        const response = await axios.get(`${backend}/ucitelj/${teacherId}`);
 
         if (response.status === 200) {
           const rawData = response.data;

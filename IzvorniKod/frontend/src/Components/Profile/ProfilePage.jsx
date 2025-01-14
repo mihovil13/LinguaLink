@@ -35,7 +35,7 @@ const ProfilePage = () => {
   };
   const location = useLocation();
   // definiramo podatke u korisniku
-  const {user, setUser } = useUser() || {user:{}, setUser: () => {} };
+  const { user, setUser } = useUser() || { user: {}, setUser: () => {} };
 
   // preko Reactovog useState pratimo je li modal otvoren ili zatvoren
   // na pocetku je zatvoren
@@ -123,7 +123,7 @@ const ProfilePage = () => {
 
             // azuriramo podatke s onima iz backenda
             setUser({
-              id : id || null,
+              id: id || null,
               ime: ime || "",
               prezime: prezime || "",
               email: email || "",
@@ -137,7 +137,7 @@ const ProfilePage = () => {
               qualifications: qualifications || [],
               satnica: satnica || "",
             });
-
+            setEditedUser(user);
 
             if (!response.data.uloga) {
               //ako korisnilk nema definiranu ulogu, prikazuje se modal za odabir uloge
@@ -304,7 +304,7 @@ const ProfilePage = () => {
   return (
     <div className="profile-page">
       <a href="/" className="logo-link">
-          <img src={logo_icon} alt="Logo" className="logo" />
+        <img src={logo_icon} alt="Logo" className="logo" />
       </a>
       {/* Modal za odabir uloge */}
       {isRoleModalOpen && (
@@ -447,11 +447,27 @@ const ProfilePage = () => {
             </button>
           </div>
           <div className="profile-buttons">
+            {user.uloga === "Učenik" && (
+              <button
+                className="teachers-button"
+                onClick={() => navigate("/teachers")}
+              >
+                Učitelji
+              </button>
+            )}
+            {user.uloga === "Učitelj" && (
+              <button
+                className="calendar-button"
+                onClick={() => navigate(`/calendar/${user.id}`)}
+              >
+                Moj kalendar
+              </button>
+            )}
             <button
-              className="teachers-button"
-              onClick={() => navigate("/teachers")}
+              className="zahtjevi-button"
+              onClick={() => navigate(`/requests/${user.id}`)}
             >
-              Učitelji
+              Moji zahtjevi
             </button>
             <button className="odjava-button" onClick={handleLogout}>
               Odjava
