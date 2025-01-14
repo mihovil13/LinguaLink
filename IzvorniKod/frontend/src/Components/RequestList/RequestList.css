@@ -23,6 +23,22 @@
     justify-content: space-between;
     
   }
+
+  .status-accepted {
+    color: #4caf50; /* Zelena boja za prihvaćeno */
+    font-weight: bold;
+  }
+  
+  .status-rejected {
+    color: #f44336; /* Crvena boja za odbijeno */
+    font-weight: bold;
+  }
+  
+  .status-pending {
+    color: #613c78; /* Ljubičasta boja za nepotvrđeno */
+    font-weight: bold;
+  }
+  
   
   @media (max-width: 1024px) {
     .parent-container {

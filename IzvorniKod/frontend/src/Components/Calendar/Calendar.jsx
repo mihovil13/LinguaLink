@@ -34,6 +34,8 @@ const Calendar = () => {
   const [selectedTime, setSelectedTime] = useState(null);
   const [reservedLessons, setReservedLessons] = useState([]);
   const navigate = useNavigate();
+  const [showNotification, setShowNotification] = useState(false);
+
 
   useEffect(() => {
     fetchAvailableTimes();
@@ -154,10 +156,11 @@ const Calendar = () => {
           }
         );
         if (response.status === 200 || response.status === 201) {
-          alert("Rezervacija uspješno spremljena");
+          setShowNotification(true); // Prikaži oblak
+          setTimeout(() => setShowNotification(false), 3000); // Sakrij nakon 3 sekunde
           setIsModalOpen(false);
-
-          // dodajemo tu rezervaciju u kalendar
+        
+          // Dodavanje rezervacije u kalendar
           const calendarApi = calendarRef.current.getApi();
           calendarApi.addEvent({
             title: `Nepotvrđeno: ${selectedTime}`,
@@ -165,12 +168,12 @@ const Calendar = () => {
             allDay: false,
             backgroundColor: "#ffc107",
           });
-
-          // iz slobodnih termina uklanjamo upravo dodani termin
+        
+          // Uklanjanje termina iz slobodnih
           setAvailableTimes((prevTimes) =>
             prevTimes.filter((time) => time !== selectedTime)
           );
-        }
+        }        
       } catch (error) {
         console.error("Greška prilikom stvaranja rezervacije:", error);
         alert("Provjeri konzolu");
@@ -196,6 +199,9 @@ const Calendar = () => {
 
   return (
     <div>
+      <div id="notification" className={`filter-notification ${showNotification ? 'show' : ''}`}>
+        Rezervacija uspješno spremljena!
+      </div>
       <a href="/" className="logo-link">
         <img src={logo_icon} alt="Logo" className="logo" />
       </a>

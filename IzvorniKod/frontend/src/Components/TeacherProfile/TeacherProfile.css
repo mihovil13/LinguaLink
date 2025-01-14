@@ -68,7 +68,7 @@
   text-align: center;
   margin-top: 10px;
 }
-.profile-buttons {
+.profile-buttons{
   display: flex;
   flex: 1;
   align-items: flex-end;
@@ -77,8 +77,11 @@
 }
 .edit-button {
   display: flex;
-  justify-content: center;
-  margin-top: 20px;
+  flex: 1;
+  align-items: flex-end;
+  width: 100%;
+  gap: 10px;
+  margin-top: 5px;
 }
 ul {
   list-style: none;
@@ -105,6 +108,7 @@ p {
 .calendar-button,
 .teachers-button,
 .edit-profile-button,
+.zahtjevi-button,
 .jezici-koje-znam > button,
 .jezici-koje-znam > div > button,
 .jezici-koje-zelim-nauciti > button,
@@ -112,7 +116,7 @@ p {
 .spremi-zatvori > button,
 .odjava-button {
   background-color: #613c78;
-  padding: 15px 15px; 
+  padding: 10px 15px; 
   color: #fff;
   font-size: 1.1rem;
   border: none;

@@ -10,11 +10,21 @@ const RequestList = () => {
   const { user } = useUser();
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showNotification, setShowNotification] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState("");
+
 
   const formatDate = (timestamp) => {
     const date = new Date(timestamp);
-    return date.toLocaleString();
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Mjeseci su 0-indeksirani
+    const year = date.getFullYear();
+    const hours = String(date.getHours()).padStart(2, "0");
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+  
+    return `${day}.${month}.${year}., ${hours}:${minutes}`;
   };
+  
 
   useEffect(() => {
     const fetchRequest = async () => {
@@ -71,14 +81,17 @@ const RequestList = () => {
       );
 
       if (response.status === 200) {
-        alert("Zahtjev uspješno prihvaćen! 🎉");
+        setNotificationMessage("Zahtjev uspješno prihvaćen! 🎉");
+        setShowNotification(true);
+        setTimeout(() => setShowNotification(false), 3000);
+      
         setRequests((prev) =>
-            prev.map((request) =>
-              request.predavanjeId === id
-                ? { ...request, potvrdeno: 1 } // Ažuriraj status u 'prihvaćeno'
-                : request
-            )
-          );
+          prev.map((request) =>
+            request.predavanjeId === id
+              ? { ...request, potvrdeno: 1 }
+              : request
+          )
+        );
       } else {
         alert(`Neočekivan odgovor: ${response.status}`);
       }
@@ -107,11 +120,15 @@ const RequestList = () => {
       console.log("ODGOVOR ODBIJANJA", response);
 
       if (response.status === 200) {
-        alert("Zahtjev uspješno odbijen! 🚫");
+        setNotificationMessage("Zahtjev uspješno odbijen! 🚫");
+        setShowNotification(true);
+        setTimeout(() => setShowNotification(false), 3000);
+      
         setRequests((prev) =>
           prev.filter((request) => request.predavanjeId !== id)
         );
-      } else {
+      }
+       else {
         alert(`Neočekivan odgovor: ${response.status}`);
       }
     } catch (error) {
@@ -123,16 +140,11 @@ const RequestList = () => {
   };
 
   const renderStatus = (status) => {
-    switch (status) {
-      case 1:
-        return "Prihvaćen";
-      case -1:
-        return "Odbijen";
-      default:
-        return "Nepotvrđen";
-        break;
-    }
+    const statusClass =
+      status === 1 ? "status-accepted" : status === -1 ? "status-rejected" : "status-pending";
+    return <span className={statusClass}>{status === 1 ? "Prihvaćen" : status === -1 ? "Odbijen" : "Nepotvrđen"}</span>;
   };
+  
 
   if (loading) {
     return <p>Učitavanje zahtjeva...</p>;
@@ -140,6 +152,9 @@ const RequestList = () => {
 
   return (
     <div className="parent-container">
+      <div id="notification" className={`filter-notification ${showNotification ? 'show' : ''}`}>
+      {notificationMessage}
+      </div>
       <a href="/" className="logo-link">
         <img src={logo_icon} alt="Logo" className="logo" />
       </a>
@@ -154,11 +169,13 @@ const RequestList = () => {
             requests.map((request) => (
               <div className="request-container" key={request.predavanjeId}>
                 <div className="left">
-                  <p>
+                <p>
+                  <strong>
                     {user.uloga === "Učenik"
                       ? `${request.uciteljIme} ${request.uciteljPrezime}`
                       : `${request.ucenikIme} ${request.ucenikPrezime}`}
-                  </p>
+                  </strong>
+                </p>
                   <p>
                     Datum i vrijeme: {formatDate(request.datumVrijemePocetka)}
                   </p>
@@ -182,7 +199,7 @@ const RequestList = () => {
                       </button>
                     </div>
                   ) : (
-                    <p>Status: Prihvaćeno</p>
+                    <p>Status: {renderStatus(request.potvrdeno)}</p>
                   )}
                 </div>
               </div>

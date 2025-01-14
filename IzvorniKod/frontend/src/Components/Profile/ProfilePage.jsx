@@ -445,6 +445,12 @@ const ProfilePage = () => {
             <button className="edit-profile-button" onClick={handleEditProfile}>
               Uredi profil
             </button>
+            <button
+              className="zahtjevi-button"
+              onClick={() => navigate(`/requests/${user.id}`)}
+            >
+              Moji zahtjevi
+            </button>
           </div>
           <div className="profile-buttons">
             {user.uloga === "Učenik" && (
@@ -463,12 +469,6 @@ const ProfilePage = () => {
                 Moj kalendar
               </button>
             )}
-            <button
-              className="zahtjevi-button"
-              onClick={() => navigate(`/requests/${user.id}`)}
-            >
-              Moji zahtjevi
-            </button>
             <button className="odjava-button" onClick={handleLogout}>
               Odjava
             </button>
