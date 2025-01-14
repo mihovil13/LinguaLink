@@ -1,7 +1,7 @@
 import "./LoginSignup.css";
 import email_icon from "../Assets/email.png";
 import password_icon from "../Assets/password.png";
-import logo_icon from "../Assets/logo-prototip3.png"
+import logo_icon from "../Assets/logo-prototip3.png";
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -56,8 +56,15 @@ const LoginSignup = () => {
   };
 
   return (
-      
-    <div className="container">
+    <div
+      className="container"
+      onKeyDown={(e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          handleLogin();
+        }
+      }}
+    >
       <a href="/" className="logo-link">
         <img src={logo_icon} alt="Logo" className="logo" />
       </a>
