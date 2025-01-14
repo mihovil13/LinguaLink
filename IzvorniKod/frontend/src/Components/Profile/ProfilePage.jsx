@@ -52,6 +52,10 @@ const ProfilePage = () => {
   // u ovom primjeru, polje ovisnosti je prazno (nalazi se na samom kraju hooka),
   // sto znaci da ce se hook izvrsiti prilikom ucitavanja stranice
 
+  const [showNotification, setShowNotification] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState("");
+
+
   useEffect(() => {
     console.log("Doslo s backenda");
     console.log(user.id);
@@ -191,10 +195,8 @@ const ProfilePage = () => {
       alert("Molimo unesite ispravnu satnicu.");
       return;
     }
-
+  
     try {
-      console.log("Poslano na backend");
-      console.log(updatedProfile);
       const response = await axios.put(
         "http://localhost:8080/api/moj-profil",
         updatedProfile,
@@ -204,19 +206,23 @@ const ProfilePage = () => {
           },
         }
       );
-
+  
       if (response.status === 200) {
-        setUser(editedUser); // spremili smo promjene
-        setEditModalOpen(false); // zatvaramo prozor za uredivanje
-        alert("Profil uspjesno spremljen");
+        setUser(editedUser); // Spremanje promjena
+        setEditModalOpen(false); // Zatvaranje modalnog prozora
+        setNotificationMessage("Profil uspješno spremljen! 🎉"); // Postavljanje poruke
+        setShowNotification(true); // Prikazivanje notifikacije
+  
+        setTimeout(() => setShowNotification(false), 3000); // Sakrivanje notifikacije nakon 3 sekunde
       } else {
-        alert("Doslo je do greske prilikom spremanja profila");
+        alert("Došlo je do greške prilikom spremanja profila.");
       }
     } catch (error) {
-      console.error("Error during profile saving:", error);
+      console.error("Greška prilikom spremanja profila:", error);
       alert("Došlo je do greške prilikom spremanja profila.");
     }
   };
+  
 
   // funkciju koristimo za mijenjanje postojećih vrijednosti, a ne stvaranje novih
   const handleInputChange = (field, index, value, listType) => {
@@ -303,6 +309,9 @@ const ProfilePage = () => {
 
   return (
     <div className="profile-page">
+    <div id="notification" className={`filter-notification ${showNotification ? 'show' : ''}`}>
+      {notificationMessage}
+    </div>
       <a href="/" className="logo-link">
         <img src={logo_icon} alt="Logo" className="logo" />
       </a>
