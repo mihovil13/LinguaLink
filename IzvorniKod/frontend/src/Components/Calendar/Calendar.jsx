@@ -7,6 +7,8 @@ import axios from "axios";
 import Modal from "react-modal";
 import { useUser } from "../../UserContext";
 import { useLocation, useParams, useNavigate } from "react-router-dom";
+import logo_icon from "../Assets/logo-prototip3.png";
+
 
 const backend = "http://localhost:8080";
 
@@ -77,7 +79,7 @@ const Calendar = () => {
     if (clickedDate >= today) {
       setSelectedDate(info.dateStr);
 
-      const allTimes = ["09:00", "10:00", "11:00", "12:00", "13:00", "14:00"];
+      const allTimes = ["09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00"];
 
       const reservedTimes = reservedLessons
       .filter((lesson) => lesson.start.startsWith(info.dateStr)) // provjeri rezervacije za odabrani datum
@@ -163,12 +165,21 @@ const Calendar = () => {
     }
   };
 
+  const formatEuropeanDate = (date) => {
+    const [year, month, day] = date.split("-"); // Pretpostavlja format YYYY-MM-DD
+    return `${day}.${month}.${year}`;
+  };
+
   const closeModal = () => {
     setIsModalOpen(false);
   };
+  
 
   return (
     <div>
+      <a href="/" className="logo-link">
+        <img src={logo_icon} alt="Logo" className="logo" />
+      </a>
       <Fullcalendar
         ref={calendarRef}
         events={reservedLessons}
@@ -204,53 +215,51 @@ const Calendar = () => {
         }}
       />
 
-      <div className="timeslots">
-        {selectedDate && (
-          <div style={{ border: "1px solid #613c78" }}>
-            <h3>Dostupni termini za {selectedDate}:</h3>
-            <div className="times">
-              {availableTimes.map((time) => (
-                <button
-                  key={time}
-                  onClick={() => handleTimeClick(time)} // Otvara modal na klik
-                  className="time-button"
-                >
-                  {time}
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
+  <div className="timeslots">
+    {selectedDate ? (
+      <div>
+        <h3>Dostupni termini za {formatEuropeanDate(selectedDate)}:</h3>
+        <div className="times">
+          {availableTimes.map((time) => (
+            <button
+              key={time}
+              onClick={() => handleTimeClick(time)} // Otvara modal na klik
+              className="time-button"
+            >
+              {time}
+            </button>
+          ))}
+        </div>
       </div>
+    ) : (
+      <p>Molimo kliknite na datum za prikaz dostupnih termina.</p>
+    )}
+  </div>
+
 
       {/* Modal za potvrdu rezervacije */}
       <Modal
         isOpen={isModalOpen}
         onRequestClose={closeModal}
-        className="modal"
+        className="modal-calendar"
         overlayClassName="overlay"
         ariaHideApp={false}
       >
-        <div className="modal">
-          <div className="title">
-            <h3>Potvrda rezervacije</h3>
-          </div>
-          <div className="text">
-            <p>Želite li potvrditi rezervaciju?</p>
-          </div>
-          <div className="terminTime">
-            {selectedDate && selectedTime && (
-              <p className="selected-datetime">
-                Datum: {selectedDate}, Vrijeme: {selectedTime}
-              </p>
-            )}
-          </div>
-          <div className="modal-actions">
+        <div className="modal-content">
+          <h3>📅 Potvrda rezervacije</h3>
+          <p>Želite li potvrditi rezervaciju za sljedeći termin?</p>
+          {selectedDate && selectedTime && (
+            <p>
+              <strong>Datum:</strong> {formatEuropeanDate(selectedDate)}, <strong>Vrijeme:</strong>{" "}
+              {selectedTime}
+            </p>
+          )}
+          <div className="modal-calendar-actions">
             <button className="confirm-button" onClick={confirmReservation}>
-              Potvrdi
+              ✅ Potvrdi
             </button>
             <button className="cancel-button" onClick={closeModal}>
-              Odustani
+              ❌ Odustani
             </button>
           </div>
         </div>
