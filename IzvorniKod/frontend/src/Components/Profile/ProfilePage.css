@@ -60,7 +60,6 @@
 
 .profile-buttons {
    display: flex;
-   flex-wrap: wrap;
    justify-content: center; 
    gap: 5px; 
    border-radius: 20px;
@@ -92,6 +91,7 @@
 .odjava-button:hover {
    background-color: #4a2c5f;
 }
+
 
 @media (max-width: 768px) {
    .teachers-button,

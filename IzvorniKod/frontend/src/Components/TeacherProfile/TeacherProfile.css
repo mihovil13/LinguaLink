@@ -71,10 +71,10 @@
 .profile-buttons{
   display: flex;
   flex: 1;
-  align-items: flex-end;
   width: 100%;
   gap: 10px;
 }
+
 .edit-button {
   display: flex;
   flex: 1;
@@ -114,7 +114,8 @@ p {
 .jezici-koje-zelim-nauciti > button,
 .jezici-koje-zelim-nauciti > div > button,
 .spremi-zatvori > button,
-.odjava-button {
+.odjava-button,
+.calendar-button {
   background-color: #613c78;
   padding: 10px 15px; 
   color: #fff;
@@ -349,15 +350,15 @@ p {
 .role-buttons {
   display: flex;
   justify-content: space-around;
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
 .role-button {
-  padding: 10px 20px;
+  flex-basis: calc(50% - 200px);
   background-color: #007bff;
   color: white;
   border: none;
-  border-radius: 5px;
+  border-radius: 10px;
   cursor: pointer;
 }
 
