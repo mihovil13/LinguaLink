@@ -3,6 +3,7 @@ import "./TeacherList.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import logo_icon from "../Assets/logo-prototip3.png";
+import { useUser } from "../../UserContext";
 
 const TeacherList = () => {
   const [teachers, setTeachers] = useState([]);
@@ -13,6 +14,7 @@ const TeacherList = () => {
   const [filtersApplied, setFiltersApplied] = useState(false);
   const [qualificationFilters, setQualificationfilters] = useState([]);
   const navigate = useNavigate();
+  const {user} = useUser();
 
   const styles = [
     "Vizualni",
@@ -68,8 +70,20 @@ const TeacherList = () => {
                   .map((qualification) => qualification.trim())
               : [],
           }));
-          setTeachers(teachersData);
-          setFilteredTeachers(teachersData);
+
+        //ako je korisnik prijavljen, i ima jezike u listi, filtriraj učitelje prema njegovim jezicima
+        const filteredByUserLanguages = isLoggedIn && user.languagesToLearn.length > 0
+          ? teachersData.filter((teacher) =>
+              teacher.languagesTeach.some((lang) =>
+                user.languagesToLearn
+                  .map((l) => l.nazivJezika.trim())
+                  .includes(lang)
+              )
+            )
+          : teachersData; // ako korisnik nije prijavljen, prikazujemo sve
+
+          setTeachers(filteredByUserLanguages);
+          setFilteredTeachers(filteredByUserLanguages);
         }
       } catch (error) {
         console.error("Error fetching teacher list:", error);
@@ -121,6 +135,19 @@ const TeacherList = () => {
     setQualificationfilters([]);
     setFilteredTeachers(teachers);
     setFiltersApplied(false);
+
+    
+    if (user.languagesToLearn.length > 0) {
+      const filteredByUserLanguages = teachers.filter((teacher) =>
+        teacher.languagesTeach.some((lang) =>
+          user.languagesToLearn
+            .map((l) => l.nazivJezika.trim())
+            .includes(lang)
+        )
+      );
+      setFilteredTeachers(filteredByUserLanguages);
+    }
+
   };
 
   //funkcija za izmjenu filtra jezika

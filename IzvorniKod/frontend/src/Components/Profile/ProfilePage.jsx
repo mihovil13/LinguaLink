@@ -3,6 +3,7 @@ import "./ProfilePage.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import logo_icon from "../Assets/logo-prototip3.png";
+import { useUser } from "../../UserContext";
 
 const ProfilePage = () => {
   const navigate = useNavigate();
@@ -34,20 +35,7 @@ const ProfilePage = () => {
   };
   const location = useLocation();
   // definiramo podatke u korisniku
-  const [user, setUser] = useState({
-    ime: "",
-    prezime: "",
-    email: "",
-    uloga: "",
-    languagesKnown: [{ nazivJezika: "", razina: "početna" }],
-    languagesToLearn: [{ nazivJezika: "" }],
-    languagesTeach: [{ nazivJezika: "" }],
-    stilPoducavanja: "",
-    ciljeviUcenja: "",
-    iskustvo: "",
-    qualifications: [{ kvalifikacije: "" }],
-    satnica: "",
-  });
+  const {user, setUser } = useUser() || {user:{}, setUser: () => {} };
 
   // preko Reactovog useState pratimo je li modal otvoren ili zatvoren
   // na pocetku je zatvoren
@@ -63,6 +51,13 @@ const ProfilePage = () => {
   // sastoji se od funkcije, i od polja ovisnosti koje nareduje kada ce se funkcija izvrsiti
   // u ovom primjeru, polje ovisnosti je prazno (nalazi se na samom kraju hooka),
   // sto znaci da ce se hook izvrsiti prilikom ucitavanja stranice
+
+  useEffect(() => {
+    console.log("Doslo s backenda");
+    console.log(user.id);
+    console.log(user);
+  }, [user]);
+
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
@@ -84,6 +79,7 @@ const ProfilePage = () => {
 
           if (response.status === 200) {
             let {
+              id,
               ime,
               prezime,
               email,
@@ -97,17 +93,15 @@ const ProfilePage = () => {
               qualifications,
               satnica,
             } = response.data; // iz odgovora uzimamo navedene varijable
-            console.log("cilj:", ciljeviUcenja);
-            console.log(stilPoducavanja);
+            console.log("odgovor");
+            console.log(response.data);
             if (languagesKnown) {
               languagesKnown = languagesKnown.map((entry) => {
                 const [language, level] = entry.split("-");
                 return { nazivJezika: language.trim(), razina: level.trim() };
               });
-              console.log(languagesKnown);
             }
             if (languagesToLearn) {
-              console.log(languagesToLearn);
               languagesToLearn = languagesToLearn.map((entry) => {
                 return {
                   nazivJezika: entry.nazivJezika.trim(),
@@ -115,7 +109,6 @@ const ProfilePage = () => {
               });
             }
             if (languagesTeach) {
-              console.log(languagesTeach);
               languagesTeach = languagesTeach.map((entry) => {
                 return {
                   nazivJezika: entry.nazivJezika.trim(),
@@ -130,6 +123,7 @@ const ProfilePage = () => {
 
             // azuriramo podatke s onima iz backenda
             setUser({
+              id : id || null,
               ime: ime || "",
               prezime: prezime || "",
               email: email || "",
@@ -143,6 +137,7 @@ const ProfilePage = () => {
               qualifications: qualifications || [],
               satnica: satnica || "",
             });
+
 
             if (!response.data.uloga) {
               //ako korisnilk nema definiranu ulogu, prikazuje se modal za odabir uloge
@@ -198,6 +193,7 @@ const ProfilePage = () => {
     }
 
     try {
+      console.log("Poslano na backend");
       console.log(updatedProfile);
       const response = await axios.put(
         "http://localhost:8080/api/moj-profil",
@@ -269,7 +265,6 @@ const ProfilePage = () => {
         alert(`Već ste naveli ovu kvalifikaciju: ${value}`);
       } else {
         updatedList[index][field] = value;
-        console.log("Updated qualifications list:", updatedList);
         setEditedUser({ ...editedUser, [listType]: updatedList });
       }
     } else {

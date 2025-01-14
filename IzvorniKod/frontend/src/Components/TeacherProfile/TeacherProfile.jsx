@@ -112,7 +112,9 @@ const TeacherProfile = () => {
           {teacher.languagesTeach && teacher.languagesTeach.length > 0 ? (
             <ul>
               {teacher.languagesTeach.map((lang, index) => (
-                <li key={index || lang.jezik_id}>{lang.language || lang.nazivJezika}</li>
+                <li key={index || lang.jezik_id}>
+                  {lang.language || lang.nazivJezika}
+                </li>
               ))}
             </ul>
           ) : (
@@ -152,7 +154,7 @@ const TeacherProfile = () => {
         <div className="profile-imagetext">
           <img
             src={
-              "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-teacher-vector.jpg"
+              "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"
             }
             alt={`${teacher.ime}'s profile`}
             className="profile-picture-large"
@@ -162,7 +164,10 @@ const TeacherProfile = () => {
         </div>
         <div className="buttons">
           <div className="edit-button">
-            <button className="calendar-button" onClick={() => navigate(``)}>
+            <button
+              className="calendar-button"
+              onClick={() => navigate(`/calendar/${teacherId}`)}
+            >
               Prikaz kalendara
             </button>
           </div>
