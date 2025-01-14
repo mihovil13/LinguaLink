@@ -186,8 +186,8 @@ const TeacherList = () => {
       className={`parent-container ${isLoggedIn ? "logged-in" : "logged-out"}`}
     >
       <a href="/" className="logo-link">
-                <img src={logo_icon} alt="Logo" className="logo" />
-        </a>
+        <img src={logo_icon} alt="Logo" className="logo" />
+      </a>
       <div className="filter-notification">Filtri primijenjeni</div>
 
       <div className="container">
@@ -198,8 +198,11 @@ const TeacherList = () => {
         <div className="main-content">
           {filteredTeachers.length > 0 ? (
             filteredTeachers.map((teacher, index) => (
-              <div className="teacher-container" key={index}
-              onClick={() => handleTeacherClick(teacher.user_id)}>
+              <div
+                className="teacher-container"
+                key={index}
+                onClick={() => handleTeacherClick(teacher.user_id)}
+              >
                 <img
                   src="https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"
                   alt=""
@@ -209,19 +212,16 @@ const TeacherList = () => {
                     {teacher.ime} {teacher.prezime}
                   </p>
                 </div>
-
                 <div className="teacher-languages">
                   <p>{teacher.languagesTeach.join(", ")}</p>
                 </div>
               </div>
             ))
           ) : (
-            <p className="empty-message">
-              Nema dostupnih učitelja prema odabranim filtrima.
-            </p>
+            <p className="empty-message">Nema dostupnih učitelja prema odabranim filtrima.</p>
           )}
         </div>
-      </div>
+     </div>
 
       {isLoggedIn && (
         <div className="filter-container">

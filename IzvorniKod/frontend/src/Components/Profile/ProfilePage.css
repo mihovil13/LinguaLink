@@ -1,22 +1,20 @@
-/* Glavni stilovi za profilnu stranicu */
 .profile-page {
    display: flex;
-   flex-wrap: wrap; /* Omogućava fleksibilno prelamanje na manjim ekranima */
+   flex-wrap: wrap; 
    justify-content: center;
    align-items: flex-start;
-   height: auto; /* Automatska visina za bolje skaliranje */
+   height: auto; 
    width: 100%;
-   max-width: 1200px; /* Maksimalna širina za veće ekrane */
+   max-width: 1200px; 
    background-color: #f9f9f9;
    border: 5px solid #ddd;
    border-radius: 10px;
-   margin: 20px auto; /* Centriranje */
+   margin: 20px auto;
    box-sizing: border-box;
 }
 
-/* Sidebar sekcija */
 .profile-sidebar {
-   flex: 1 1 300px; /* Fleksibilna širina: minimum 300px */
+   flex: 1 1 300px; 
    padding: 10px;
    background-color: #f9f9f9;
    border-right: 1px solid #ddd;
@@ -35,7 +33,6 @@
    text-align: center;
 }
 
-/* Header sekcija */
 .profile-header {
    display: flex;
    align-items: center;
@@ -64,8 +61,8 @@
 .profile-buttons {
    display: flex;
    flex-wrap: wrap;
-   justify-content: center; /* Centriranje dugmadi */
-   gap: 5px; /* Razmak između dugmadi */
+   justify-content: center; 
+   gap: 5px; 
    border-radius: 20px;
 }
 
@@ -81,7 +78,7 @@
 
 .teachers-button,
 .odjava-button {
-   flex: 1 1 calc(50% - 200px); /* Odjava i Prikaz zauzimaju po pola reda */
+   flex: 1 1 calc(50% - 200px); 
    background-color: #613c78;
    color: #fff;
    font-size: 1rem;
@@ -90,20 +87,26 @@
    cursor: pointer;
 }
 
-/* Hover efekti */
 .edit-profile-button:hover,
 .teachers-button:hover,
 .odjava-button:hover {
    background-color: #4a2c5f;
 }
 
-/* Responzivni stilovi za manje ekrane */
 @media (max-width: 768px) {
    .teachers-button,
    .odjava-button {
-       flex: 1 1 100%; /* Dugmad zauzimaju ceo red na manjim ekranima */
+       flex: 1 1 100%; 
    }
 }
+
+.scrollable-content {
+   margin-top: 20px;
+   padding: 10px 0;
+   display: flex;
+   flex-direction: column;
+   gap: 10px;
+ }
 
 .modal.open {
    display: flex;
@@ -112,7 +115,6 @@
    justify-content: center;
 }
 
-/* Tooltip */
 .tooltip-container {
    display: block;
    padding: 10px;
@@ -123,64 +125,76 @@
    cursor: pointer;
 }
 
-/* Responzivni stilovi */
 @media (max-width: 768px) {
    .profile-page {
-       flex-direction: column;
-       width: 90%;
+     flex-direction: column;
+     height: auto; 
+     width: 90vw;
+     margin-left: 20px;
    }
-
+ 
    .profile-sidebar {
-       border-right: none;
-       border-bottom: 1px solid #ddd;
+     width: 100%;
+     border-right: none;
+     padding: 10px;
+     margin-bottom: 10px;
+     height: auto;
    }
-
-   .profile-buttons {
-       flex-direction: column;
-       gap: 10px;
-   }
-
-   .teachers-button,
-   .odjava-button {
-       width: 100%; /* Dugmad zauzima celu širinu */
-   }
-
-   .profile-picture-large {
-       width: 120px;
-       height: 120px;
-   }
-
-   .profile-name,
-   .profile-surname {
-       font-size: 1.2em;
-   }
-}
-
-@media (max-width: 480px) {
-   .profile-page {
-       padding: 10px;
-   }
-
-   .profile-sidebar {
-       padding: 10px;
-   }
-
+ 
    .profile-header {
-       padding: 10px;
+     width: 100%;
+     align-items: flex-start; 
+     padding: 10px;
+     flex-direction: row; 
+     justify-content: center; 
+     gap: 10px; 
+ 
    }
-
+ 
+   .profile-buttons, .edit-button {
+     flex-direction: column; 
+     align-items: stretch;
+     margin-left: 30px;
+   }
+ 
+   .calendar-button,
+   .teachers-button,
+   .edit-button {
+     width: 85%;
+     margin-top: 10px;
+   }
+ 
+   .logo {
+     width: 35px;
+     height: 30px;
+   }
+ }
+ 
+ @media (max-width: 480px) {
+   .profile-sidebar,
+   .profile-header {
+     width: 100%; 
+     margin-left: 30px;
+   }
+ 
    .profile-picture-large {
-       width: 100px;
-       height: 100px;
+     width: 60px; 
+     height: 60px;
    }
-
    .profile-name,
    .profile-surname {
-       font-size: 1.2em;
+     font-size: 1.2em; 
+     text-align: left; 
    }
-
-   .teachers-button,
-   .odjava-button {
-       font-size: 0.8rem; /* Još manji font za vrlo male ekrane */
+ 
+   .profile-sidebar span {
+     font-size: 1rem; 
+     margin: 10px 0;
    }
-}
+ 
+   .calendar-button,
+   .teachers-button {
+     padding: 10px 15px;
+     font-size: 0.9rem; 
+   }
+ }
