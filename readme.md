@@ -2,7 +2,14 @@
 
 > Cilj našeg projekta je stvoriti pristupačnu i jednostavnu za korištenje platformu koja će pomoći korisnicima u učenju novog jezika.
 > Aplikacija će omogućiti učenicima jezika pretragu, a zatim i spajanje s učiteljima koji će ih voditi kroz učenje jezika.
+> 
+# Opis projekta
+Ovaj projekt je rezultat timskog rada u sklopu projeknog zadatka kolegija [Programsko inženjerstvo](https://www.fer.unizg.hr/predmet/proinz) na Fakultetu elektrotehnike i računarstva Sveučilišta u Zagrebu. 
 
+# Pristup aplikaciji
+> Poveznica za pristup aplikaciji:
+>
+> https://lingualink-frontend-z3ss.onrender.com/
 
 # Članovi tima 
 > Popis članova tima/linkovi/ glavni doprinos

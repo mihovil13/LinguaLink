@@ -1,0 +1,200 @@
+.profile-page {
+   display: flex;
+   flex-wrap: wrap; 
+   justify-content: center;
+   align-items: flex-start;
+   height: auto; 
+   width: 100%;
+   max-width: 1200px; 
+   background-color: #f9f9f9;
+   border: 5px solid #ddd;
+   border-radius: 10px;
+   margin: 20px auto;
+   box-sizing: border-box;
+}
+
+.profile-sidebar {
+   flex: 1 1 300px; 
+   padding: 10px;
+   background-color: #f9f9f9;
+   border-right: 1px solid #ddd;
+   box-sizing: border-box;
+}
+
+.profile-sidebar span {
+   display: block;
+   background-color: #613c78;
+   color: white;
+   font-size: 1.4rem;
+   font-weight: 450;
+   margin: 20px 0;
+   padding: 8px;
+   border-radius: 10px;
+   text-align: center;
+}
+
+.profile-header {
+   display: flex;
+   align-items: center;
+   box-sizing: border-box;
+}
+
+.profile-imagetext {
+   text-align: center;
+   width: 200px;
+   height: 200px;
+   border-radius: 50%;
+   object-fit: cover;
+   margin: 20px 0;
+}
+
+.profile-picture-large img {
+   width: 150px;
+   height: 150px;
+}
+
+.profile-name,
+.profile-surname {
+   font-size: 1.7rem;
+}
+
+.profile-buttons {
+   display: flex;
+   flex-wrap: wrap;
+   justify-content: center; 
+   gap: 5px; 
+   border-radius: 20px;
+}
+
+.edit-profile-button {
+   margin-top: 25px;
+   background-color: #613c78;
+   color: #fff;
+   font-size: 1rem;
+   border: none;
+   text-align: center;
+   cursor: pointer;
+}
+
+.teachers-button,
+.odjava-button {
+   flex: 1 1 calc(50% - 200px); 
+   background-color: #613c78;
+   color: #fff;
+   font-size: 1rem;
+   border: none;
+   text-align: center;
+   cursor: pointer;
+}
+
+.edit-profile-button:hover,
+.teachers-button:hover,
+.odjava-button:hover {
+   background-color: #4a2c5f;
+}
+
+@media (max-width: 768px) {
+   .teachers-button,
+   .odjava-button {
+       flex: 1 1 100%; 
+   }
+}
+
+.scrollable-content {
+   margin-top: 20px;
+   padding: 10px 0;
+   display: flex;
+   flex-direction: column;
+   gap: 10px;
+ }
+
+.modal.open {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   justify-content: center;
+}
+
+.tooltip-container {
+   display: block;
+   padding: 10px;
+   background-color: #613c78;
+   color: white;
+   text-align: center;
+   border-radius: 5px;
+   cursor: pointer;
+}
+
+@media (max-width: 768px) {
+   .profile-page {
+     flex-direction: column;
+     height: auto; 
+     width: 90vw;
+     margin-left: 20px;
+   }
+ 
+   .profile-sidebar {
+     width: 100%;
+     border-right: none;
+     padding: 10px;
+     margin-bottom: 10px;
+     height: auto;
+   }
+ 
+   .profile-header {
+     width: 100%;
+     align-items: flex-start; 
+     padding: 10px;
+     flex-direction: row; 
+     justify-content: center; 
+     gap: 10px; 
+ 
+   }
+ 
+   .profile-buttons, .edit-button {
+     flex-direction: column; 
+     align-items: stretch;
+     margin-left: 30px;
+   }
+ 
+   .calendar-button,
+   .teachers-button,
+   .edit-button {
+     width: 85%;
+     margin-top: 10px;
+   }
+ 
+   .logo {
+     width: 35px;
+     height: 30px;
+   }
+ }
+ 
+ @media (max-width: 480px) {
+   .profile-sidebar,
+   .profile-header {
+     width: 100%; 
+     margin-left: 30px;
+   }
+ 
+   .profile-picture-large {
+     width: 60px; 
+     height: 60px;
+   }
+   .profile-name,
+   .profile-surname {
+     font-size: 1.2em; 
+     text-align: left; 
+   }
+ 
+   .profile-sidebar span {
+     font-size: 1rem; 
+     margin: 10px 0;
+   }
+ 
+   .calendar-button,
+   .teachers-button {
+     padding: 10px 15px;
+     font-size: 0.9rem; 
+   }
+ }
