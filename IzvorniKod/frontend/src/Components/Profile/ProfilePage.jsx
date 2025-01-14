@@ -10,7 +10,7 @@ const ProfilePage = () => {
   const handleLogout = async () => {
     try {
       const token = localStorage.getItem("token");
-
+  
       if (token) {
         await axios.post(
           "http://localhost:8080/api/auth/logout",
@@ -22,17 +22,21 @@ const ProfilePage = () => {
           }
         );
       }
-
+  
       // Ukloni token iz localStorage
       localStorage.removeItem("token");
-
-      // Preusmjeri korisnika na login stranicu
+  
+      // Resetiraj korisnika u kontekstu
+      setUser({});
+  
+      // Preusmjeri korisnika na početnu stranicu
       navigate("/");
     } catch (error) {
       console.error("Error during logout:", error);
       alert("Došlo je do greške prilikom odjave.");
     }
   };
+  
   const location = useLocation();
   // definiramo podatke u korisniku
   const { user, setUser } = useUser() || { user: {}, setUser: () => {} };

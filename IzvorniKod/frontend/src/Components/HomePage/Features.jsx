@@ -13,11 +13,13 @@ const Features = () => {
         },
         { 
             title: 'Uči jezik', 
-            description: 'Koristi interaktivne alate za učenje jezika.' 
+            description: 'Koristi interaktivne alate za učenje jezika.' ,
+            redirect: '/profile' // Dodajemo redirekciju na /profil
         },
         { 
             title: 'Praćenje napretka', 
-            description: 'Prati svoj napredak kroz aplikaciju.' 
+            description: 'Prati svoj napredak kroz aplikaciju.'
+            //vodit ce na arhivirane lekcije
         },
     ];
 
