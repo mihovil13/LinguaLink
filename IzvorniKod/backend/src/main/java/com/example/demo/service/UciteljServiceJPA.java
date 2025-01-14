@@ -42,7 +42,7 @@ public class  UciteljServiceJPA implements UciteljService {
             ucitelj.setIme(body.get("ime").toString());
             ucitelj.setPrezime(body.get("prezime").toString());
             ucitelj.setEmail(body.get("email").toString());
-            if (body.containsKey("qualifications")) {
+            if (body.containsKey("qualifications") && body.get("qualifications")!=null) {
                 List<Map<String,String>> qualifications = (List<Map<String,String>>) body.get("qualifications");
                 List<String> qualOdvojeno = qualifications.stream()
                         .map(lang->(String)lang.get("kvalifikacije")).toList();
@@ -58,7 +58,7 @@ public class  UciteljServiceJPA implements UciteljService {
             if (body.containsKey("iskustvo")) {
                 ucitelj.setIskustvo((String) body.get("iskustvo"));
             }
-            if (body.containsKey("languagesTeach")) {
+            if (body.containsKey("languagesTeach") && body.get("langaugesTeach")!=null) {
                 List<Map<String,String>> jezici =(List<Map<String,String>>) body.get("languagesTeach");
                 List<String> jezikOdvojeno = jezici.stream()
                         .map(lang -> (String) lang.get("nazivJezika")).toList();
