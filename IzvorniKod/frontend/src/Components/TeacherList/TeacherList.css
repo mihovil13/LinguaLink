@@ -249,6 +249,29 @@ p {
   font-weight: 600;
 }
 
+.logo-link {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  text-decoration: none;
+}
+
+.logo {
+  width: 55px;
+  height: 50px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.logo:hover {
+  transform: scale(1.1);
+}
+
+.logo-link img {
+    border-radius: 20%;
+    image-rendering: auto;
+}
+
 @media (max-width: 1024px) {
   .parent-container.logged-in {
     display: grid;

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./TeacherProfile.css";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
+import logo_icon from "../Assets/logo-prototip3.png";
 
 const TeacherProfile = () => {
   const backend = "http://localhost:8080/";
@@ -86,6 +87,9 @@ const TeacherProfile = () => {
 
   return (
     <div className="profile-page">
+      <a href="/" className="logo-link">
+                      <img src={logo_icon} alt="Logo" className="logo" />
+      </a>
       <div className="profile-sidebar">
         <div className="profile-podaci">
           <span>Osobni podaci</span>

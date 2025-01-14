@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./ProfilePage.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
+import logo_icon from "../Assets/logo-prototip3.png";
 import { useUser } from "../../UserContext";
 
 const ProfilePage = () => {
@@ -302,6 +303,9 @@ const ProfilePage = () => {
 
   return (
     <div className="profile-page">
+      <a href="/" className="logo-link">
+          <img src={logo_icon} alt="Logo" className="logo" />
+      </a>
       {/* Modal za odabir uloge */}
       {isRoleModalOpen && (
         <div className="role-modal">
@@ -447,7 +451,7 @@ const ProfilePage = () => {
               className="teachers-button"
               onClick={() => navigate("/teachers")}
             >
-              Prikaz učitelja
+              Učitelji
             </button>
             <button className="odjava-button" onClick={handleLogout}>
               Odjava

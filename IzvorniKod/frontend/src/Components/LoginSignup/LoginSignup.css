@@ -165,7 +165,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    margin: 10px auto;
+    margin: 12px auto;
     width: 100%;
     align-items: center;
 }
@@ -210,12 +210,6 @@ body {
     cursor: pointer;
 }
  
-.oauth2-btn {
-    padding: 5%;
-    margin: 5px auto;
-    font-size: 15px;
-}
-
 .logo-link {
   position: absolute;
   top: 15px;
