@@ -6,6 +6,11 @@ public class PredavanjeDTO {
     private Integer ucenikId;
     private Integer uciteljId;
     private LocalDateTime datumVrijemePocetka;
+    private Integer potvrdeno; // Novi atribut
+    private String ucenikIme;
+    private String ucenikPrezime;
+    private String uciteljIme;
+    private String uciteljPrezime;
 
     // Getteri i setteri
     public Integer getUcenikId() {
@@ -30,5 +35,45 @@ public class PredavanjeDTO {
 
     public void setDatumVrijemePocetka(LocalDateTime datumVrijemePocetka) {
         this.datumVrijemePocetka = datumVrijemePocetka;
+    }
+
+    public Integer getPotvrdeno() {
+        return potvrdeno;
+    }
+
+    public void setPotvrdeno(Integer potvrdeno) {
+        this.potvrdeno = potvrdeno;
+    }
+
+    public String getUcenikIme() {
+        return ucenikIme;
+    }
+
+    public void setUcenikIme(String ucenikIme) {
+        this.ucenikIme = ucenikIme;
+    }
+
+    public String getUcenikPrezime() {
+        return ucenikPrezime;
+    }
+
+    public void setUcenikPrezime(String ucenikPrezime) {
+        this.ucenikPrezime = ucenikPrezime;
+    }
+
+    public String getUciteljIme() {
+        return uciteljIme;
+    }
+
+    public void setUciteljIme(String uciteljIme) {
+        this.uciteljIme = uciteljIme;
+    }
+
+    public String getUciteljPrezime() {
+        return uciteljPrezime;
+    }
+
+    public void setUciteljPrezime(String uciteljPrezime) {
+        this.uciteljPrezime = uciteljPrezime;
     }
 }

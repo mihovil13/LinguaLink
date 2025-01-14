@@ -1,13 +1,11 @@
 package com.example.demo.controller;
 
+import com.example.demo.DTO.PredavanjeDTO;
 import com.example.demo.model.Predavanje;
-import com.example.demo.model.Ucenik;
-import com.example.demo.model.Ucitelj;
 import com.example.demo.service.PredavanjeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.example.demo.DTO.PredavanjeDTO;
 
 import java.util.List;
 
@@ -36,12 +34,6 @@ public class PredavanjeController {
         return ResponseEntity.ok("Predavanje uspješno spremljeno");
     }
 
-    @GetMapping("/dohvati-predavanja/{id}")
-    public ResponseEntity<List<Predavanje>> getPredavanjaByUciteljId(@PathVariable int id) {
-        List<Predavanje> predavanja = predavanjeService.getPredavanjaByUciteljId(id);
-        return ResponseEntity.ok(predavanja);
-    }
-
     @PutMapping("/prihvati-predavanje/{id}")
     public ResponseEntity<String> prihvatiPredavanje(@PathVariable Integer id) {
         predavanjeService.updatePotvrdeno(id, 1);
@@ -54,9 +46,15 @@ public class PredavanjeController {
         return ResponseEntity.ok("Predavanje uspješno otkazano");
     }
 
+    @GetMapping("/dohvati-predavanja/{id}")
+    public ResponseEntity<List<PredavanjeDTO>> getPredavanjaByUciteljId(@PathVariable int id) {
+        List<PredavanjeDTO> predavanja = predavanjeService.getPredavanjaByUciteljId(id);
+        return ResponseEntity.ok(predavanja);
+    }
+
     @GetMapping("/dohvati-predavanja-ucenik/{id}")
-    public ResponseEntity<List<Predavanje>> getPredavanjaByUcenikId(@PathVariable int id) {
-        List<Predavanje> predavanja = predavanjeService.getPredavanjaByUcenikId(id);
+    public ResponseEntity<List<PredavanjeDTO>> getPredavanjaByUcenikId(@PathVariable int id) {
+        List<PredavanjeDTO> predavanja = predavanjeService.getPredavanjaByUcenikId(id);
         return ResponseEntity.ok(predavanja);
     }
 }
