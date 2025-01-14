@@ -3,7 +3,11 @@ import "./ProfilePage.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import logo_icon from "../Assets/logo-prototip3.png";
+import edit_icon from "../Assets/pencil.png";
+import profileimg from "../Assets/person.jpg";
 import { useUser } from "../../UserContext";
+
+const backend = "http://localhost:8080";
 
 const ProfilePage = () => {
   const navigate = useNavigate();
@@ -12,15 +16,11 @@ const ProfilePage = () => {
       const token = localStorage.getItem("token");
 
       if (token) {
-        await axios.post(
-          "http://localhost:8080/api/auth/logout",
-          {},
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        await axios.post(`${backend}/api/auth/logout`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
       }
 
       // Ukloni token iz localStorage
@@ -35,7 +35,7 @@ const ProfilePage = () => {
   };
   const location = useLocation();
   // definiramo podatke u korisniku
-  const {user, setUser } = useUser() || {user:{}, setUser: () => {} };
+  const { user, setUser } = useUser() || { user: {}, setUser: () => {} };
 
   // preko Reactovog useState pratimo je li modal otvoren ili zatvoren
   // na pocetku je zatvoren
@@ -67,15 +67,12 @@ const ProfilePage = () => {
         if (token) {
           localStorage.setItem("token", token);
 
-          const response = await axios.get(
-            "http://localhost:8080/api/moj-profil",
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-                // slanje upita prema backendu, u headerima se salje token
-              },
-            }
-          );
+          const response = await axios.get(`${backend}/api/moj-profil`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              // slanje upita prema backendu, u headerima se salje token
+            },
+          });
 
           if (response.status === 200) {
             let {
@@ -123,7 +120,7 @@ const ProfilePage = () => {
 
             // azuriramo podatke s onima iz backenda
             setUser({
-              id : id || null,
+              id: id || null,
               ime: ime || "",
               prezime: prezime || "",
               email: email || "",
@@ -137,7 +134,6 @@ const ProfilePage = () => {
               qualifications: qualifications || [],
               satnica: satnica || "",
             });
-
 
             if (!response.data.uloga) {
               //ako korisnilk nema definiranu ulogu, prikazuje se modal za odabir uloge
@@ -170,7 +166,7 @@ const ProfilePage = () => {
 
     //slanje podataka u updajtanom korisniku na backend
     axios
-      .put("http://localhost:8080/api/moj-profil", updatedUser, {
+      .put(`${backend}/api/moj-profil`, updatedUser, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -196,7 +192,7 @@ const ProfilePage = () => {
       console.log("Poslano na backend");
       console.log(updatedProfile);
       const response = await axios.put(
-        "http://localhost:8080/api/moj-profil",
+        `${backend}/api/moj-profil`,
         updatedProfile,
         {
           headers: {
@@ -301,10 +297,44 @@ const ProfilePage = () => {
     setEditedUser({ ...editedUser, [listType]: updatedList });
   };
 
+  const handleFileUpload = async (file) => {
+    const formData = new FormData();
+    formData.append("profileImage", file);
+
+    try {
+      const response = await axios.post(
+        `${backend}/api/upload-profile-image`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        alert("Slika uspješno spremljena!");
+        setUser({ ...user, profileImageUrl: response.data.imageUrl });
+      } else {
+        alert("Provjeri konzolu");
+      }
+    } catch (error) {
+      console.error("Greška prilikom uploada slike: ", error);
+    }
+  };
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      handleFileUpload(file);
+    }
+  };
+
   return (
     <div className="profile-page">
       <a href="/" className="logo-link">
-          <img src={logo_icon} alt="Logo" className="logo" />
+        <img src={logo_icon} alt="Logo" className="logo" />
       </a>
       {/* Modal za odabir uloge */}
       {isRoleModalOpen && (
@@ -430,12 +460,21 @@ const ProfilePage = () => {
 
       <div className="profile-header">
         <div className="profile-imagetext">
-          <img
-            src={
-              "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"
-            }
-            alt={`${user.ime}'s profile`}
-            className="profile-picture-large"
+          <div className="profile-image-container">
+            <img
+              src={user.profileImageUrl || profileimg}
+              alt={`${user.ime}'s profile`}
+              className="profile-picture-large"
+            />
+            <label for="input-file">
+              <img src={edit_icon} alt="Uredi sliku" />
+            </label>
+          </div>
+          <input
+            type="file"
+            accept="image/jpeg, image/png, image/jpg"
+            id="input-file"
+            onChange={handleFileChange}
           />
           <h1 className="profile-name">{user.ime}</h1>
           <h1 className="profile-surname">{user.prezime}</h1>
