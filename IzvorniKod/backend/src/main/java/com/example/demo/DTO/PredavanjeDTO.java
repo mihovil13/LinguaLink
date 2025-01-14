@@ -3,16 +3,23 @@ package com.example.demo.DTO;
 import java.time.LocalDateTime;
 
 public class PredavanjeDTO {
+    private Integer predavanjeId;
     private Integer ucenikId;
     private Integer uciteljId;
     private LocalDateTime datumVrijemePocetka;
-    private Integer potvrdeno; // Novi atribut
+    private Integer potvrdeno;
     private String ucenikIme;
     private String ucenikPrezime;
     private String uciteljIme;
     private String uciteljPrezime;
 
     // Getteri i setteri
+    public Integer getPredavanjeId() {
+        return predavanjeId;
+    }
+    public void setPredavanjeId(Integer predavanjeId) {
+        this.predavanjeId = predavanjeId;
+    }
     public Integer getUcenikId() {
         return ucenikId;
     }

@@ -64,5 +64,4 @@ public class Predavanje {
     public void setUcitelj(Ucitelj ucitelj) {
         this.ucitelj = ucitelj;
     }
-
 }
