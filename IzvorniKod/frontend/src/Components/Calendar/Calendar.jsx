@@ -9,7 +9,6 @@ import { useUser } from "../../UserContext";
 import { useLocation, useParams, useNavigate } from "react-router-dom";
 import logo_icon from "../Assets/logo-prototip3.png";
 
-
 const backend = "http://localhost:8080";
 
 Modal.setAppElement("#root");
@@ -79,17 +78,27 @@ const Calendar = () => {
     if (clickedDate >= today) {
       setSelectedDate(info.dateStr);
 
-      const allTimes = ["09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00"];
+      const allTimes = [
+        "09:00",
+        "10:00",
+        "11:00",
+        "12:00",
+        "13:00",
+        "14:00",
+        "15:00",
+        "16:00",
+      ];
 
       const reservedTimes = reservedLessons
-      .filter((lesson) => lesson.start.startsWith(info.dateStr)) // provjeri rezervacije za odabrani datum
-      .map((lesson) => {
-        const time = new Date(lesson.start).toTimeString().slice(0, 5); // izvuci vrijeme u formatu HH:mm
-        return time;
-      });
+        .filter((lesson) => lesson.start.startsWith(info.dateStr)) // provjeri rezervacije za odabrani datum
+        .map((lesson) => {
+          const time = new Date(lesson.start).toTimeString().slice(0, 5); // izvuci vrijeme u formatu HH:mm
+          return time;
+        });
 
-      const availableTimes = allTimes.filter((time) => !reservedTimes.includes(time));
-
+      const availableTimes = allTimes.filter(
+        (time) => !reservedTimes.includes(time)
+      );
 
       // ako je odabrani datum danasnji, filtriraj termine prema trenutnom vremenu
       if (clickedDate.getTime() === today.getTime()) {
@@ -113,8 +122,6 @@ const Calendar = () => {
   };
 
   const confirmReservation = async () => {
-    console.log(user.id);
-    console.log(teacherId);
     if (selectedDate && selectedTime && user.id !== teacherId) {
       const predavanjeData = {
         ucenikId: user.id,
@@ -173,7 +180,6 @@ const Calendar = () => {
   const closeModal = () => {
     setIsModalOpen(false);
   };
-  
 
   return (
     <div>
@@ -215,27 +221,26 @@ const Calendar = () => {
         }}
       />
 
-  <div className="timeslots">
-    {selectedDate ? (
-      <div>
-        <h3>Dostupni termini za {formatEuropeanDate(selectedDate)}:</h3>
-        <div className="times">
-          {availableTimes.map((time) => (
-            <button
-              key={time}
-              onClick={() => handleTimeClick(time)} // Otvara modal na klik
-              className="time-button"
-            >
-              {time}
-            </button>
-          ))}
-        </div>
+      <div className="timeslots">
+        {selectedDate ? (
+          <div>
+            <h3>Dostupni termini za {formatEuropeanDate(selectedDate)}:</h3>
+            <div className="times">
+              {availableTimes.map((time) => (
+                <button
+                  key={time}
+                  onClick={() => handleTimeClick(time)} // Otvara modal na klik
+                  className="time-button"
+                >
+                  {time}
+                </button>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <p>Molimo kliknite na datum za prikaz dostupnih termina.</p>
+        )}
       </div>
-    ) : (
-      <p>Molimo kliknite na datum za prikaz dostupnih termina.</p>
-    )}
-  </div>
-
 
       {/* Modal za potvrdu rezervacije */}
       <Modal
@@ -250,8 +255,8 @@ const Calendar = () => {
           <p>Želite li potvrditi rezervaciju za sljedeći termin?</p>
           {selectedDate && selectedTime && (
             <p>
-              <strong>Datum:</strong> {formatEuropeanDate(selectedDate)}, <strong>Vrijeme:</strong>{" "}
-              {selectedTime}
+              <strong>Datum:</strong> {formatEuropeanDate(selectedDate)},{" "}
+              <strong>Vrijeme:</strong> {selectedTime}
             </p>
           )}
           <div className="modal-calendar-actions">
