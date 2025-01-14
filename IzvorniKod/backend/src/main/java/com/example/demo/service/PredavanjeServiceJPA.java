@@ -33,6 +33,7 @@ public class PredavanjeServiceJPA implements PredavanjeService {
                 .stream()
                 .map(predavanje -> {
                     PredavanjeDTO dto = new PredavanjeDTO();
+                    dto.setPredavanjeId(predavanje.getPredavanjeId());
                     dto.setUcenikId(predavanje.getUcenikId());
                     dto.setUciteljId(predavanje.getUciteljId());
                     dto.setDatumVrijemePocetka(predavanje.getDatumVrijemePocetka());
@@ -60,6 +61,7 @@ public class PredavanjeServiceJPA implements PredavanjeService {
                 .stream()
                 .map(predavanje -> {
                     PredavanjeDTO dto = new PredavanjeDTO();
+                    dto.setPredavanjeId(predavanje.getPredavanjeId());
                     dto.setUcenikId(predavanje.getUcenikId());
                     dto.setUciteljId(predavanje.getUciteljId());
                     dto.setDatumVrijemePocetka(predavanje.getDatumVrijemePocetka());
@@ -71,18 +73,5 @@ public class PredavanjeServiceJPA implements PredavanjeService {
                     return dto;
                 })
                 .toList();
-    }
 
-    // Pomoćna metoda za mapiranje Predavanje u PredavanjeDTO
-    private PredavanjeDTO mapToDTO(Predavanje predavanje) {
-        PredavanjeDTO dto = new PredavanjeDTO();
-        dto.setUcenikId(predavanje.getUcenikId());
-        dto.setUciteljId(predavanje.getUciteljId());
-        dto.setDatumVrijemePocetka(predavanje.getDatumVrijemePocetka());
-        dto.setUcenikIme(predavanje.getUcenik().getIme());
-        dto.setUcenikPrezime(predavanje.getUcenik().getPrezime());
-        dto.setUciteljIme(predavanje.getUcitelj().getIme());
-        dto.setUciteljPrezime(predavanje.getUcitelj().getPrezime());
-        return dto;
-    }
 }
