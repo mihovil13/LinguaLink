@@ -5,9 +5,11 @@ import password_icon from "../Assets/password.png";
 import logo_icon from "../Assets/logo-prototip3.png";
 import React, { useState } from "react";
 import axios from "axios";
+import { useUser } from "../../UserContext";
 import { useNavigate } from "react-router-dom";
 
 const LoginRegister = () => {
+  const { setUser } = useUser();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     ime: "",
@@ -30,14 +32,25 @@ const LoginRegister = () => {
       );
 
       if (registerResponse.status === 200) {
-        const token = registerResponse.data.token;
-        localStorage.setItem("token", token);
+        const userData = registerResponse.data;
+        localStorage.setItem("token", userData.token);
+
+        setUser((prev) => ({
+          ...prev,
+          id: userData.id,
+          ime: userData.ime,
+          prezime: userData.prezime,
+          email: userData.email,
+          uloga: userData.uloga,
+        }));
+
+        console.log("Trenutni korisnik: ", userData);
 
         const profileResponse = await axios.get(
           "http://localhost:8080/api/moj-profil",
           {
             headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
+              Authorization: `Bearer ${userData.token}`,
             },
           }
         );
@@ -139,13 +152,20 @@ const LoginRegister = () => {
           Registriraj se
         </div>
       </div>
-      <div>
-        <a
-          href="http://localhost:8080/oauth2/authorization/github"
-          className="oauth2-btn"
-        >
-          Registriraj se uz pomoć GitHuba!
-        </a>
+      <div className="submit-container">
+        <div className="submit">
+          <a
+            href="http://localhost:8080/oauth2/authorization/github"
+            className="oauth2-btn2"
+          >
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/25/25231.png"
+              alt="GitHub"
+              className="github-avatar"
+            />
+            Registracija
+          </a>
+        </div>
       </div>
       <div className="ima_racun" onClick={() => navigate("/login")}>
         Imaš račun? <span>Prijavi se!</span>

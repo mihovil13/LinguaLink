@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./TeacherProfile.css";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
+import logo_icon from "../Assets/logo-prototip3.png";
 
 const TeacherProfile = () => {
   const backend = "http://localhost:8080/";
@@ -85,94 +86,102 @@ const TeacherProfile = () => {
   }, [location, navigate]);
 
   return (
-      <div className="profile-page">
-        <div className="profile-sidebar">
-          <div className="profile-podaci">
-            <span>Osobni podaci</span>
-            <p>
-              <strong>Ime:</strong> {teacher.ime}
-            </p>
-            <p>
-              <strong>Prezime:</strong> {teacher.prezime}
-            </p>
-            <p>
-              <strong>Email:</strong> {teacher.email}
-            </p>
-            <p>
-              <strong>Uloga:</strong> {teacher.uloga}
-            </p>
-          </div>
-
-          <div className="profile-jezici">
-            <span>Jezici koje podučavam</span>
-            {teacher.languagesTeach && teacher.languagesTeach.length > 0 ? (
-                <ul>
-                  {teacher.languagesTeach.map((lang, index) => (
-                      <li key={index || lang.jezik_id}>{lang.language || lang.nazivJezika}</li>
-                  ))}
-                </ul>
-            ) : (
-                <p>Nema unesenih podataka o jezicima.</p>
-            )}
-
-            <span>Iskustvo</span>
-            <p>{teacher.iskustvo || "Nema unesenih podataka o iskustvu."}</p>
-
-            <span>Kvalifikacije</span>
-            {teacher.qualifications && teacher.qualifications.length > 0 ? (
-                <ul>
-                  {teacher.qualifications.map((item, index) => (
-                      <li key={index}>{item.kvalifikacije}</li>
-                  ))}
-                </ul>
-            ) : (
-                <p>Nema unesenih podataka o kvalifikacijama.</p>
-            )}
-
-            <span>Stil podučavanja</span>
-            <p>
-              {teacher.stilPoducavanja ||
-                  "Nema unesenih podataka o stilu podučavanja."}
-            </p>
-
-            <span>Satnica</span>
-            <p>
-              {teacher.satnica
-                  ? `${teacher.satnica}€/h`
-                  : "Nema unesenih podataka o satnici."}
-            </p>
-          </div>
+    <div className="profile-page">
+      <a href="/" className="logo-link">
+                      <img src={logo_icon} alt="Logo" className="logo" />
+      </a>
+      <div className="profile-sidebar">
+        <div className="profile-podaci">
+          <span>Osobni podaci</span>
+          <p>
+            <strong>Ime:</strong> {teacher.ime}
+          </p>
+          <p>
+            <strong>Prezime:</strong> {teacher.prezime}
+          </p>
+          <p>
+            <strong>Email:</strong> {teacher.email}
+          </p>
+          <p>
+            <strong>Uloga:</strong> {teacher.uloga}
+          </p>
         </div>
 
-        <div className="profile-header">
-          <div className="profile-imagetext">
-            <img
-                src={
-                  "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-teacher-vector.jpg"
-                }
-                alt={`${teacher.ime}'s profile`}
-                className="profile-picture-large"
-            />
-            <h1 className="profile-name">{teacher.ime}</h1>
-            <h1 className="profile-surname">{teacher.prezime}</h1>
+        <div className="profile-jezici">
+          <span>Jezici koje podučavam</span>
+          {teacher.languagesTeach && teacher.languagesTeach.length > 0 ? (
+            <ul>
+              {teacher.languagesTeach.map((lang, index) => (
+                <li key={index || lang.jezik_id}>
+                  {lang.language || lang.nazivJezika}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>Nema unesenih podataka o jezicima.</p>
+          )}
+
+          <span>Iskustvo</span>
+          <p>{teacher.iskustvo || "Nema unesenih podataka o iskustvu."}</p>
+
+          <span>Kvalifikacije</span>
+          {teacher.qualifications && teacher.qualifications.length > 0 ? (
+            <ul>
+              {teacher.qualifications.map((item, index) => (
+                <li key={index}>{item.kvalifikacije}</li>
+              ))}
+            </ul>
+          ) : (
+            <p>Nema unesenih podataka o kvalifikacijama.</p>
+          )}
+
+          <span>Stil podučavanja</span>
+          <p>
+            {teacher.stilPoducavanja ||
+              "Nema unesenih podataka o stilu podučavanja."}
+          </p>
+
+          <span>Satnica</span>
+          <p>
+            {teacher.satnica
+              ? `${teacher.satnica}€/h`
+              : "Nema unesenih podataka o satnici."}
+          </p>
+        </div>
+      </div>
+
+      <div className="profile-header">
+        <div className="profile-imagetext">
+          <img
+            src={
+              "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"
+            }
+            alt={`${teacher.ime}'s profile`}
+            className="profile-picture-large"
+          />
+          <h1 className="profile-name">{teacher.ime}</h1>
+          <h1 className="profile-surname">{teacher.prezime}</h1>
+        </div>
+        <div className="buttons">
+          <div className="edit-button">
+            <button
+              className="calendar-button"
+              onClick={() => navigate(`/calendar/${teacherId}`)}
+            >
+              Prikaz kalendara
+            </button>
           </div>
-          <div className="buttons">
-            <div className="edit-button">
-              <button className="calendar-button" onClick={() => navigate("/calendar")}>
-                Prikaz kalendara
-              </button>
-            </div>
-            <div className="profile-buttons">
-              <button
-                  className="teachers-button"
-                  onClick={() => navigate("/teachers")}
-              >
-                Prikaz učitelja
-              </button>
-            </div>
+          <div className="profile-buttons">
+            <button
+              className="teachers-button"
+              onClick={() => navigate("/teachers")}
+            >
+              Prikaz učitelja
+            </button>
           </div>
         </div>
       </div>
+    </div>
   );
 };
 

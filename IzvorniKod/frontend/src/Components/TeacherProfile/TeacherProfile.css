@@ -1,9 +1,7 @@
 .profile-page {
   display: flex;
   align-items: flex-start;
-  /* horizontalno: poravna ih na pocetku */
   height: 70vh;
-  /* viewport height */
   width: 80vw;
   background-color: #f9f9f9;
   border: 3px solid #ddd;
@@ -18,7 +16,6 @@
   height: 60vh;
   width: 50vw;
   font-size: 1.2rem;
-  margin-top: 20px;
 }
 .profile-header {
   display: flex;
@@ -31,21 +28,26 @@
 .profile-podaci {
   flex: 1;
   padding: 10px;
+  gap: 5px;
   border-radius: 30px;
 }
+
 .profile-jezici {
   flex: 1;
   padding: 10px;
   border-radius: 30px;
   overflow-y: auto;
 }
+
+.profile-jezici p {
+  font-size: 1rem;
+}
 .profile-sidebar span {
   background-color: #613c78;
   color: white;
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   font-weight: 450;
-  margin: 20px 0px;
-  padding: 8px;
+  padding: 5px;
   border-radius: 10px;
 }
 .profile-imagetext {
@@ -58,13 +60,13 @@
   height: 150px;
   border-radius: 50%;
   object-fit: cover;
-  margin: 20px 0px;
+  margin: 5px 0px;
 }
 .profile-name,
 .profile-surname {
-  font-size: 2em;
+  font-size: 1.5em;
   text-align: center;
-  margin: 0px;
+  margin-top: 10px;
 }
 .profile-buttons {
   display: flex;
@@ -89,17 +91,35 @@ ul li {
 p {
   padding: 1px 0px;
 }
+
+.profile-sidebar span {
+  font-size: 1.3rem;
+  margin: 15px 0;
+}
+
+.profile-sidebar p {
+  font-size: 1.15rem;
+  margin: 10px 0;
+}
+
 .calendar-button,
-.teachers-button {
+.teachers-button,
+.edit-profile-button,
+.jezici-koje-znam > button,
+.jezici-koje-znam > div > button,
+.jezici-koje-zelim-nauciti > button,
+.jezici-koje-zelim-nauciti > div > button,
+.spremi-zatvori > button,
+.odjava-button {
   background-color: #613c78;
+  padding: 15px 15px; 
   color: #fff;
-  font-size: 1rem;
-  padding: 15px 30px;
+  font-size: 1.1rem;
   border: none;
-  border-radius: 5px;
+  border-radius: 10px;
   cursor: pointer;
-  margin-top: 20px;
-  height: 10vh;
+  text-align: center; 
+  width: auto; 
 }
 
 .calendar-button:hover,
@@ -113,46 +133,49 @@ p {
   background-color: #4a2c5f;
 }
 
-.edit-profile-button {
-  background-color: #613c78;
-  color: #fff;
-  font-size: 1rem;
-  padding: 15px 30px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  height: 8vh;
-}
-
 .modal {
-  display: flex;
   position: fixed;
-  padding: 10px 0px;
-  width: 58%;
-  height: 67%;
-  background-color: rgba(0, 0, 0, 0.8);
+  top: 50%; 
+  left: 50%;
+  transform: translate(-50%, -50%); 
+  width: 90%; 
+  max-width: 500px; 
+  height: auto; 
+  max-height: 80vh; 
+  background: white;
   border-radius: 8px;
-  justify-content: center;
-  /* align-items: center; */
+  overflow: hidden; 
+  box-shadow: 0 0 20px 10px rgba(0, 0, 0, 0.7); 
   z-index: 999;
 }
 
-.modal-content {
-  background-color: white;
-  padding: 10px 20px;
-  border-radius: 8px;
-  width: 400px;
-  max-width: 80%;
-  max-height: 80vh;
-  display: flex;
+.modal.open {
+  display: flex; 
   flex-direction: column;
 }
 
-.modal-content > .scrollable-content {
-  padding: 10px 20px;
-  overflow-y: auto;
-  flex: 1;
+.modal-content {
+  padding: 20px;
+  overflow-y: auto; 
+  max-height: calc(80vh - 40px); 
 }
+
+/* Za uređaje ispod 768px */
+@media (max-width: 768px) {
+  .modal {
+    width: 95%; 
+    max-width: none; 
+  }
+}
+
+@media (max-width: 480px) {
+  .modal {
+    width: 100%;
+    border-radius: 0; 
+  }
+}
+
+
 
 .jezici-koje-znam > div,
 .jezici-koje-zelim-nauciti > div {
@@ -175,7 +198,6 @@ p {
 }
 
 .spremi-zatvori {
-  padding: 10px 20px;
   background: white;
   border-top: 1px solid #ddd;
   display: flex;
@@ -187,9 +209,9 @@ p {
   background-color: #613c78;
   color: #fff;
   font-size: 1rem;
-  padding: 10px;
+  padding: 5px;
   border: none;
-  border-radius: 5px;
+  border-radius: 10px;
   cursor: pointer;
   height: 5vh;
 }
@@ -275,81 +297,29 @@ p {
   color: #333;
 }
 
-@media (max-width: 768px) {
-  .profile-page {
-    flex-direction: column;
-    height: auto;
-    width: 90vw;
-    padding: 10px;
-  }
-
-  .profile-sidebar {
-    flex: 1;
-    width: 100%;
-    border-right: none;
-    margin-top: 10px;
-    padding: 10px;
-  }
-
-  .profile-header {
-    flex: 1;
-    align-items: flex-start;
-    width: 100%;
-    padding: 10px;
-  }
-
-  .profile-name,
-  .profile-surname {
-    font-size: 1.5em;
-  }
-
-  .profile-picture-large {
-    width: 120px;
-    height: 120px;
-  }
-
-  .profile-buttons {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .calendar-button,
-  .teachers-button {
-    width: 100%;
-    margin-top: 10px;
-    padding: 12px;
-  }
-
-  .profile-sidebar span {
-    font-size: 1.2rem;
-    margin: 15px 0;
-  }
+.logo-link {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  text-decoration: none;
 }
 
-@media (max-width: 480px) {
-  .profile-name,
-  .profile-surname {
-    font-size: 1.2em;
-  }
-
-  .profile-picture-large {
-    width: 100px;
-    height: 100px;
-  }
-
-  .calendar-button,
-  .teachers-button {
-    padding: 10px 20px;
-  }
-
-  .profile-sidebar {
-    padding: 5px;
-  }
-
-  .profile-header {
-    padding: 5px;
-  }
+.logo {
+  width: 55px;
+  height: 50px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
 }
+
+.logo:hover {
+  transform: scale(1.1);
+}
+
+.logo-link img {
+    border-radius: 20%;
+    image-rendering: auto;
+}
+
 
 .role-modal {
   position: fixed;
@@ -389,4 +359,80 @@ p {
 
 .role-button:hover {
   background-color: #0056b3;
+}
+
+
+@media (max-width: 768px) {
+  .profile-page {
+    flex-direction: column;
+    height: auto; 
+    width: 90vw;
+    padding: 10px;
+    margin-left: 20px;
+  }
+
+  .profile-sidebar {
+    width: 100%;
+    border-right: none;
+    padding: 10px;
+    margin-bottom: 10px; 
+    height: auto;
+  }
+
+  .profile-header {
+    width: 100%;
+    align-items: flex-start; 
+    padding: 10px;
+    flex-direction: row; 
+    justify-content: center; 
+    gap: 10px; 
+
+  }
+
+  .profile-buttons, .edit-button {
+    flex-direction: column; 
+    align-items: stretch;
+    margin-left: 30px;
+  }
+
+  .calendar-button,
+  .teachers-button,
+  .edit-button {
+    width: 85%;
+    margin-top: 10px;
+  }
+
+  .logo {
+    width: 35px;
+    height: 30px;
+  }
+}
+
+@media (max-width: 480px) {
+  .profile-sidebar,
+  .profile-header {
+    width: 100%; 
+    margin-left: 82px;
+  }
+
+  .profile-picture-large {
+    width: 60px; 
+    height: 60px;
+  }
+  .profile-name,
+  .profile-surname {
+    font-size: 1.2em; 
+    text-align: left;
+  }
+
+  .profile-sidebar span {
+    font-size: 1rem; 
+    margin: 10px 0;
+  }
+
+  .calendar-button,
+  .teachers-button {
+    padding: 10px 15px;
+    font-size: 0.9rem; 
+  }
 }

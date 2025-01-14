@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./TeacherList.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import logo_icon from "../Assets/logo-prototip3.png";
 import { useUser } from "../../UserContext";
 
 const TeacherList = () => {
@@ -70,8 +71,8 @@ const TeacherList = () => {
               : [],
           }));
 
-        //ako je korisnik prijavljen, filtriraj učitelje prema njegovim jezicima
-        const filteredByUserLanguages = isLoggedIn
+        //ako je korisnik prijavljen, i ima jezike u listi, filtriraj učitelje prema njegovim jezicima
+        const filteredByUserLanguages = isLoggedIn && user.languagesToLearn.length > 0
           ? teachersData.filter((teacher) =>
               teacher.languagesTeach.some((lang) =>
                 user.languagesToLearn
@@ -135,8 +136,8 @@ const TeacherList = () => {
     setFilteredTeachers(teachers);
     setFiltersApplied(false);
 
-   
-      //resetiraj na učitelje koji podučavaju jezike iz user.languagesToLearn
+    
+    if (user.languagesToLearn.length > 0) {
       const filteredByUserLanguages = teachers.filter((teacher) =>
         teacher.languagesTeach.some((lang) =>
           user.languagesToLearn
@@ -145,6 +146,8 @@ const TeacherList = () => {
         )
       );
       setFilteredTeachers(filteredByUserLanguages);
+    }
+
   };
 
   //funkcija za izmjenu filtra jezika
@@ -182,6 +185,9 @@ const TeacherList = () => {
     <div
       className={`parent-container ${isLoggedIn ? "logged-in" : "logged-out"}`}
     >
+      <a href="/" className="logo-link">
+        <img src={logo_icon} alt="Logo" className="logo" />
+      </a>
       <div className="filter-notification">Filtri primijenjeni</div>
 
       <div className="container">
@@ -192,8 +198,11 @@ const TeacherList = () => {
         <div className="main-content">
           {filteredTeachers.length > 0 ? (
             filteredTeachers.map((teacher, index) => (
-              <div className="teacher-container" key={index}
-              onClick={() => handleTeacherClick(teacher.user_id)}>
+              <div
+                className="teacher-container"
+                key={index}
+                onClick={() => handleTeacherClick(teacher.user_id)}
+              >
                 <img
                   src="https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"
                   alt=""
@@ -203,19 +212,16 @@ const TeacherList = () => {
                     {teacher.ime} {teacher.prezime}
                   </p>
                 </div>
-
                 <div className="teacher-languages">
                   <p>{teacher.languagesTeach.join(", ")}</p>
                 </div>
               </div>
             ))
           ) : (
-            <p className="empty-message">
-              Nema dostupnih učitelja prema odabranim filtrima.
-            </p>
+            <p className="empty-message">Nema dostupnih učitelja prema odabranim filtrima.</p>
           )}
         </div>
-      </div>
+     </div>
 
       {isLoggedIn && (
         <div className="filter-container">

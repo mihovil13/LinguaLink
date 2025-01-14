@@ -3,14 +3,16 @@ import LoginRegister from "./Components/LoginSignup/LoginRegister";
 import ProfilePage from "./Components/Profile/ProfilePage";
 import TeacherList from "./Components/TeacherList/TeacherList";
 import HomePage from "./Components/HomePage/HomePage";
-import TeacherProfile from "./Components/TeacherProfile/TeacherProfile"
+import TeacherProfile from "./Components/TeacherProfile/TeacherProfile";
 import Calendar from "./Components/Calendar/Calendar";
+import { UserProvider } from "./UserContext";
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 function App() {
   return (
-      <div>
+    <div>
+      <UserProvider>
         <Router>
           <Routes>
             <Route path="/register" element={<LoginRegister />} />
@@ -18,12 +20,12 @@ function App() {
             <Route path="/login" element={<LoginSignup />} />
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/teachers" element={<TeacherList />} />
-            <Route path="/teacher/:teacherId" element={<TeacherProfile/>} />
-            <Route path="/calendar" element={<Calendar/>} />
-
+            <Route path="/teacher/:teacherId" element={<TeacherProfile />} />
+            <Route path="/calendar/:teacherId" element={<Calendar />} />
           </Routes>
         </Router>
-      </div>
+      </UserProvider>
+    </div>
   );
 }
 
