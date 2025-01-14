@@ -1,9 +1,7 @@
 .profile-page {
   display: flex;
   align-items: flex-start;
-  /* horizontalno: poravna ih na pocetku */
   height: 70vh;
-  /* viewport height */
   width: 80vw;
   background-color: #f9f9f9;
   border: 3px solid #ddd;
@@ -41,7 +39,7 @@
   overflow-y: auto;
 }
 
-profile-jezici p {
+.profile-jezici p {
   font-size: 1rem;
 }
 .profile-sidebar span {
@@ -114,14 +112,14 @@ p {
 .spremi-zatvori > button,
 .odjava-button {
   background-color: #613c78;
-  padding: 15px 15px; /* Dovoljno prostora za tekst */
+  padding: 15px 15px; 
   color: #fff;
   font-size: 1.1rem;
   border: none;
   border-radius: 10px;
   cursor: pointer;
-  text-align: center; /* Osigurava da tekst bude centriran */
-  width: auto; /* Automatska širina ovisno o tekstu */
+  text-align: center; 
+  width: auto; 
 }
 
 .calendar-button:hover,
@@ -200,7 +198,6 @@ p {
 }
 
 .spremi-zatvori {
-  padding: 10px 20px;
   background: white;
   border-top: 1px solid #ddd;
   display: flex;
@@ -212,9 +209,9 @@ p {
   background-color: #613c78;
   color: #fff;
   font-size: 1rem;
-  padding: 10px;
+  padding: 5px;
   border: none;
-  border-radius: 5px;
+  border-radius: 10px;
   cursor: pointer;
   height: 5vh;
 }
@@ -365,20 +362,20 @@ p {
 }
 
 
-/* Profile Page */
 @media (max-width: 768px) {
   .profile-page {
     flex-direction: column;
-    height: auto; /* Omogućava prirodnu visinu za vertikalni prikaz */
+    height: auto; 
     width: 90vw;
     padding: 10px;
+    margin-left: 20px;
   }
 
   .profile-sidebar {
     width: 100%;
     border-right: none;
     padding: 10px;
-    margin-bottom: 10px; /* Dodan razmak između sidebar-a i header-a */
+    margin-bottom: 10px; 
     height: auto;
   }
 
@@ -401,36 +398,41 @@ p {
   .calendar-button,
   .teachers-button,
   .edit-button {
-    width: 100%;
+    width: 85%;
     margin-top: 10px;
+  }
+
+  .logo {
+    width: 35px;
+    height: 30px;
   }
 }
 
 @media (max-width: 480px) {
-  .profile-page {
-    width: 100%; /* Maksimalno koristi širinu */
-    padding: 5px;
+  .profile-sidebar,
+  .profile-header {
+    width: 100%; 
+    margin-left: 82px;
   }
 
   .profile-picture-large {
-    width: 100px;
-    height: 100px; /* Smanjuje veličinu slike na mobilnim uređajima */
+    width: 60px; 
+    height: 60px;
   }
-
   .profile-name,
   .profile-surname {
-    font-size: 1.2em; /* Smanjena veličina fonta */
-    text-align: left; /* Poravnanje za manje ekrane */
+    font-size: 1.2em; 
+    text-align: left;
   }
 
   .profile-sidebar span {
-    font-size: 1rem; /* Prilagođava veličinu teksta */
+    font-size: 1rem; 
     margin: 10px 0;
   }
 
   .calendar-button,
   .teachers-button {
     padding: 10px 15px;
-    font-size: 0.9rem; /* Smanjuje dugmad */
+    font-size: 0.9rem; 
   }
 }
