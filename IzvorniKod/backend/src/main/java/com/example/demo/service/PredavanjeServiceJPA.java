@@ -73,7 +73,5 @@ public class PredavanjeServiceJPA implements PredavanjeService {
                     return dto;
                 })
                 .toList();
-    }
-
 
 }
