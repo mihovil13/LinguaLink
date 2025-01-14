@@ -42,7 +42,7 @@ public class  UciteljServiceJPA implements UciteljService {
             ucitelj.setIme(body.get("ime").toString());
             ucitelj.setPrezime(body.get("prezime").toString());
             ucitelj.setEmail(body.get("email").toString());
-            if (body.containsKey("qualifications")) {
+            if (body.containsKey("qualifications") && body.get("qualifications")!=null) {
                 List<Map<String,String>> qualifications = (List<Map<String,String>>) body.get("qualifications");
                 List<String> qualOdvojeno = qualifications.stream()
                         .map(lang->(String)lang.get("kvalifikacije")).toList();
@@ -58,7 +58,7 @@ public class  UciteljServiceJPA implements UciteljService {
             if (body.containsKey("iskustvo")) {
                 ucitelj.setIskustvo((String) body.get("iskustvo"));
             }
-            if (body.containsKey("languagesTeach")) {
+            if (body.containsKey("languagesTeach") && body.get("langaugesTeach")!=null) {
                 List<Map<String,String>> jezici =(List<Map<String,String>>) body.get("languagesTeach");
                 List<String> jezikOdvojeno = jezici.stream()
                         .map(lang -> (String) lang.get("nazivJezika")).toList();
@@ -69,26 +69,26 @@ public class  UciteljServiceJPA implements UciteljService {
                 }
                 System.out.println("DOBRA LISTA POPRAVAK");
                 System.out.println(dobraLista);
-                    Ucitelj ucitelj2 = uciteljRepository.getUciteljByEmail(ucitelj.getEmail());
-                if(!ucitelj2.getLanguagesTeach().isEmpty() || ucitelj2.getLanguagesTeach().size()==dobraLista.size()){
-                    Integer brojac = 0;
-                    for(Jezik jezik:dobraLista){
-                       if(ucitelj2.getLanguagesTeach().contains(jezik)){
-                           brojac++;
-                       }
-                    }
+//                    Ucitelj ucitelj2 = uciteljRepository.getUciteljByEmail(ucitelj.getEmail());
+//                if(!ucitelj2.getLanguagesTeach().isEmpty() || ucitelj2.getLanguagesTeach().size()==dobraLista.size()){
+//                    Integer brojac = 0;
+//                    for(Jezik jezik:dobraLista){
+//                       if(ucitelj2.getLanguagesTeach().contains(jezik)){
+//                           brojac++;
+//                       }
+//                    }
+//
+//                    if(brojac!=ucitelj2.getLanguagesTeach().size()){
+//                        ucitelj.setLanguagesTeach(dobraLista);
+//                    }
+//                }
+//                else{
+//                    ucitelj.setLanguagesTeach(dobraLista);
+//                }
 
-                    if(brojac!=ucitelj2.getLanguagesTeach().size()){
-                        ucitelj.setLanguagesTeach(dobraLista);
-                    }
-                }
-                else{
-                    ucitelj.setLanguagesTeach(dobraLista);
-                }
 
 
-
-                //ucitelj.setLanguagesTeach(dobraLista);
+                ucitelj.setLanguagesTeach(dobraLista);
 
 
 
