@@ -74,6 +74,9 @@ public class Korisnik implements UserDetails {
         this.email = email;
     }
 
+    @Column(name = "profile_image_url")
+    private String profileImageUrl;
+
     public String getUloga() {
         return uloga;
     }
@@ -133,5 +136,12 @@ public class Korisnik implements UserDetails {
     }
 
 
+    public String getProfileImageUrl() {
+        return profileImageUrl;
+    }
+
+    public void setProfileImageUrl(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
+    }
     public Object getRole() {return role;}
 }
