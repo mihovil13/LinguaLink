@@ -10,7 +10,7 @@ body {
     height: 100%;    
 }
 
-button, button:hover, button:focus {
+.navbar-links button {
     background: #613c78 !important; /* Postavi boju za dugme */
     border: none !important;
     box-shadow: none !important;

@@ -88,7 +88,7 @@ const TeacherProfile = () => {
   return (
     <div className="profile-page">
       <a href="/" className="logo-link">
-                      <img src={logo_icon} alt="Logo" className="logo" />
+        <img src={logo_icon} alt="Logo" className="logo" />
       </a>
       <div className="profile-sidebar">
         <div className="profile-podaci">
