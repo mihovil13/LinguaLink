@@ -466,7 +466,7 @@ const ProfilePage = () => {
               alt={`${user.ime}'s profile`}
               className="profile-picture-large"
             />
-            <label for="input-file">
+            <label htmlFor="input-file">
               <img src={edit_icon} alt="Uredi sliku" />
             </label>
           </div>
