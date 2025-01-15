@@ -46,6 +46,21 @@
     background-color: #f2eeed;
 }
 
+/* Promjena pokazivača na ručicu na prelasku mišem */
+.fc-daygrid-day {
+    cursor: pointer;
+}
+
+/* Stil za selektovani datum */
+.fc-daygrid-day.selected {
+    background-color: #add8e6 !important; /* Plava boja */
+}
+
+/* Reset prethodno selektovane ćelije */
+.fc-daygrid-day:not(.selected) {
+    background-color: #fff !important;
+}
+
 /*bojanje header retka iznad stupaca u #613c78, a teksta u bijelu*/
 .fc-col-header-cell {
     background-color: #613c78;
@@ -216,7 +231,7 @@ body {
     flex-basis: calc(33.333% - 30px);
     text-align: center;
     padding: 10px;
-    background-color: #5c2d91;
+    background-color: #613c78;
     color: white;
     border: none;
     border-radius: 5px;
@@ -228,7 +243,7 @@ body {
 }
 
 .time-button:hover {
-    background-color: #7a42c3;
+    background-color: #9649ca;
     transform: scale(1.05); 
 }
 

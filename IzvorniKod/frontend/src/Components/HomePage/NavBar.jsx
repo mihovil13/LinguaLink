@@ -24,7 +24,7 @@ const Navbar = () => {
         {user && user.ime && user.prezime ? (
             <li>
             <button
-                className="navbar-link profile-link"
+                className="profile-link"
                 onClick={handleProfileClick}
             >
                 {user.ime} {user.prezime}

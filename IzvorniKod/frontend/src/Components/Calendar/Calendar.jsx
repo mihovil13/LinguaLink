@@ -114,45 +114,55 @@ const Calendar = () => {
   const handleDateClick = (info) => {
     const clickedDate = new Date(info.dateStr);
     const today = new Date();
-    today.setHours(1, 0, 0, 0);
+    today.setHours(0, 0, 0, 0);
 
     if (clickedDate >= today) {
-      setSelectedDate(info.dateStr);
+        // Ažuriraj selektovani datum
+        setSelectedDate(info.dateStr);
 
-      const allTimes = [
-        "09:00",
-        "10:00",
-        "11:00",
-        "12:00",
-        "13:00",
-        "14:00",
-        "15:00",
-        "16:00",
-      ];
-
-      const reservedTimes = reservedLessons
-        .filter((lesson) => lesson.start.startsWith(info.dateStr))
-        .map((lesson) => {
-          const time = new Date(lesson.start).toTimeString().slice(0, 5);
-          return time;
+        // Resetiraj sve ćelije
+        document.querySelectorAll('.fc-daygrid-day').forEach(cell => {
+            cell.classList.remove('selected');
         });
 
-      const availableTimes = allTimes.filter(
-        (time) => !reservedTimes.includes(time)
-      );
+        // Dodaj klasu za selektovani datum
+        info.dayEl.classList.add('selected');
 
-      if (clickedDate.getTime() === today.getTime()) {
-        const now = new Date();
-        const filteredTimes = allTimes.filter((time) => {
-          const [hours, minutes] = time.split(":").map(Number);
-          const termTime = new Date();
-          termTime.setHours(hours, minutes, 0, 0);
-          return termTime > now;
-        });
-        setAvailableTimes(filteredTimes);
-      } else {
-        setAvailableTimes(availableTimes);
-      }
+        // Generiši dostupne termine
+        const allTimes = [
+            "09:00",
+            "10:00",
+            "11:00",
+            "12:00",
+            "13:00",
+            "14:00",
+            "15:00",
+            "16:00",
+        ];
+
+        const reservedTimes = reservedLessons
+            .filter((lesson) => lesson.start.startsWith(info.dateStr))
+            .map((lesson) => {
+                const time = new Date(lesson.start).toTimeString().slice(0, 5);
+                return time;
+            });
+
+        const availableTimes = allTimes.filter(
+            (time) => !reservedTimes.includes(time)
+        );
+
+        if (clickedDate.getTime() === today.getTime()) {
+            const now = new Date();
+            const filteredTimes = allTimes.filter((time) => {
+                const [hours, minutes] = time.split(":").map(Number);
+                const termTime = new Date();
+                termTime.setHours(hours, minutes, 0, 0);
+                return termTime > now;
+            });
+            setAvailableTimes(filteredTimes);
+        } else {
+            setAvailableTimes(availableTimes);
+        }
     }
   };
 
@@ -288,26 +298,26 @@ const Calendar = () => {
         }}
       />
 
-  <div className="timeslots">
-    {selectedDate ? (
-      <div>
-        <h3>Dostupni termini za {formatEuropeanDate(selectedDate)}:</h3>
-        <div className="times">
-          {availableTimes.map((time) => (
-            <button
-              key={time}
-              onClick={() => handleTimeClick(time)} // Otvara modal na klik
-              className="time-button"
-            >
-              {time}
-            </button>
-          ))}
-        </div>
+    <div className="timeslots">
+        {selectedDate ? (
+          <div>
+            <h3>Dostupni termini za {formatEuropeanDate(selectedDate)}:</h3>
+            <div className="times">
+              {availableTimes.map((time) => (
+                <button
+                  key={time}
+                  onClick={() => handleTimeClick(time)} // Otvara modal na klik
+                  className="time-button"
+                >
+                  {time}
+                </button>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <p>Molimo kliknite na datum za prikaz dostupnih termina.</p>
+        )}
       </div>
-    ) : (
-      <p>Molimo kliknite na datum za prikaz dostupnih termina.</p>
-    )}
-  </div>
 
 
       {/* Modal za potvrdu rezervacije */}

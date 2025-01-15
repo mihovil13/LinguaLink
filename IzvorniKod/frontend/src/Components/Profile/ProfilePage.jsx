@@ -11,28 +11,37 @@ const backend = "http://localhost:8080";
 
 const ProfilePage = () => {
   const navigate = useNavigate();
+  const getToken = () => {
+    return localStorage.getItem("token");
+  };
+  
   const handleLogout = async () => {
     try {
-      const token = localStorage.getItem("token");
+      const token = getToken();
 
       if (token) {
-        await axios.post(`${backend}/api/auth/logout`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        // Poziv backendu za odjavu
+        await axios.post(
+          `${backend}/api/auth/logout`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
       }
 
-      // Ukloni token iz localStorage
-      localStorage.removeItem("token");
-
-      // Resetiraj korisnika u kontekstu
+      // Resetiranje korisničkih podataka
       setUser({});
 
-      // Preusmjeri korisnika na početnu stranicu
+      // Brisanje tokena iz localStorage
+      localStorage.removeItem("token");
+
+      // Preusmjeravanje na glavnu stranicu
       navigate("/");
     } catch (error) {
-      console.error("Error during logout:", error);
+      console.error("Greška prilikom odjave:", error);
       alert("Došlo je do greške prilikom odjave.");
     }
   };
@@ -494,12 +503,14 @@ const ProfilePage = () => {
             <button className="edit-profile-button" onClick={handleEditProfile}>
               Uredi profil
             </button>
-            <button
-              className="zahtjevi-button"
-              onClick={() => navigate(`/requests/${user.id}`)}
-            >
-              Moji zahtjevi
-            </button>
+            {(user.uloga === "Učenik" || user.uloga === "Učitelj") && (
+              <button
+                className="zahtjevi-button"
+                onClick={() => navigate(`/requests/${user.id}`)}
+              >
+                Moji zahtjevi
+              </button>
+            )}
           </div>
           <div className="profile-buttons">
             {user.uloga === "Učenik" && (
@@ -518,11 +529,20 @@ const ProfilePage = () => {
                 Moj kalendar
               </button>
             )}
+            {user.uloga === "Admin" && (
+              <button
+                className="admin-button"
+                onClick={() => navigate(`/users`)}
+              >
+                Korisnici
+              </button>
+            )}
             <button className="odjava-button" onClick={handleLogout}>
               Odjava
             </button>
           </div>
         </div>
+
       </div>
       {isEditModalOpen && (
         <div className="modal">

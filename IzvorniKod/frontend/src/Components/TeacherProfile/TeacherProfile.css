@@ -115,7 +115,8 @@ p {
 .jezici-koje-zelim-nauciti > div > button,
 .spremi-zatvori > button,
 .odjava-button,
-.calendar-button {
+.calendar-button,
+.admin-button {
   background-color: #613c78;
   padding: 10px 15px; 
   color: #fff;
