@@ -11,4 +11,6 @@ import java.util.List;
 @Repository
 public interface UciteljRepository extends CrudRepository<Ucitelj, Long> {
     public List<Ucitelj> findAll();
+    public Ucitelj getUciteljByEmail(String email);
+    public Ucitelj getUciteljById(Long id);
 }

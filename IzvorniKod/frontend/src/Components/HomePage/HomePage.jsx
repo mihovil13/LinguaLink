@@ -1,21 +1,15 @@
-import Navbar from './NavBar';
-import Hero from './Hero';
-import Features from './Features';
-import Footer from './Footer';
+import Navbar from "./NavBar";
+import Hero from "./Hero";
+import Features from "./Features";
 
-const HomePage =() => {
+const HomePage = () => {
+  return (
+    <div className="home-container"> {/* Dodajemo parent container */}
+      <Navbar />
+      <Hero />
+      <Features />
+    </div>
+  );
+};
 
-
-
-
-    return (
-        <div>
-            <Navbar />
-            <Hero />
-            <Features />
-        </div>
-    );
-
-}
-
-export default HomePage
+export default HomePage;

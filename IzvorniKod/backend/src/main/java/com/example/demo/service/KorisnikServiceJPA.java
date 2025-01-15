@@ -6,8 +6,11 @@ import com.example.demo.model.Ucitelj;
 import com.example.demo.repository.KorisnikRepository;
 import com.example.demo.repository.UcenikRepository;
 import com.example.demo.repository.UciteljRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 
@@ -16,11 +19,15 @@ public class KorisnikServiceJPA implements KorisnikService {
     private final KorisnikRepository korisnikRepository;
     private final UcenikRepository ucenikRepository;
     private final UciteljRepository uciteljRepository;
+    private final UcenikServiceJPA ucenikServiceJPA;
+    private final UciteljServiceJPA uciteljServiceJPA;
 
-    public KorisnikServiceJPA(KorisnikRepository korisnikRepository, UcenikRepository ucenikRepository, UciteljRepository uciteljRepository) {
+    public KorisnikServiceJPA(KorisnikRepository korisnikRepository, UcenikRepository ucenikRepository, UciteljRepository uciteljRepository, UcenikServiceJPA ucenikServiceJPA, UciteljServiceJPA uciteljServiceJPA) {
         this.korisnikRepository = korisnikRepository;
         this.ucenikRepository = ucenikRepository;
         this.uciteljRepository = uciteljRepository;
+        this.ucenikServiceJPA = ucenikServiceJPA;
+        this.uciteljServiceJPA = uciteljServiceJPA;
     }
 
 
@@ -46,17 +53,55 @@ public class KorisnikServiceJPA implements KorisnikService {
 
     }
 
-    @Override
-    public Korisnik login(Korisnik korisnik) {
-        Optional<Korisnik> existingKorisnik = korisnikRepository.findByEmailAndLozinka(korisnik.getEmail(), korisnik.getLozinka());
-        if (existingKorisnik.isEmpty()) {
-            throw new IllegalArgumentException("Neispravni podaci za prijavu.");
-        }
-        System.out.println("NOVI KORISNIK SE ULOGIRAO!!");
-        return existingKorisnik.get();
-    }
-
     public Optional<Korisnik> getKorisnik(String email) {
         return korisnikRepository.findByEmail(email);
+    }
+
+    @Override
+    public Korisnik getKorisnikByEmail(String email) {
+        return korisnikRepository.getKorisnikByEmail(email);
+    }
+
+    @Override
+    public ResponseEntity<?> updateKorisnik(Korisnik korisnik, Map<String, Object> body) {
+        System.out.println(korisnik.getUloga());
+        if (body.containsKey("uloga") && korisnik.getUloga()==null) {
+            korisnik.setUloga((String) body.get("uloga"));
+            if(korisnik.getUloga().equals("Učitelj")){
+                Ucitelj ucitelj = new Ucitelj(korisnik.getIme(),korisnik.getPrezime(),korisnik.getEmail(),korisnik.getLozinka(), korisnik.getUloga());
+                korisnikRepository.delete(korisnik);
+                uciteljRepository.save(ucitelj);
+            }
+            if(korisnik.getUloga().equals("Učenik")){
+                Ucenik ucenik = new Ucenik(korisnik.getIme(),korisnik.getPrezime(),korisnik.getEmail(),korisnik.getLozinka(), korisnik.getUloga());
+                korisnikRepository.delete(korisnik);
+                ucenikRepository.save(ucenik);
+            }
+        }
+        if(korisnik.getUloga().equals("Učitelj")){
+            Ucitelj ucitelj = uciteljServiceJPA.getUciteljiByEmail(korisnik.getEmail());
+            return uciteljServiceJPA.updateUcitelj(ucitelj,body);
+
+        }
+        if(korisnik.getUloga().equals("Učenik")){
+            Ucenik ucenik = ucenikServiceJPA.getUcenik(korisnik.getEmail());
+            return ucenikServiceJPA.updateUcenik(ucenik,body);
+
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @Override
+    public List<Korisnik> getAllUsersExceptAdmins() {
+        return korisnikRepository.findByUlogaNot("Admin");
+    }
+    @Override
+    public boolean deleteUserById(Long id) {
+        if (korisnikRepository.existsById(id)) {
+            korisnikRepository.deleteById(id);
+            return true;
+        } else {
+            return false; // Korisnik s danim ID-em ne postoji
+        }
     }
 }

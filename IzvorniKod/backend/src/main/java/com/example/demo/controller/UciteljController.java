@@ -24,6 +24,7 @@ public class UciteljController {
     @GetMapping
     public ResponseEntity<List<Ucitelj>> getUcitelj() {
         List<Ucitelj> ucitelji = uciteljService.getUcitelji();
+        System.out.println("Ucitelji");
         System.out.println(ucitelji);
         return ResponseEntity.ok(ucitelji);
     }

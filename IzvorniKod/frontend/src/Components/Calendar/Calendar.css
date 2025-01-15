@@ -1,12 +1,17 @@
-/* ovo postavlja pozadinske boje buttona month, week, lijevo i desno  
+/* ovo postavlja pozadinske boje buttona month, week, lijevo i desno
    kada su aktivni, neaktivni i kada se hovera iznad njih */
-   :root{
+:root{
     --fc-button-text-color: #fff;
     --fc-button-bg-color: #613c78;
     --fc-button-hover-bg-color: #482a5c;
     --fc-button-hover-border-color: #482a5c;
     --fc-button-active-bg-color: #311f40;
     --fc-button-active-border-color: #311f40;
+}
+
+.fc {
+    width: 100vh; /* Postavite željenu širinu */
+    margin: 0 auto; /* Centrirajte kalendar, opcionalno */
 }
 
 /*ovaj dio koda postavlja today button da izgleda isto kao i ostali
@@ -33,11 +38,11 @@
 
 /* ovo je za bojanje ćelija i stupaca (dana i sati) u kalendaru u bijelo*/
 .fc-day {
-    background-color: #fff; 
-  }
+    background-color: #fff;
+}
 
-/*ovo je za bojanje stupca današnjeg dana u week prikazu tjedna u boju #f2eeed */  
-  .fc-day-today .fc-daygrid-day-frame{
+/*ovo je za bojanje stupca današnjeg dana u week prikazu tjedna u boju #f2eeed */
+.fc-day-today .fc-daygrid-day-frame{
     background-color: #f2eeed;
 }
 
@@ -52,40 +57,229 @@
     background-color: white;
 }
 
-.fc {
-    width: 100vh; /* Postavite željenu širinu */
-    margin: 0 auto; /* Centrirajte kalendar, opcionalno */
-}
 
 .fc-previous-month {
     background-color: transparent;
     pointer-events: none;
-  }
-  
-  .fc-past-date {
+}
+
+.fc-past-date {
     background-color: #d3d3d3;
     color: #808080;
     pointer-events: none;
+}
+
+
+.timeslots {
+    margin-top: 20px; 
+    text-align: center; 
+    background-color: white;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px;
+}
+
+.time-button {
+    flex: 1 1 calc(33.333% - 30px); 
+    text-align: center;
+    margin: 5px;
+    padding: 10px;
+    background-color: #5c2d91;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    max-width: 120px; 
+    flex-wrap: nowrap;
+}
+
+.time-button:hover {
+    background-color: #7a42c3;
+    transform: scale(1.05); 
+}
+
+
+.fc {
+    z-index: 1 !important; 
+}
+
+.fc-daygrid-day {
+    z-index: 0 !important;
+}
+
+body {
+    overflow: visible;
+}
+
+.modal-calendar {
+    position: fixed; 
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    border-radius: 10px;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);
+    text-align: center;
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: center;
+    min-height: 60vh;
+    width: 50vh; 
+    z-index: 999;
+}
+.modal-content h3 {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.modal-content p {
+    font-size: 1.1rem;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+.modal-calendar-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 0 10px; 
+    gap: 10px;
+}
+
+.confirm-button, .cancel-button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s;
+}
+
+.modal-calendar .text p {
+    margin: 10px 0; 
+    font-size: 1rem; 
+    color: #333; 
+  }
+  
+.modal-calendar .text strong {
+    color: #613c78; 
+}
+  
+.confirm-button {
+    background-color: #613c78;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.confirm-button:hover {
+    background-color: #45a049;
+    transform: scale(1.05);
+}
+
+.cancel-button {
+    background-color: #ccc;
+    color: black;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.cancel-button:hover {
+    background-color: #c63936;
+    transform: scale(1.05);
+}
+
+.selected-datetime {
+    margin: 15px 0; 
+    font-size: 1rem; 
+    font-weight: bold; 
+    text-align: center; 
+    color: #613c78; 
+}
+
+.times button{
+    flex-basis: calc(33.333% - 30px);
+
+}
+.time-button {
+    flex-basis: calc(33.333% - 30px);
+    text-align: center;
+    padding: 10px;
+    background-color: #5c2d91;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    max-width: 120px; 
+    height: 50px; 
+    box-sizing: border-box; 
+}
+
+.time-button:hover {
+    background-color: #7a42c3;
+    transform: scale(1.05); 
+}
+
+.logo-link {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    text-decoration: none;
+  }
+  
+  .logo {
+    width: 55px;
+    height: 50px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+  }
+  
+  .logo:hover {
+    transform: scale(1.1);
+  }
+  
+  .logo-link img {
+      border-radius: 20%;
+      image-rendering: auto;
   }
 
-/* Stil za dugmad dostupnih termina */
-.time-button {
-    margin: 5px;
-    padding: 10px 15px;
-    background-color: #5c2d91; /* Tamno ljubičasta boja */
-    color: white; /* Bijela boja teksta */
-    border: none; /* Bez okvira */
-    border-radius: 5px; /* Zaobljeni rubovi */
-    cursor: pointer; /* Promjena kursora na pokazivač */
-  }
-  
-  .time-button:hover {
-    background-color: #7a42c3; /* Svjetlija ljubičasta na hover */
-  }
-  
-  /* Stil za sekciju dostupnih termina */
-  .timeslots {
-    margin-top: 20px; /* Razmak iznad */
-    text-align: center; /* Centrirani sadržaj */
-    background-color: white;
-  }
+
+
+@media (max-width: 768px) {
+    .time-button {
+        flex: 1 1 calc(50% - 20px); 
+        font-size: 12px;
+        padding: 6px;
+    }
+
+    .fc {
+        height: calc(100vh - 120px); 
+    }
+}
+
+@media (max-width: 480px) {
+    .time-button {
+        font-size: 10px;
+        padding: 5px;
+    }
+
+    .fc {
+        height: calc(100vh - 100px); 
+    }
+
+    .logo-link {
+        position: relative;
+    }
+}
