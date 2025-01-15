@@ -59,8 +59,6 @@ const ProfilePage = () => {
   const [showNotification, setShowNotification] = useState(false);
   const [notificationMessage, setNotificationMessage] = useState("");
 
-
-
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
@@ -93,7 +91,6 @@ const ProfilePage = () => {
               qualifications,
               satnica,
             } = response.data; // iz odgovora uzimamo navedene varijable
-
 
             languagesKnown = languagesKnown || [];
             languagesToLearn = languagesToLearn || [];
@@ -143,11 +140,6 @@ const ProfilePage = () => {
               satnica: satnica || "",
             });
 
-<<<<<<< HEAD
-=======
-            console.log("user", user);
-
->>>>>>> main
             if (!response.data.uloga) {
               //ako korisnilk nema definiranu ulogu, prikazuje se modal za odabir uloge
               setRoleModalOpen(true);
