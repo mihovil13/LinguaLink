@@ -44,6 +44,9 @@ const TeacherList = () => {
   const qualifications = ["Profesor", "Izvorni govornik", "Certifikat"];
 
   useEffect(() => {
+    if (!user.id) {
+      return;
+    }
     const token = localStorage.getItem("token");
     if (token) {
       setIsLoggedIn(true);
@@ -71,8 +74,10 @@ const TeacherList = () => {
               : [],
           }));
 
+          console.log(teachersData);
+
         //ako je korisnik prijavljen, i ima jezike u listi, filtriraj učitelje prema njegovim jezicima
-        const filteredByUserLanguages = isLoggedIn && user.languagesToLearn.length > 0
+        const filteredByUserLanguages = token && user.languagesToLearn.length > 0
           ? teachersData.filter((teacher) =>
               teacher.languagesTeach.some((lang) =>
                 user.languagesToLearn
@@ -92,7 +97,7 @@ const TeacherList = () => {
     };
 
     fetchTeacherData();
-  }, []);
+  }, [user]);
 
   const applyFilters = () => {
     const filtered = teachers.filter((teacher) => {

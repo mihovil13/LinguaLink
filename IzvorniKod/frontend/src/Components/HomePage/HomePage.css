@@ -1,4 +1,3 @@
-/* Reset osnovnih stilova */
 * {
     margin: 0;
     padding: 0;
@@ -10,6 +9,14 @@ body {
     width: 100%;
     height: 100%;    
 }
+
+button, button:hover, button:focus {
+    background: #613c78 !important; /* Postavi boju za dugme */
+    border: none !important;
+    box-shadow: none !important;
+    appearance: none !important;
+    outline: none !important;
+  }
 
 .home-container {
     display: flex;
@@ -224,7 +231,35 @@ body {
     color: #613c78; 
 }
 
+.navbar-links {
+    display: flex; 
+    align-items: center; 
+    gap: 10px; 
+    list-style: none; 
+    margin: 0; 
+    padding: 0; 
+}
+  
+.navbar-link {
+    text-decoration: none; 
+}
+  
+.profile-link {
+    background: none; 
+    border: none;
+    cursor: pointer;
+    font-size: inherit; 
+    margin: 0;
+    line-height: 1; 
+}
 
+@media (max-width: 768px) {
+    .navbar-links {
+      flex-direction: column; 
+    }
+  }
+  
+  
 /* Responzivnost za manje ekrane */
 @media (max-width: 768px) {
     .navbar {
@@ -290,3 +325,21 @@ body {
         font-size: 0.85rem;
     }
 }
+
+
+@media (max-width: 768px) {
+    
+
+    .navbar-logo {
+        display: flex; 
+    }
+
+    .navbar-links {
+        margin-left: auto; 
+    }
+
+    .navbar-link {
+        font-size: 1rem; 
+    }
+}
+
