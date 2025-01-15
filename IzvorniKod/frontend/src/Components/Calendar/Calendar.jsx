@@ -135,8 +135,6 @@ const Calendar = () => {
   };
 
   const confirmReservation = async () => {
-    console.log(user.id);
-    console.log(teacherId);
     if (selectedDate && selectedTime && user.id !== teacherId) {
       const predavanjeData = {
         ucenikId: user.id,
@@ -240,28 +238,27 @@ const Calendar = () => {
         }}
       />
 
-      {user.uloga !== "Učitelj" && (
-        <div className="timeslots">
-          {selectedDate ? (
-            <div>
-              <h3>Dostupni termini za {formatEuropeanDate(selectedDate)}:</h3>
-              <div className="times">
-                {availableTimes.map((time) => (
-                  <button
-                    key={time}
-                    onClick={() => handleTimeClick(time)} // Otvara modal na klik
-                    className="time-button"
-                  >
-                    {time}
-                  </button>
-                ))}
-              </div>
-            </div>
-          ) : (
-            <p>Molimo kliknite na datum za prikaz dostupnih termina.</p>
-          )}
+  <div className="timeslots">
+    {selectedDate ? (
+      <div>
+        <h3>Dostupni termini za {formatEuropeanDate(selectedDate)}:</h3>
+        <div className="times">
+          {availableTimes.map((time) => (
+            <button
+              key={time}
+              onClick={() => handleTimeClick(time)} // Otvara modal na klik
+              className="time-button"
+            >
+              {time}
+            </button>
+          ))}
         </div>
-      )}
+      </div>
+    ) : (
+      <p>Molimo kliknite na datum za prikaz dostupnih termina.</p>
+    )}
+  </div>
+
 
       {/* Modal za potvrdu rezervacije */}
       <Modal

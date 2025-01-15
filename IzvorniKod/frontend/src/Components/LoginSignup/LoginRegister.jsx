@@ -76,7 +76,15 @@ const LoginRegister = () => {
   };
 
   return (
-    <div className="container">
+    <div
+      className="container"
+      onKeyDown={(e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          handleRegister();
+        }
+      }}
+    >
       <a href="/" className="logo-link">
         <img src={logo_icon} alt="Logo" className="logo" />
       </a>

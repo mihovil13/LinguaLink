@@ -92,6 +92,36 @@
    background-color: #4a2c5f;
 }
 
+.profile-imagetext input {
+   display: none;
+}
+
+.profile-image-container {
+   position: relative;
+   display: inline-block;
+}
+
+.profile-image-container label {
+   position: absolute;
+   top: 5px;
+   right: 5px;
+   opacity: 0;
+   transition: opacity 0.3s ease;
+}
+
+.profile-image-container:hover label {
+   opacity: 1;
+}
+
+.profile-image-container img {
+   display: block;
+}
+
+.profile-image-container label img {
+   width: 20px;
+   height: 20px;
+   cursor: pointer;
+}
 
 @media (max-width: 768px) {
    .teachers-button,
