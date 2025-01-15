@@ -79,6 +79,8 @@ public class KorisnikGetMapper {
                 List<Jezik> jezici = new ArrayList<>();
                 korisnikGetDTO.setLanguagesKnown(jezikRazinas);
                 korisnikGetDTO.setLanguagesToLearn(jezici);
+                System.out.println("Jezici: ");
+                System.out.println(korisnikGetDTO.getLanguagesToLearn());
             }
         }
 
