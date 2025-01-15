@@ -31,6 +31,7 @@ public class DemoApplication {
 			uciteljRepository.save(new Ucitelj("Perica",  "Peric","perica.peric@gmail.com", passwordEncoder.encode("nogomet123"),"Učitelj"));
 			repository.save(new Korisnik("Ana",  "Katic","ana.katic@gmail.com", passwordEncoder.encode("volimpse123"),"Učenik"));
 			repository.save(new Korisnik("Nedjeljko", "Bajic","nedjeljko.bajic@gmail.com", passwordEncoder.encode("progi<3"),"Učenik"));
+			repository.save(new Korisnik("Ivan", "Horvat", "ivan.horvat@gmail.com",  passwordEncoder.encode("ovojeadminsifra"), "Admin"));
 		};
 	}
 
