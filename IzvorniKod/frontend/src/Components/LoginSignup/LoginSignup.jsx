@@ -40,7 +40,6 @@ const LoginSignup = () => {
         const token = response.data.token; // dohvaćamo token i spremamo ga
         localStorage.setItem("token", token);
 
-        // const adminResponse = awawit axios.get(`${backend}/api`)
         const profileResponse = await axios.get(`${backend}/api/moj-profil`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -50,7 +49,7 @@ const LoginSignup = () => {
         if (profileResponse.status === 200) {
           const role = profileResponse.data.uloga;
           if (role === "Admin") {
-            navigate("/teachers");
+            navigate("/users");
           } else {
             navigate("/profile");
           }

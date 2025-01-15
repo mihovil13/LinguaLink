@@ -207,27 +207,12 @@ button:hover {
    background-color: #4d2763;
 }
 
-.clear-filters {
-   text-align: center;
-   margin-top: 10px;
-   font-size: 0.9rem;
-   color: #333;
-}
-
-.clear-filters button {
-   margin-top: 10px;
-   background-color: #f44336;
-}
-
-.clear-filters button:hover {
-   background-color: #d32f2f;
-}
-
-.teacher-container {
+.user-container {
    display: flex;
    flex-direction: row;
    align-items: center;
    justify-content: space-between;
+   position: relative;
    border: 1px solid #ccc;
    border-radius: 5px;
    padding: 10px;
@@ -237,25 +222,38 @@ button:hover {
    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.teacher-container:hover {
+.user-container:hover {
    cursor: pointer;
    background-color: #dad7d9;
 }
 
-.teacher-info {
+.delete-button {
+   display: none;
+   background: none;
+   border: none;
+   cursor: pointer;
+   position: absolute;
+   right: 10px;
+   top: 10px;
+   width: 20px;
+   height: 20px;
+}
+
+.delete-button img {
+   width: 20px;
+   height: 20px;
+}
+
+.user-container:hover .delete-button {
+   display: inline-block;
+}
+
+.user-info {
    flex: 1;
    display: flex;
    flex-direction: column;
    justify-content: center;
    margin-left: 15px;
-}
-
-.teacher-languages {
-   flex: 1;
-   text-align: right;
-   font-size: 0.9rem;
-   font-weight: 400;
-   color: #555;
 }
 
 footer {
@@ -279,14 +277,14 @@ footer {
    margin-bottom: 15px;
 }
 
-.teacher-container>p {
+.user-container>p {
    font-size: 1rem;
    font-weight: 600;
    margin: 0;
    color: #333;
 }
 
-.teacher-container>img {
+.user-container>img {
    width: 50px;
    height: 50px;
    border-radius: 50%;
@@ -329,6 +327,19 @@ p {
    border-radius: 20%;
    image-rendering: auto;
 }
+
+/* .user-container button {
+   width: 20px;
+   height:
+   cursor: pointer;
+   border-radius: 5px;
+}
+
+.user-container:hover > img:nth-last-child(){
+   display: block;
+   width: 20px;
+   height: 20px;
+} */
 
 @media (max-width: 1024px) {
    .parent-container.logged-in {
