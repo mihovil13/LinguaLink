@@ -78,8 +78,9 @@ const UserList = () => {
                   <button
                     className="delete-button"
                     onClick={() => handleDelete(user.user_id)}
+                    aria-label="Obriši korisnika"
                   >
-                    <img src={delete_icon} alt="" />
+                    <img src={delete_icon} alt="Delete" />
                   </button>
                 </div>
               );
