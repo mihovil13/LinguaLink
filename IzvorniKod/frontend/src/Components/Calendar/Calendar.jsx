@@ -34,6 +34,8 @@ const Calendar = () => {
   const [selectedTime, setSelectedTime] = useState(null);
   const [reservedLessons, setReservedLessons] = useState([]);
   const navigate = useNavigate();
+  const [showNotification, setShowNotification] = useState(false);
+
 
   useEffect(() => {
     fetchAvailableTimes();
@@ -53,15 +55,26 @@ const Calendar = () => {
       if (response.status === 200) {
         console.log("response");
         console.log(response.data);
-        const events = response.data
-          .filter((lesson) => lesson.potvrdeno === 0 || lesson.potvrdeno === -1)
-          .map((lesson) => ({
-            id: lesson.predavanjeId,
-            title: lesson.potvrdeno === -1 ? "Nepotvrđeno" : "Rezervirano",
-            start: lesson.datumVrijemePocetka,
-            backgroundColor: lesson.potvrdeno === -1 ? "#ffc107" : "#613c78",
-          }));
+        const filteredLessons = response.data.filter(
+          (lesson) => lesson.potvrdeno !== -1
+        );
 
+        const events = filteredLessons.map((lesson) => ({
+          id: lesson.predavanjeId,
+          title:
+            lesson.potvrdeno === 0
+              ? "Nepotvrđeno"
+              : lesson.potvrdeno === 1
+              ? "Rezervirano"
+              : "Slobodno",
+          start: lesson.datumVrijemePocetka,
+          backgroundColor:
+            lesson.potvrdeno === 0
+              ? "#ffc107"
+              : lesson.potvrdeno === 1
+              ? "#613c78"
+              : "28a745",
+        }));
         setReservedLessons(events);
       }
     } catch (error) {
@@ -141,23 +154,24 @@ const Calendar = () => {
           }
         );
         if (response.status === 200 || response.status === 201) {
-          alert("Rezervacija uspješno spremljena");
+          setShowNotification(true); // Prikaži oblak
+          setTimeout(() => setShowNotification(false), 3000); // Sakrij nakon 3 sekunde
           setIsModalOpen(false);
-
-          // dodajemo tu rezervaciju u kalendar
+        
+          // Dodavanje rezervacije u kalendar
           const calendarApi = calendarRef.current.getApi();
           calendarApi.addEvent({
-            title: `Rezervirano: ${selectedTime}`,
+            title: `Nepotvrđeno: ${selectedTime}`,
             start: `${selectedDate}T${selectedTime}:00`,
             allDay: false,
-            backgroundColor: "#613c78",
+            backgroundColor: "#ffc107",
           });
-
-          // iz slobodnih termina uklanjamo upravo dodani termin
+        
+          // Uklanjanje termina iz slobodnih
           setAvailableTimes((prevTimes) =>
             prevTimes.filter((time) => time !== selectedTime)
           );
-        }
+        }        
       } catch (error) {
         console.error("Greška prilikom stvaranja rezervacije:", error);
         alert("Provjeri konzolu");
@@ -183,6 +197,9 @@ const Calendar = () => {
 
   return (
     <div>
+      <div id="notification" className={`filter-notification ${showNotification ? 'show' : ''}`}>
+        Rezervacija uspješno spremljena!
+      </div>
       <a href="/" className="logo-link">
         <img src={logo_icon} alt="Logo" className="logo" />
       </a>
@@ -221,6 +238,7 @@ const Calendar = () => {
         }}
       />
 
+<<<<<<< HEAD
       <div className="timeslots">
         {selectedDate ? (
           <div>
@@ -241,6 +259,30 @@ const Calendar = () => {
           <p>Molimo kliknite na datum za prikaz dostupnih termina.</p>
         )}
       </div>
+=======
+      {user.uloga !== "Učitelj" && (
+        <div className="timeslots">
+          {selectedDate ? (
+            <div>
+              <h3>Dostupni termini za {formatEuropeanDate(selectedDate)}:</h3>
+              <div className="times">
+                {availableTimes.map((time) => (
+                  <button
+                    key={time}
+                    onClick={() => handleTimeClick(time)} // Otvara modal na klik
+                    className="time-button"
+                  >
+                    {time}
+                  </button>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <p>Molimo kliknite na datum za prikaz dostupnih termina.</p>
+          )}
+        </div>
+      )}
+>>>>>>> main
 
       {/* Modal za potvrdu rezervacije */}
       <Modal

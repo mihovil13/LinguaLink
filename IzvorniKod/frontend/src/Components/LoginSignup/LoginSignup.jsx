@@ -6,7 +6,11 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
+
+
 const LoginSignup = () => {
+  const [error, setError] = useState("");
+  const [showNotification, setShowNotification] = useState(false);
   const navigate = useNavigate(); // za preusmjeravanje na login page
   const [loginData, setLoginData] = useState({
     email: "",
@@ -31,31 +35,34 @@ const LoginSignup = () => {
         "http://localhost:8080/api/korisnici/login",
         loginData
       );
-
+    
       if (response.status === 200) {
         const token = response.data.token; // dohvaćamo token i spremamo ga
         localStorage.setItem("token", token);
-
+    
         const profileResponse = await axios.get(
           "http://localhost:8080/api/moj-profil",
           {
-            // slanje get zahtjeva prema backendu
             headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`, // u headerima šaljemo token
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
           }
         );
-
+    
         if (profileResponse.status === 200) {
           navigate("/profile");
         }
       }
     } catch (error) {
-      alert(error.response?.data || "Došlo je do greške prilikom prijave");
+      setError(error.response?.data || "Došlo je do greške prilikom prijave");
+      setShowNotification(true);
+      setTimeout(() => setShowNotification(false), 3000);
     }
+    
   };
 
   return (
+<<<<<<< HEAD
     <div
       className="container"
       onKeyDown={(e) => {
@@ -65,6 +72,15 @@ const LoginSignup = () => {
         }
       }}
     >
+=======
+      
+    <div className="container">
+      {error && (
+        <div id="notification" className={`filter-notification ${showNotification ? 'show' : ''}`}>
+        {error}
+      </div>
+      )}
+>>>>>>> main
       <a href="/" className="logo-link">
         <img src={logo_icon} alt="Logo" className="logo" />
       </a>

@@ -19,6 +19,9 @@ const LoginRegister = () => {
     uloga: "Učenik",
   });
 
+  const [error, setError] = useState(""); // Za čuvanje greške
+  const [showNotification, setShowNotification] = useState(false); // Za vidljivost obavijesti
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -60,10 +63,15 @@ const LoginRegister = () => {
         }
       }
     } catch (error) {
-      alert(
+      setError(
         error.response?.data ||
           "Došlo je do greške prilikom registracije ili dohvaćanja profila"
       );
+      setShowNotification(true);
+
+      setTimeout(() => {
+        setShowNotification(false); // Sakrij obavijest nakon 5 sekundi
+      }, 5000);
     }
   };
 
@@ -80,6 +88,14 @@ const LoginRegister = () => {
       <a href="/" className="logo-link">
         <img src={logo_icon} alt="Logo" className="logo" />
       </a>
+      
+      {/* Oblak za obavijesti */}
+      {error && (
+        <div id="notification" className={`filter-notification ${showNotification ? 'show' : ''}`}>
+          {error}
+        </div>
+      )}
+
       <div className="header">
         <button
           className="teacher-button"

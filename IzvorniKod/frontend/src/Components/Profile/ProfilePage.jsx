@@ -26,13 +26,17 @@ const ProfilePage = () => {
       // Ukloni token iz localStorage
       localStorage.removeItem("token");
 
-      // Preusmjeri korisnika na login stranicu
+      // Resetiraj korisnika u kontekstu
+      setUser({});
+
+      // Preusmjeri korisnika na početnu stranicu
       navigate("/");
     } catch (error) {
       console.error("Error during logout:", error);
       alert("Došlo je do greške prilikom odjave.");
     }
   };
+
   const location = useLocation();
   // definiramo podatke u korisniku
   const { user, setUser } = useUser() || { user: {}, setUser: () => {} };
@@ -52,11 +56,10 @@ const ProfilePage = () => {
   // u ovom primjeru, polje ovisnosti je prazno (nalazi se na samom kraju hooka),
   // sto znaci da ce se hook izvrsiti prilikom ucitavanja stranice
 
-  useEffect(() => {
-    console.log("Doslo s backenda");
-    console.log(user.id);
-    console.log(user);
-  }, [user]);
+  const [showNotification, setShowNotification] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState("");
+
+
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -90,8 +93,13 @@ const ProfilePage = () => {
               qualifications,
               satnica,
             } = response.data; // iz odgovora uzimamo navedene varijable
-            console.log("odgovor");
-            console.log(response.data);
+
+
+            languagesKnown = languagesKnown || [];
+            languagesToLearn = languagesToLearn || [];
+            languagesTeach = languagesTeach || [];
+            qualifications = qualifications || [];
+
             if (languagesKnown) {
               languagesKnown = languagesKnown.map((entry) => {
                 const [language, level] = entry.split("-");
@@ -135,6 +143,11 @@ const ProfilePage = () => {
               satnica: satnica || "",
             });
 
+<<<<<<< HEAD
+=======
+            console.log("user", user);
+
+>>>>>>> main
             if (!response.data.uloga) {
               //ako korisnilk nema definiranu ulogu, prikazuje se modal za odabir uloge
               setRoleModalOpen(true);
@@ -188,9 +201,9 @@ const ProfilePage = () => {
       return;
     }
 
+    console.log("Saljem na backend", updatedProfile);
+
     try {
-      console.log("Poslano na backend");
-      console.log(updatedProfile);
       const response = await axios.put(
         `${backend}/api/moj-profil`,
         updatedProfile,
@@ -202,14 +215,17 @@ const ProfilePage = () => {
       );
 
       if (response.status === 200) {
-        setUser(editedUser); // spremili smo promjene
-        setEditModalOpen(false); // zatvaramo prozor za uredivanje
-        alert("Profil uspjesno spremljen");
+        setUser(editedUser); // Spremanje promjena
+        setEditModalOpen(false); // Zatvaranje modalnog prozora
+        setNotificationMessage("Profil uspješno spremljen! 🎉"); // Postavljanje poruke
+        setShowNotification(true); // Prikazivanje notifikacije
+
+        setTimeout(() => setShowNotification(false), 3000); // Sakrivanje notifikacije nakon 3 sekunde
       } else {
-        alert("Doslo je do greske prilikom spremanja profila");
+        alert("Došlo je do greške prilikom spremanja profila.");
       }
     } catch (error) {
-      console.error("Error during profile saving:", error);
+      console.error("Greška prilikom spremanja profila:", error);
       alert("Došlo je do greške prilikom spremanja profila.");
     }
   };
@@ -333,6 +349,12 @@ const ProfilePage = () => {
 
   return (
     <div className="profile-page">
+      <div
+        id="notification"
+        className={`filter-notification ${showNotification ? "show" : ""}`}
+      >
+        {notificationMessage}
+      </div>
       <a href="/" className="logo-link">
         <img src={logo_icon} alt="Logo" className="logo" />
       </a>
@@ -484,14 +506,30 @@ const ProfilePage = () => {
             <button className="edit-profile-button" onClick={handleEditProfile}>
               Uredi profil
             </button>
+            <button
+              className="zahtjevi-button"
+              onClick={() => navigate(`/requests/${user.id}`)}
+            >
+              Moji zahtjevi
+            </button>
           </div>
           <div className="profile-buttons">
-            <button
-              className="teachers-button"
-              onClick={() => navigate("/teachers")}
-            >
-              Učitelji
-            </button>
+            {user.uloga === "Učenik" && (
+              <button
+                className="teachers-button"
+                onClick={() => navigate("/teachers")}
+              >
+                Učitelji
+              </button>
+            )}
+            {user.uloga === "Učitelj" && (
+              <button
+                className="calendar-button"
+                onClick={() => navigate(`/calendar/${user.id}`)}
+              >
+                Moj kalendar
+              </button>
+            )}
             <button className="odjava-button" onClick={handleLogout}>
               Odjava
             </button>
