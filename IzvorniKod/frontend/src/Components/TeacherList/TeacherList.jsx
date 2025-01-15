@@ -87,6 +87,10 @@ const TeacherList = () => {
             )
           : teachersData; // ako korisnik nije prijavljen, prikazujemo sve
 
+          console.log("ovo je user", user);
+
+          console.log(filteredByUserLanguages);
+
           setTeachers(filteredByUserLanguages);
           setFilteredTeachers(filteredByUserLanguages);
         }

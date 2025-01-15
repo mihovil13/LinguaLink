@@ -10,7 +10,7 @@ const ProfilePage = () => {
   const handleLogout = async () => {
     try {
       const token = localStorage.getItem("token");
-  
+
       if (token) {
         await axios.post(
           "http://localhost:8080/api/auth/logout",
@@ -22,13 +22,13 @@ const ProfilePage = () => {
           }
         );
       }
-  
+
       // Ukloni token iz localStorage
       localStorage.removeItem("token");
-  
+
       // Resetiraj korisnika u kontekstu
       setUser({});
-  
+
       // Preusmjeri korisnika na početnu stranicu
       navigate("/");
     } catch (error) {
@@ -36,7 +36,7 @@ const ProfilePage = () => {
       alert("Došlo je do greške prilikom odjave.");
     }
   };
-  
+
   const location = useLocation();
   // definiramo podatke u korisniku
   const { user, setUser } = useUser() || { user: {}, setUser: () => {} };
@@ -60,11 +60,6 @@ const ProfilePage = () => {
   const [notificationMessage, setNotificationMessage] = useState("");
 
 
-  useEffect(() => {
-    console.log("Doslo s backenda");
-    console.log(user.id);
-    console.log(user);
-  }, [user]);
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -101,8 +96,13 @@ const ProfilePage = () => {
               qualifications,
               satnica,
             } = response.data; // iz odgovora uzimamo navedene varijable
-            console.log("odgovor");
-            console.log(response.data);
+
+
+            languagesKnown = languagesKnown || [];
+            languagesToLearn = languagesToLearn || [];
+            languagesTeach = languagesTeach || [];
+            qualifications = qualifications || [];
+
             if (languagesKnown) {
               languagesKnown = languagesKnown.map((entry) => {
                 const [language, level] = entry.split("-");
@@ -145,7 +145,8 @@ const ProfilePage = () => {
               qualifications: qualifications || [],
               satnica: satnica || "",
             });
-            setEditedUser(user);
+
+            console.log("user", user);
 
             if (!response.data.uloga) {
               //ako korisnilk nema definiranu ulogu, prikazuje se modal za odabir uloge
@@ -199,7 +200,9 @@ const ProfilePage = () => {
       alert("Molimo unesite ispravnu satnicu.");
       return;
     }
-  
+
+    console.log("Saljem na backend", updatedProfile);
+
     try {
       const response = await axios.put(
         "http://localhost:8080/api/moj-profil",
@@ -210,13 +213,13 @@ const ProfilePage = () => {
           },
         }
       );
-  
+
       if (response.status === 200) {
         setUser(editedUser); // Spremanje promjena
         setEditModalOpen(false); // Zatvaranje modalnog prozora
         setNotificationMessage("Profil uspješno spremljen! 🎉"); // Postavljanje poruke
         setShowNotification(true); // Prikazivanje notifikacije
-  
+
         setTimeout(() => setShowNotification(false), 3000); // Sakrivanje notifikacije nakon 3 sekunde
       } else {
         alert("Došlo je do greške prilikom spremanja profila.");
@@ -226,7 +229,6 @@ const ProfilePage = () => {
       alert("Došlo je do greške prilikom spremanja profila.");
     }
   };
-  
 
   // funkciju koristimo za mijenjanje postojećih vrijednosti, a ne stvaranje novih
   const handleInputChange = (field, index, value, listType) => {
@@ -313,9 +315,12 @@ const ProfilePage = () => {
 
   return (
     <div className="profile-page">
-    <div id="notification" className={`filter-notification ${showNotification ? 'show' : ''}`}>
-      {notificationMessage}
-    </div>
+      <div
+        id="notification"
+        className={`filter-notification ${showNotification ? "show" : ""}`}
+      >
+        {notificationMessage}
+      </div>
       <a href="/" className="logo-link">
         <img src={logo_icon} alt="Logo" className="logo" />
       </a>
