@@ -51,13 +51,13 @@ const ProfilePage = () => {
   // stvaramo stanje koje pohranjuje privremene podatke korisnika kad uredujemo profil
   const [editedUser, setEditedUser] = useState(user);
 
+  const [showNotification, setShowNotification] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState("");
+
   // useEffect je hook koji upravlja stvarima poput dohvacanja podataka, manipulacije DOM-a itd...
   // sastoji se od funkcije, i od polja ovisnosti koje nareduje kada ce se funkcija izvrsiti
   // u ovom primjeru, polje ovisnosti je prazno (nalazi se na samom kraju hooka),
   // sto znaci da ce se hook izvrsiti prilikom ucitavanja stranice
-
-  const [showNotification, setShowNotification] = useState(false);
-  const [notificationMessage, setNotificationMessage] = useState("");
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -166,10 +166,10 @@ const ProfilePage = () => {
   //modal za odabir uloge
   const handleRoleSelection = (role) => {
     const updatedUser = { ...user, uloga: role };
-    setUser(updatedUser); //update varijable korisnika s odabranom ulogom
-    setRoleModalOpen(false); //zatvaranje modala
+    setUser(updatedUser); // Ažuriraj korisnika s odabranom ulogom
+    setRoleModalOpen(false); // Zatvori modal
 
-    //slanje podataka u updajtanom korisniku na backend
+    // Pošalji ažuriranu ulogu na backend
     axios
       .put(`${backend}/api/moj-profil`, updatedUser, {
         headers: {
@@ -178,12 +178,16 @@ const ProfilePage = () => {
       })
       .then((response) => {
         if (response.status === 200) {
-          alert("Uloga uspješno postavljena!");
+          setNotificationMessage("Uloga uspješno postavljena! 🎉");
+          setShowNotification(true);
+          setTimeout(() => setShowNotification(false), 3000); // Sakrij notifikaciju nakon 3 sekunde
         }
       })
       .catch((error) => {
         console.error("Error saving role:", error);
-        alert("Došlo je do greške pri spremanju uloge.");
+        setNotificationMessage("Došlo je do greške pri spremanju uloge.");
+        setShowNotification(true);
+        setTimeout(() => setShowNotification(false), 3000); // Sakrij notifikaciju nakon 3 sekunde
       });
   };
 
@@ -209,7 +213,7 @@ const ProfilePage = () => {
       if (response.status === 200) {
         setUser(editedUser); // Spremanje promjena
         setEditModalOpen(false); // Zatvaranje modalnog prozora
-        setNotificationMessage("Profil uspješno spremljen! 🎉"); // Postavljanje poruke
+        setNotificationMessage("Profil uspješno spremljen!"); // Postavljanje poruke
         setShowNotification(true); // Prikazivanje notifikacije
 
         setTimeout(() => setShowNotification(false), 3000); // Sakrivanje notifikacije nakon 3 sekunde
