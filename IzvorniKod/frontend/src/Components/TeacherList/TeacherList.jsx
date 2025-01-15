@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./TeacherList.css";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import logo_icon from "../Assets/logo-prototip3.png";
 import { useUser } from "../../UserContext";
 
@@ -14,7 +14,7 @@ const TeacherList = () => {
   const [filtersApplied, setFiltersApplied] = useState(false);
   const [qualificationFilters, setQualificationfilters] = useState([]);
   const navigate = useNavigate();
-  const {user} = useUser();
+  const { user } = useUser();
 
   const styles = [
     "Vizualni",
@@ -43,10 +43,9 @@ const TeacherList = () => {
 
   const qualifications = ["Profesor", "Izvorni govornik", "Certifikat"];
 
+
   useEffect(() => {
-    if (!user.id) {
-      return;
-    }
+
     const token = localStorage.getItem("token");
     if (token) {
       setIsLoggedIn(true);
@@ -54,13 +53,14 @@ const TeacherList = () => {
 
     const fetchTeacherData = async () => {
       try {
+        console.log("Probali smo")
         const response = await axios.get("http://localhost:8080/teachers", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
         if (response.status === 200) {
-          console.log(response.data);
+          console.log("U IFU SMO");
           //languagesTeach/qualifications podatak se iz backenda vraca kao string
           //ovom funkcijom pretvaramo taj podatak u polje
           const teachersData = response.data.map((teacher) => ({
@@ -69,30 +69,39 @@ const TeacherList = () => {
               ? teacher.languagesTeach.map((lang) => lang.nazivJezika.trim())
               : [], // Pretvorba jezika u niz,
             qualifications: teacher.qualifications
-              ? teacher.qualifications
-                  .map((qualification) => qualification.trim())
+              ? teacher.qualifications.map((qualification) =>
+                  qualification.trim()
+                )
               : [],
           }));
 
           console.log(teachersData);
 
-        //ako je korisnik prijavljen, i ima jezike u listi, filtriraj učitelje prema njegovim jezicima
-        const filteredByUserLanguages = token && user.languagesToLearn.length > 0
-          ? teachersData.filter((teacher) =>
-              teacher.languagesTeach.some((lang) =>
-                user.languagesToLearn
-                  .map((l) => l.nazivJezika.trim())
-                  .includes(lang)
-              )
-            )
-          : teachersData; // ako korisnik nije prijavljen, prikazujemo sve
+          //ako je korisnik prijavljen, i ima jezike u listi, filtriraj učitelje prema njegovim jezicima
+          const filteredByUserLanguages =
+            token && user.languagesToLearn.length > 0
+              ? teachersData.filter((teacher) =>
+                  teacher.languagesTeach.some((lang) =>
+                    user.languagesToLearn
+                      .map((l) => l.nazivJezika.trim())
+                      .includes(lang)
+                  )
+                )
+              : teachersData; // ako korisnik nije prijavljen, prikazujemo sve
 
           console.log("ovo je user", user);
 
           console.log(filteredByUserLanguages);
 
-          setTeachers(filteredByUserLanguages);
+          setTeachers(teachersData);
           setFilteredTeachers(filteredByUserLanguages);
+
+          if (user.languagesToLearn.length > 0) {
+            const userLanguages = user.languagesToLearn.map((l) =>
+              l.nazivJezika.trim()
+            );
+            setLanguageFilters(userLanguages);
+          }
         }
       } catch (error) {
         console.error("Error fetching teacher list:", error);
@@ -144,19 +153,6 @@ const TeacherList = () => {
     setQualificationfilters([]);
     setFilteredTeachers(teachers);
     setFiltersApplied(false);
-
-    
-    if (user.languagesToLearn.length > 0) {
-      const filteredByUserLanguages = teachers.filter((teacher) =>
-        teacher.languagesTeach.some((lang) =>
-          user.languagesToLearn
-            .map((l) => l.nazivJezika.trim())
-            .includes(lang)
-        )
-      );
-      setFilteredTeachers(filteredByUserLanguages);
-    }
-
   };
 
   //funkcija za izmjenu filtra jezika
@@ -187,8 +183,8 @@ const TeacherList = () => {
   };
 
   const handleTeacherClick = (teacherId) => {
-    navigate(`/teacher/${teacherId}`)
-  }
+    navigate(`/teacher/${teacherId}`);
+  };
 
   return (
     <div
@@ -227,10 +223,12 @@ const TeacherList = () => {
               </div>
             ))
           ) : (
-            <p className="empty-message">Nema dostupnih učitelja prema odabranim filtrima.</p>
+            <p className="empty-message">
+              Nema dostupnih učitelja prema odabranim filtrima.
+            </p>
           )}
         </div>
-     </div>
+      </div>
 
       {isLoggedIn && (
         <div className="filter-container">
