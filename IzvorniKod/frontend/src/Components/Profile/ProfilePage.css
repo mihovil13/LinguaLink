@@ -92,7 +92,6 @@
    background-color: #4a2c5f;
 }
 
-<<<<<<< HEAD
 .profile-imagetext input {
    display: none;
 }
@@ -123,8 +122,6 @@
    height: 20px;
    cursor: pointer;
 }
-=======
->>>>>>> main
 
 @media (max-width: 768px) {
    .teachers-button,
