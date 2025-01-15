@@ -305,37 +305,33 @@ const ProfilePage = () => {
     setEditedUser({ ...editedUser, [listType]: updatedList });
   };
 
-  const handleFileUpload = async (file) => {
-    const formData = new FormData();
-    formData.append("profileImage", file);
-
+  const handleImageUrlUpload = async (imageUrl) => {
     try {
       const response = await axios.post(
-        `${backend}/api/upload-profile-image`,
-        formData,
+        `${backend}/api/moj-profil/upload-profile-image-url`, // Nova ruta koja očekuje URL slike
+        { imageUrl }, // Šaljemo URL slike u tijelu POST zahtjeva
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
-            "Content-Type": "multipart/form-data",
           },
         }
       );
 
       if (response.status === 200) {
-        alert("Slika uspješno spremljena!");
-        setUser({ ...user, profileImageUrl: response.data.imageUrl });
+        alert("Slika uspješno promijenjena!");
+        setUser({ ...user, profileImageUrl: response.data.imageUrl }); // Ažuriraj korisnički profil s novim URL-om
       } else {
         alert("Provjeri konzolu");
       }
     } catch (error) {
-      console.error("Greška prilikom uploada slike: ", error);
+      console.error("Greška prilikom promjene slike: ", error);
     }
   };
 
   const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      handleFileUpload(file);
+    const imageUrl = event.target.value; // Dohvati URL koji korisnik unosi u input
+    if (imageUrl) {
+      handleImageUrlUpload(imageUrl); // Pozovi funkciju za upload URL-a
     }
   };
 
@@ -477,7 +473,7 @@ const ProfilePage = () => {
           <div className="profile-image-container">
             <img
               src={user.profileImageUrl || profileimg}
-              alt={`${user.ime}'s profile`}
+              alt={`${user.ime}'s profile picture`}
               className="profile-picture-large"
             />
             <label htmlFor="input-file">
