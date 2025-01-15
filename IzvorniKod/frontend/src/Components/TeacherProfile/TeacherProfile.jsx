@@ -3,6 +3,8 @@ import "./TeacherProfile.css";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import logo_icon from "../Assets/logo-prototip3.png";
+import { useUser } from "../../UserContext";
+
 
 const TeacherProfile = () => {
   const backend = "http://localhost:8080";
@@ -20,6 +22,10 @@ const TeacherProfile = () => {
     qualifications: [{ kvalifikacije: "" }],
     satnica: "",
   });
+  const { user, setUser } = useUser();
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const toggleDropdown = () => setIsDropdownOpen((prev) => !prev);
+  
 
   //dohvat podataka o ucitelju prilikom prvog ucitavanja stranice
   useEffect(() => {
@@ -85,11 +91,69 @@ const TeacherProfile = () => {
     fetchTeacherProfile();
   }, [location, navigate]);
 
+  const getToken = () => {
+    return localStorage.getItem("token");
+  };
+
+  const handleLogout = async () => {
+    try {
+      const token = getToken();
+
+      if (token) {
+        // Poziv backendu za odjavu
+        await axios.post(
+          `${backend}/api/auth/logout`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+      }
+
+      // Resetiranje korisničkih podataka
+      setUser({});
+
+      // Brisanje tokena iz localStorage
+      localStorage.removeItem("token");
+
+      // Preusmjeravanje na glavnu stranicu
+      navigate("/");
+    } catch (error) {
+      console.error("Greška prilikom odjave:", error);
+      alert("Došlo je do greške prilikom odjave.");
+    }
+  };
+
   return (
     <div className="profile-page">
       <a href="/" className="logo-link">
         <img src={logo_icon} alt="Logo" className="logo" />
       </a>
+      <div className="user-profile">
+        <img
+          src="https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"
+          alt="Profile"
+          className="profile-icon"
+          onClick={toggleDropdown}
+        />
+        <span
+          className="user-name"
+          onClick={toggleDropdown}
+        >
+          {user.ime} {user.prezime[0]}.
+        </span>
+        {isDropdownOpen && (
+          <div className="dropdown-menu">
+            <button onClick={() => navigate("/profile")}>Profil</button>
+            <button onClick={() => navigate(`/requests/${user.id}`)}>Zahtjevi</button>
+            <button onClick={handleLogout}>
+              Odjava
+            </button>
+          </div>
+        )}
+      </div>
       <div className="profile-sidebar">
         <div className="profile-podaci">
           <span>Osobni podaci</span>

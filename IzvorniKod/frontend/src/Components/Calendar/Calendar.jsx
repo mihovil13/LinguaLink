@@ -17,14 +17,13 @@ const getToken = () => {
   return localStorage.getItem("token");
 };
 
-// Funkcija za pronalazak prvog dana trenutnog mjeseca
 const getFirstDayOfCurrentMonth = () => {
   const today = new Date();
-  return new Date(today.getFullYear(), today.getMonth(), 1); // Prvi dan trenutnog mjeseca
+  return new Date(today.getFullYear(), today.getMonth(), 1);
 };
 
 const Calendar = () => {
-  const { user } = useUser();
+  const { user, setUser } = useUser();
   const { teacherId } = useParams();
   const calendarRef = useRef(null);
   const [selectedDate, setSelectedDate] = useState(null);
@@ -35,7 +34,7 @@ const Calendar = () => {
   const [reservedLessons, setReservedLessons] = useState([]);
   const navigate = useNavigate();
   const [showNotification, setShowNotification] = useState(false);
-
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   useEffect(() => {
     fetchAvailableTimes();
@@ -53,8 +52,6 @@ const Calendar = () => {
         }
       );
       if (response.status === 200) {
-        console.log("response");
-        console.log(response.data);
         const filteredLessons = response.data.filter(
           (lesson) => lesson.potvrdeno !== -1
         );
@@ -83,6 +80,37 @@ const Calendar = () => {
     }
   };
 
+  const handleLogout = async () => {
+    try {
+      const token = getToken();
+
+      if (token) {
+        // Poziv backendu za odjavu
+        await axios.post(
+          `${backend}/api/auth/logout`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+      }
+
+      // Resetiranje korisničkih podataka
+      setUser({});
+
+      // Brisanje tokena iz localStorage
+      localStorage.removeItem("token");
+
+      // Preusmjeravanje na glavnu stranicu
+      navigate("/");
+    } catch (error) {
+      console.error("Greška prilikom odjave:", error);
+      alert("Došlo je do greške prilikom odjave.");
+    }
+  };
+
   const handleDateClick = (info) => {
     const clickedDate = new Date(info.dateStr);
     const today = new Date();
@@ -103,9 +131,9 @@ const Calendar = () => {
       ];
 
       const reservedTimes = reservedLessons
-        .filter((lesson) => lesson.start.startsWith(info.dateStr)) // provjeri rezervacije za odabrani datum
+        .filter((lesson) => lesson.start.startsWith(info.dateStr))
         .map((lesson) => {
-          const time = new Date(lesson.start).toTimeString().slice(0, 5); // izvuci vrijeme u formatu HH:mm
+          const time = new Date(lesson.start).toTimeString().slice(0, 5);
           return time;
         });
 
@@ -113,14 +141,13 @@ const Calendar = () => {
         (time) => !reservedTimes.includes(time)
       );
 
-      // ako je odabrani datum danasnji, filtriraj termine prema trenutnom vremenu
       if (clickedDate.getTime() === today.getTime()) {
         const now = new Date();
         const filteredTimes = allTimes.filter((time) => {
           const [hours, minutes] = time.split(":").map(Number);
           const termTime = new Date();
           termTime.setHours(hours, minutes, 0, 0);
-          return termTime > now; // zadrzi samo termine u buducnosti
+          return termTime > now;
         });
         setAvailableTimes(filteredTimes);
       } else {
@@ -135,8 +162,6 @@ const Calendar = () => {
   };
 
   const confirmReservation = async () => {
-    console.log(user.id);
-    console.log(teacherId);
     if (selectedDate && selectedTime && user.id !== teacherId) {
       const predavanjeData = {
         ucenikId: user.id,
@@ -156,11 +181,10 @@ const Calendar = () => {
           }
         );
         if (response.status === 200 || response.status === 201) {
-          setShowNotification(true); // Prikaži oblak
-          setTimeout(() => setShowNotification(false), 3000); // Sakrij nakon 3 sekunde
+          setShowNotification(true);
+          setTimeout(() => setShowNotification(false), 3000);
           setIsModalOpen(false);
-        
-          // Dodavanje rezervacije u kalendar
+
           const calendarApi = calendarRef.current.getApi();
           calendarApi.addEvent({
             title: `Nepotvrđeno: ${selectedTime}`,
@@ -168,12 +192,11 @@ const Calendar = () => {
             allDay: false,
             backgroundColor: "#ffc107",
           });
-        
-          // Uklanjanje termina iz slobodnih
+
           setAvailableTimes((prevTimes) =>
             prevTimes.filter((time) => time !== selectedTime)
           );
-        }        
+        }
       } catch (error) {
         console.error("Greška prilikom stvaranja rezervacije:", error);
         alert("Provjeri konzolu");
@@ -189,7 +212,7 @@ const Calendar = () => {
   };
 
   const formatEuropeanDate = (date) => {
-    const [year, month, day] = date.split("-"); // Pretpostavlja format YYYY-MM-DD
+    const [year, month, day] = date.split("-");
     return `${day}.${month}.${year}`;
   };
 
@@ -197,10 +220,35 @@ const Calendar = () => {
     setIsModalOpen(false);
   };
 
+  const toggleDropdown = () => setIsDropdownOpen((prev) => !prev);
+
   return (
     <div>
       <div id="notification" className={`filter-notification ${showNotification ? 'show' : ''}`}>
         Rezervacija uspješno spremljena!
+      </div>
+      <div className="user-profile">
+        <img
+          src="https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"
+          alt="Profile"
+          className="profile-icon"
+          onClick={toggleDropdown}
+        />
+        <span
+          className="user-name"
+          onClick={toggleDropdown}
+        >
+          {user.ime} {user.prezime[0]}.
+        </span>
+        {isDropdownOpen && (
+          <div className="dropdown-menu">
+            <button onClick={() => navigate("/profile")}>Profil</button>
+            <button onClick={() => navigate(`/requests/${user.id}`)}>Zahtjevi</button>
+            <button onClick={handleLogout}>
+              Odjava
+            </button>
+          </div>
+        )}
       </div>
       <a href="/" className="logo-link">
         <img src={logo_icon} alt="Logo" className="logo" />
