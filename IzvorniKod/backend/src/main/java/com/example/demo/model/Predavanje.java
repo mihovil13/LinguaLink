@@ -40,11 +40,11 @@ public class Predavanje {
         this.datumVrijemePocetka = datumVrijemePocetka;
     }
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "ucenik_id", insertable = false, updatable = false)
     private Ucenik ucenik;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "ucitelj_id", insertable = false, updatable = false)
     private Ucitelj ucitelj;
 

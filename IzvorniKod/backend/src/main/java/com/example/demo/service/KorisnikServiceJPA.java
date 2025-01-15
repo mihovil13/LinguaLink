@@ -9,6 +9,7 @@ import com.example.demo.repository.UciteljRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -52,17 +53,6 @@ public class KorisnikServiceJPA implements KorisnikService {
 
     }
 
-
-    @Override
-    public Korisnik login(Korisnik korisnik) {
-        Optional<Korisnik> existingKorisnik = korisnikRepository.findByEmailAndLozinka(korisnik.getEmail(), korisnik.getLozinka());
-        if (existingKorisnik.isEmpty()) {
-            throw new IllegalArgumentException("Neispravni podaci za prijavu.");
-        }
-        System.out.println("NOVI KORISNIK SE ULOGIRAO!!");
-        return existingKorisnik.get();
-    }
-
     public Optional<Korisnik> getKorisnik(String email) {
         return korisnikRepository.findByEmail(email);
     }
@@ -101,28 +91,17 @@ public class KorisnikServiceJPA implements KorisnikService {
         return ResponseEntity.notFound().build();
     }
 
-
-    /**
-     * Pohranjuje korisnika iz OAuth2 tokena.
-     *
-     * @param email   Email korisnika iz tokena
-     * @param name    Ime korisnika iz tokena
-     * @param uloga   Uloga korisnika (npr. "Učenik" ili "Učitelj")
-     */
-    public void saveKorisnikFromToken(String email, String name, String uloga) {
-        // Provjeri postoji li korisnik u bazi
-        Optional<Korisnik> existingKorisnik = korisnikRepository.findByEmail(email);
-        if (existingKorisnik.isEmpty()) {
-            // Ako korisnik ne postoji, kreiraj novog
-            Korisnik noviKorisnik = new Korisnik();
-            noviKorisnik.setEmail(email);
-            noviKorisnik.setIme(name.split(" ")[0]); // Pretpostavka: prvo ime
-            noviKorisnik.setPrezime(name.split(" ").length > 1 ? name.split(" ")[1] : ""); // Pretpostavka: drugo prezime
-            noviKorisnik.setLozinka("default_lozinka");
-            noviKorisnik.setUloga(uloga);
-            korisnikRepository.save(noviKorisnik);
+    @Override
+    public List<Korisnik> getAllUsersExceptAdmins() {
+        return korisnikRepository.findByUlogaNot("Admin");
+    }
+    @Override
+    public boolean deleteUserById(Long id) {
+        if (korisnikRepository.existsById(id)) {
+            korisnikRepository.deleteById(id);
+            return true;
+        } else {
+            return false; // Korisnik s danim ID-em ne postoji
         }
     }
-
-
 }
