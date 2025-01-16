@@ -2,7 +2,6 @@
   display: flex;
   align-items: flex-start;
   height: 70vh;
-  width: 80vw;
   background-color: #f9f9f9;
   border: 3px solid #ddd;
   border-radius: 10px;
@@ -82,6 +81,7 @@
   width: 100%;
   gap: 10px;
   margin-top: 5px;
+  justify-content: center;
 }
 ul {
   list-style: none;
@@ -113,10 +113,10 @@ p {
 .jezici-koje-znam > div > button,
 .jezici-koje-zelim-nauciti > button,
 .jezici-koje-zelim-nauciti > div > button,
-.spremi-zatvori > button,
 .odjava-button,
 .calendar-button,
-.admin-button {
+.admin-button,
+.lections-button {
   background-color: #613c78;
   padding: 10px 15px; 
   color: #fff;
@@ -125,7 +125,14 @@ p {
   border-radius: 10px;
   cursor: pointer;
   text-align: center; 
-  width: auto; 
+  width: auto;
+}
+
+.spremi-zatvori > button,
+.jezici-koje-znam > button,
+.jezici-koje-zelim-nauciti > button,
+.tooltip-container {
+  width: auto;
 }
 
 .calendar-button:hover,
@@ -366,7 +373,6 @@ p {
 .role-button:hover {
   background-color: #0056b3;
 }
-
 
 @media (max-width: 768px) {
   .profile-page {
