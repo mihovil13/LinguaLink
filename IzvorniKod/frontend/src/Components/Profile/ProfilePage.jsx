@@ -454,7 +454,7 @@ const ProfilePage = () => {
             {user.qualifications && user.qualifications.length > 0 ? (
               <ul>
                 {user.qualifications.map((item, index) => (
-                  <li key={index}>{item.kvalifikacije}</li>
+                  <li key={index}>{item.kvalifikacije === "Izvorni_govornik" ? "Izvorni govornik" : item.kvalifikacije}</li>
                 ))}
               </ul>
             ) : (
