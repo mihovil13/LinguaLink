@@ -30,6 +30,12 @@ public class UcenikServiceJPA implements UcenikService {
         ucenikRepository.save(ucenik);
     }
 
+
+    public Ucenik getUcenikById(Long Id){
+       return  ucenikRepository.getUcenikById(Id);
+    }
+
+
     @Override
     public Ucenik getUcenik(String email) {
         return ucenikRepository.getUcenikByEmail(email);
