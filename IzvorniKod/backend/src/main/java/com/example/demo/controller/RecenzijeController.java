@@ -5,6 +5,7 @@ import com.example.demo.DTO.RecenzijaPostDTO;
 import com.example.demo.mapper.RecenzijaGetMapper;
 import com.example.demo.mapper.RecenzijaPostMapper;
 import com.example.demo.model.Recenzija;
+import com.example.demo.model.Ucenik;
 import com.example.demo.model.Ucitelj;
 import com.example.demo.service.PredavanjeServiceJPA;
 import com.example.demo.service.RecenzijaServiceJPA;
@@ -48,5 +49,19 @@ public class RecenzijeController {
         }
         return ResponseEntity.ok(lista);
     }
+    @GetMapping("/recenzije-ucenik/{id}")
+    public ResponseEntity<List<RecenzijaGetDTO>> sendRecenzijeUcenik(@PathVariable Long id) {
+        List<RecenzijaGetDTO> lista = new ArrayList<>();
+        Ucenik ucenik = ucenikServiceJPA.getUcenikById(id);
+        List<Recenzija> listaRecenzija = ucenik.getRecenzije();
+        RecenzijaGetMapper mapper = new RecenzijaGetMapper(ucenikServiceJPA);
+        for(Recenzija r:listaRecenzija){
+            RecenzijaGetDTO dto = mapper.recenzijaToDTO(r);
+            lista.add(dto);
+        }
+        return ResponseEntity.ok(lista);
+    }
+
+
 
 }
