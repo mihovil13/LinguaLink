@@ -174,27 +174,34 @@ const ProfilePage = () => {
 
   //modal za odabir uloge
   const handleRoleSelection = (role) => {
-    const updatedUser = { ...user, uloga: role };
-    setUser(updatedUser); //update varijable korisnika s odabranom ulogom
-    setRoleModalOpen(false); //zatvaranje modala
+  const updatedUser = { ...user, uloga: role };
+  setUser(updatedUser); // Ažuriraj korisnički objekt s odabranom ulogom
+  setRoleModalOpen(false); // Zatvori modal
 
-    //slanje podataka u updajtanom korisniku na backend
-    axios
-      .put(`${backend}/api/moj-profil`, updatedUser, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      })
-      .then((response) => {
-        if (response.status === 200) {
-          alert("Uloga uspješno postavljena!");
-        }
-      })
-      .catch((error) => {
-        console.error("Error saving role:", error);
-        alert("Došlo je do greške pri spremanju uloge.");
-      });
-  };
+  // Slanje podataka o ažuriranom korisniku na backend
+  axios
+    .put(`${backend}/api/moj-profil`, updatedUser, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
+    .then((response) => {
+      if (response.status === 200) {
+        setNotificationMessage("Uloga uspješno postavljena! 🎉"); // Postavi poruku
+        setShowNotification(true); // Prikaži notifikaciju
+
+        setTimeout(() => setShowNotification(false), 3000); // Sakrij notifikaciju nakon 3 sekunde
+      }
+    })
+    .catch((error) => {
+      console.error("Error saving role:", error);
+      setNotificationMessage("Došlo je do greške pri spremanju uloge. 😔");
+      setShowNotification(true);
+
+      setTimeout(() => setShowNotification(false), 3000);
+    });
+};
+
 
   const handleSaveProfile = async (updatedProfile = editedUser) => {
     if (isNaN(updatedProfile.satnica) || updatedProfile.satnica < 0) {
@@ -223,11 +230,15 @@ const ProfilePage = () => {
 
         setTimeout(() => setShowNotification(false), 3000); // Sakrivanje notifikacije nakon 3 sekunde
       } else {
-        alert("Došlo je do greške prilikom spremanja profila.");
+        setNotificationMessage("Došlo je do greške prilikom spremanja profila"); // Postavljanje poruke
+        setShowNotification(true); // Prikazivanje notifikacije
+        setTimeout(() => setShowNotification(false), 3000);
       }
     } catch (error) {
       console.error("Greška prilikom spremanja profila:", error);
-      alert("Došlo je do greške prilikom spremanja profila.");
+      setNotificationMessage("Došlo je do greške prilikom spremanja profila"); // Postavljanje poruke
+      setShowNotification(true); // Prikazivanje notifikacije
+      setTimeout(() => setShowNotification(false), 3000)
     }
   };
 
@@ -504,9 +515,14 @@ const ProfilePage = () => {
         </div>
         <div className="buttons">
           <div className="edit-button">
-            <button className="edit-profile-button" onClick={handleEditProfile}>
-              Uredi profil
-            </button>
+            {(user.uloga === "Učenik" || user.uloga === "Učitelj") && (
+              <button
+                className="edit-profile-button"
+                onClick={handleEditProfile}
+              >
+                Uredi profil
+              </button>
+            )}
             {(user.uloga === "Učenik" || user.uloga === "Učitelj") && (
               <button
                 className="zahtjevi-button"

@@ -34,5 +34,5 @@ public class DemoApplication {
 			repository.save(new Korisnik("Ivan", "Horvat", "ivan.horvat@gmail.com",  passwordEncoder.encode("ovojeadminsifra"), "Admin"));
 		};
 	}
-	
+		
 }
