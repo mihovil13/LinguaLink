@@ -6,6 +6,7 @@ import com.example.demo.mapper.RecenzijaGetMapper;
 import com.example.demo.mapper.RecenzijaPostMapper;
 import com.example.demo.model.Recenzija;
 import com.example.demo.model.Ucitelj;
+import com.example.demo.service.PredavanjeServiceJPA;
 import com.example.demo.service.RecenzijaServiceJPA;
 import com.example.demo.service.UcenikServiceJPA;
 import com.example.demo.service.UciteljServiceJPA;
@@ -20,15 +21,18 @@ public class RecenzijeController {
     private final UcenikServiceJPA ucenikServiceJPA;
     private final UciteljServiceJPA uciteljServiceJPA;
     private final RecenzijaServiceJPA recenzijaServiceJPA;
-    public RecenzijeController(UcenikServiceJPA ucenikServiceJPA, UciteljServiceJPA uciteljServiceJPA, RecenzijaServiceJPA recenzijaServiceJPA) {
+    private final PredavanjeServiceJPA predavanjeServiceJPA;
+
+    public RecenzijeController(UcenikServiceJPA ucenikServiceJPA, UciteljServiceJPA uciteljServiceJPA, RecenzijaServiceJPA recenzijaServiceJPA, PredavanjeServiceJPA predavanjeServiceJPA) {
         this.ucenikServiceJPA = ucenikServiceJPA;
         this.uciteljServiceJPA = uciteljServiceJPA;
         this.recenzijaServiceJPA = recenzijaServiceJPA;
+        this.predavanjeServiceJPA = predavanjeServiceJPA;
     }
 
     @PostMapping("/api/recenzije")
     public ResponseEntity<?> fetchRecenzija(@RequestBody RecenzijaPostDTO recenzija) {
-        RecenzijaPostMapper mapper = new RecenzijaPostMapper(ucenikServiceJPA, uciteljServiceJPA);
+        RecenzijaPostMapper mapper = new RecenzijaPostMapper(ucenikServiceJPA, uciteljServiceJPA, predavanjeServiceJPA);
         return recenzijaServiceJPA.saveRecenzija(mapper.toRecenzija(recenzija));
     }
 

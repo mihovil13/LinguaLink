@@ -25,6 +25,10 @@ public class Recenzija {
     @JsonBackReference
     private Ucitelj ucitelj;
 
+    @ManyToOne
+    @JsonBackReference
+    private Predavanje predavanje;
+
     public Recenzija() {
 
     }
@@ -36,6 +40,13 @@ public class Recenzija {
         return id;
     }
 
+    public Predavanje getPredavanje() {
+        return predavanje;
+    }
+
+    public void setPredavanje(Predavanje predavanje) {
+        this.predavanje = predavanje;
+    }
 
     public String getKomentar() {
         return komentar;

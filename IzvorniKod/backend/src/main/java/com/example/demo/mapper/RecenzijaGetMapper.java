@@ -19,6 +19,7 @@ public class RecenzijaGetMapper {
         Ucenik ucenik = ucenikServiceJPA.getUcenikById(recenzija.getUcenik().getId().longValue());
         recenzijaGetDTO.setIme(ucenik.getIme());
         recenzijaGetDTO.setPrezime(ucenik.getPrezime());
+        recenzijaGetDTO.setPredavanje_id(recenzija.getPredavanje().getPredavanjeId());
         return recenzijaGetDTO;
     }
 }
