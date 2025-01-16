@@ -85,7 +85,6 @@ const Calendar = () => {
       const token = getToken();
 
       if (token) {
-        // Poziv backendu za odjavu
         await axios.post(
           `${backend}/api/auth/logout`,
           {},
@@ -97,13 +96,10 @@ const Calendar = () => {
         );
       }
 
-      // Resetiranje korisničkih podataka
       setUser({});
 
-      // Brisanje tokena iz localStorage
       localStorage.removeItem("token");
 
-      // Preusmjeravanje na glavnu stranicu
       navigate("/");
     } catch (error) {
       console.error("Greška prilikom odjave:", error);
@@ -117,18 +113,14 @@ const Calendar = () => {
     today.setHours(0, 0, 0, 0);
 
     if (clickedDate >= today) {
-        // Ažuriraj selektovani datum
         setSelectedDate(info.dateStr);
 
-        // Resetiraj sve ćelije
         document.querySelectorAll('.fc-daygrid-day').forEach(cell => {
             cell.classList.remove('selected');
         });
 
-        // Dodaj klasu za selektovani datum
         info.dayEl.classList.add('selected');
 
-        // Generiši dostupne termine
         const allTimes = [
             "09:00",
             "10:00",
@@ -151,12 +143,19 @@ const Calendar = () => {
             (time) => !reservedTimes.includes(time)
         );
 
+
+
+
+        clickedDate.setHours(0, 0, 0, 0);
+
         if (clickedDate.getTime() === today.getTime()) {
             const now = new Date();
-            const filteredTimes = allTimes.filter((time) => {
+            const filteredTimes = availableTimes.filter((time) => {
                 const [hours, minutes] = time.split(":").map(Number);
                 const termTime = new Date();
                 termTime.setHours(hours, minutes, 0, 0);
+                console.log(termTime);
+                console.log(now);
                 return termTime > now;
             });
             setAvailableTimes(filteredTimes);
