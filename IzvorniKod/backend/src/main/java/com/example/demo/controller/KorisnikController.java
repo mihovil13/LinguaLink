@@ -1,81 +1,61 @@
 package com.example.demo.controller;
 
-import com.example.demo.DTO.KorisnikGetDTO;
-import com.example.demo.config.JwtService;
-import com.example.demo.mapper.KorisnikGetMapper;
 import com.example.demo.model.Korisnik;
-import com.example.demo.model.Ucenik;
-import com.example.demo.model.Ucitelj;
-import com.example.demo.service.KorisnikServiceJPA;
-import com.example.demo.service.UcenikServiceJPA;
-import com.example.demo.service.UciteljServiceJPA;
-import io.jsonwebtoken.Claims;
-import org.springframework.aop.scope.ScopedProxyUtils;
+import com.example.demo.repository.KorisnikRepository;
+import com.example.demo.service.KorisnikService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.config.RepositoryConfigurationSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
-import java.util.Optional;
-
 @RestController
-@RequestMapping("/api/moj-profil")
+//@RequestMapping("/api/korisnici")
+@RequestMapping("/moj-profil")
 public class KorisnikController {
+  /*  private final KorisnikService korisnikService;
 
     @Autowired
-    private final KorisnikServiceJPA korisnikServiceJPA;
-    private final JwtService jwtService;
-    @Autowired
-    private UciteljServiceJPA uciteljServiceJPA;
-    @Autowired
-    private UcenikServiceJPA ucenikServiceJPA;
-
-    public KorisnikController(KorisnikServiceJPA korisnikServiceJPA, JwtService jwtService) {
-        this.korisnikServiceJPA = korisnikServiceJPA;
-        this.jwtService = jwtService;
+    public KorisnikController(KorisnikService korisnikService) {
+        this.korisnikService = korisnikService;
     }
+
+    @PostMapping("/register")
+    public ResponseEntity<String> register(@Valid @RequestBody Korisnik korisnik, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            // Ako postoje greške s login podatcima, prikazujemo ih korisniku
+            StringBuilder errorMessage = new StringBuilder();
+            bindingResult.getAllErrors().forEach(error -> {
+                errorMessage.append(error.getDefaultMessage()).append("\n");
+            });
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage.toString());
+        }
+        System.out.println(korisnik.toString());
+        try {
+            korisnikService.register(korisnik);
+            return ResponseEntity.status(HttpStatus.CREATED).body("Korisnik uspješno registriran!");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+    // Endpoint za prijavu korisnika
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody Korisnik korisnik) {
+        try {
+            korisnikService.login(korisnik);
+            return ResponseEntity.ok("Prijava uspješna!");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+        }
+    }*/
 
     @GetMapping
-    public ResponseEntity<?> fetchData(@RequestHeader(value = "Authorization", required = false) String token,
-                                       Authentication authentication) {
-
-        if (token != null && token.startsWith("Bearer ")) {
-            // Ako je korisnik autentificiran putem JWT tokena
-            token = token.substring(7); // Ukloni "Bearer " prefix
-            String email = jwtService.extractUsername(token);
-            Optional<Korisnik> korisnik  = korisnikServiceJPA.getKorisnik(email);
-            Korisnik korisnik1 = korisnikServiceJPA.getKorisnikByEmail(email);
-            KorisnikGetMapper mapper = new KorisnikGetMapper(ucenikServiceJPA,uciteljServiceJPA);
-            KorisnikGetDTO korisnikGetDTO = mapper.korisnikGetDTO(korisnik1);
-            return ResponseEntity.ok(korisnikGetDTO);
-            /*return korisnik.map(ResponseEntity::ok)
-                    .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
-            //return ResponseEntity.status(HttpStatus.NOT_FOUND).build();*/
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Korisnik nije autentificiran.");
-        }
-
+    public ResponseEntity<String> sayHello(){
+        return ResponseEntity.ok("Pozdrav s mojeg profila!");
     }
 
-    @PutMapping
-    public ResponseEntity<?> dopuniProfil(@RequestHeader(value = "Authorization", required = false) String token,
-                                          Authentication authentication,@RequestBody Map<String, Object> body) {
-        if (token.startsWith("Bearer ") && token != null) {
-            token = token.substring(7);
-            System.out.println(body);
-            String email = jwtService.extractUsername(token);
-            System.out.println(email);
-            Korisnik korisnik = korisnikServiceJPA.getKorisnikByEmail(email);
-
-            return korisnikServiceJPA.updateKorisnik(korisnik, body);
 
 
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-    }
 }

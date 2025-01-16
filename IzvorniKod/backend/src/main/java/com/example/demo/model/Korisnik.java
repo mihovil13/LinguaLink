@@ -39,6 +39,7 @@ public class Korisnik implements UserDetails {
     private String email;
     private String ime;
     private String prezime;
+    @Transient
     private String uloga;
 
     @Enumerated(EnumType.STRING)
@@ -60,11 +61,6 @@ public class Korisnik implements UserDetails {
 
     public Korisnik() {
 
-    }
-    public Korisnik(String ime,String prezime,String email){
-        this.ime = ime;
-        this.prezime = prezime;
-        this.email = email;
     }
 
     public Korisnik(String ime, String prezime, String email, String lozinka) {
@@ -119,7 +115,7 @@ public class Korisnik implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return List.of(new SimpleGrantedAuthority(role.name()));
     }
 
     @Override
@@ -131,7 +127,4 @@ public class Korisnik implements UserDetails {
     public String getUsername() {
         return getEmail();
     }
-
-
-    public Object getRole() {return role;}
 }
