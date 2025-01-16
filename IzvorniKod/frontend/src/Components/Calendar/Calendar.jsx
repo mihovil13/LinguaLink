@@ -297,6 +297,7 @@ const Calendar = () => {
         }}
       />
 
+    {user.uloga !== "Učitelj" && (
     <div className="timeslots">
         {selectedDate ? (
           <div>
@@ -317,7 +318,7 @@ const Calendar = () => {
           <p>Molimo kliknite na datum za prikaz dostupnih termina.</p>
         )}
       </div>
-
+    )}
 
       {/* Modal za potvrdu rezervacije */}
       <Modal
