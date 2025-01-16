@@ -305,11 +305,65 @@ const ProfilePage = () => {
     setEditedUser({ ...editedUser, [listType]: updatedList });
   };
 
-  const handleImageUrlUpload = async (imageUrl) => {
+  // const handleImageUrlUpload = async (imageUrl) => {
+  //   try {
+  //     const response = await axios.post(
+  //       `${backend}/api/moj-profil/upload-profile-image-url`, // Nova ruta koja očekuje URL slike
+  //       { imageUrl }, // Šaljemo URL slike u tijelu POST zahtjeva
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${localStorage.getItem("token")}`,
+  //         },
+  //       }
+  //     );
+
+  //     if (response.status === 200) {
+  //       alert("Slika uspješno promijenjena!");
+  //       setUser({ ...user, profileImageUrl: response.data.imageUrl }); // Ažuriraj korisnički profil s novim URL-om
+  //     } else {
+  //       alert("Provjeri konzolu");
+  //     }
+  //   } catch (error) {
+  //     console.error("Greška prilikom promjene slike: ", error);
+  //   }
+  // };
+
+  // const handleFileChange = (event) => {
+  //   const imageUrl = event.target.value; // Dohvati URL koji korisnik unosi u input
+  //   if (imageUrl) {
+  //     handleImageUrlUpload(imageUrl); // Pozovi funkciju za upload URL-a
+  //   }
+  // };
+
+  const [image, setImage] = useState(null);
+  const [profileImageUrl, setProfileImageUrl] = useState("");
+
+  const handleImage = async (e) => {
+    const selectedImage = e.target.files[0];
+    console.log(selectedImage);
+
+    if (selectedImage) {
+      const base64String = await convertToBase64(selectedImage);
+      setImage(base64String);
+
+      await handleApi(base64String);
+    }
+  };
+
+  const convertToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
+  };
+
+  const handleApi = async (base64String) => {
     try {
       const response = await axios.post(
-        `${backend}/api/moj-profil/upload-profile-image-url`, // Nova ruta koja očekuje URL slike
-        { imageUrl }, // Šaljemo URL slike u tijelu POST zahtjeva
+        `${backend}/api/spremi-sliku`,
+        { image: base64String },
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -318,20 +372,11 @@ const ProfilePage = () => {
       );
 
       if (response.status === 200) {
-        alert("Slika uspješno promijenjena!");
-        setUser({ ...user, profileImageUrl: response.data.imageUrl }); // Ažuriraj korisnički profil s novim URL-om
-      } else {
-        alert("Provjeri konzolu");
+        console.log("Upload successful: ", response.data);
+        setProfileImageUrl(base64String);
       }
     } catch (error) {
-      console.error("Greška prilikom promjene slike: ", error);
-    }
-  };
-
-  const handleFileChange = (event) => {
-    const imageUrl = event.target.value; // Dohvati URL koji korisnik unosi u input
-    if (imageUrl) {
-      handleImageUrlUpload(imageUrl); // Pozovi funkciju za upload URL-a
+      console.error("Error during image upload: ", error);
     }
   };
 
@@ -472,7 +517,7 @@ const ProfilePage = () => {
         <div className="profile-imagetext">
           <div className="profile-image-container">
             <img
-              src={user.profileImageUrl || profileimg}
+              src={profileImageUrl || profileimg}
               alt={`${user.ime}'s profile picture`}
               className="profile-picture-large"
             />
@@ -482,9 +527,9 @@ const ProfilePage = () => {
           </div>
           <input
             type="file"
-            accept="image/jpeg, image/png, image/jpg"
+            accept="image/*"
             id="input-file"
-            onChange={handleFileChange}
+            onChange={handleImage}
           />
           <h1 className="profile-name">{user.ime}</h1>
           <h1 className="profile-surname">{user.prezime}</h1>
