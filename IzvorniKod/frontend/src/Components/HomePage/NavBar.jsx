@@ -22,14 +22,20 @@ const Navbar = () => {
       </div>
       <ul className="navbar-links">
         {user && user.ime && user.prezime ? (
-            <li>
+            <li className="profile-container">
+            <img
+              src="https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"
+              alt="Profile"
+              className="profile-icon-homepage"
+              onClick={handleProfileClick}
+            />
             <button
-                className="navbar-link profile-link"
-                onClick={handleProfileClick}
+              className="profile-link"
+              onClick={handleProfileClick}
             >
-                {user.ime} {user.prezime}
+              {user.ime} {user.prezime}
             </button>
-            </li>
+          </li>
         ) : (
             <>
             <li><a className="navbar-link" href="/login">Prijava</a></li>

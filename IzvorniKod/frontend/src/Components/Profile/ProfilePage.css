@@ -76,7 +76,8 @@
 }
 
 .teachers-button,
-.odjava-button {
+.odjava-button ,
+.admin-button{
    flex: 1 1 calc(50% - 200px); 
    background-color: #613c78;
    color: #fff;
@@ -88,7 +89,8 @@
 
 .edit-profile-button:hover,
 .teachers-button:hover,
-.odjava-button:hover {
+.odjava-button:hover,
+ .admin-button:hover{
    background-color: #4a2c5f;
 }
 
