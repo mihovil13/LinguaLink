@@ -14,7 +14,7 @@ const ProfilePage = () => {
   const getToken = () => {
     return localStorage.getItem("token");
   };
-  
+
   const handleLogout = async () => {
     try {
       const token = getToken();
@@ -454,7 +454,11 @@ const ProfilePage = () => {
             {user.qualifications && user.qualifications.length > 0 ? (
               <ul>
                 {user.qualifications.map((item, index) => (
-                  <li key={index}>{item.kvalifikacije === "Izvorni_govornik" ? "Izvorni govornik" : item.kvalifikacije}</li>
+                  <li key={index}>
+                    {item.kvalifikacije === "Izvorni_govornik"
+                      ? "Izvorni govornik"
+                      : item.kvalifikacije}
+                  </li>
                 ))}
               </ul>
             ) : (
@@ -514,12 +518,20 @@ const ProfilePage = () => {
           </div>
           <div className="profile-buttons">
             {user.uloga === "Učenik" && (
-              <button
-                className="teachers-button"
-                onClick={() => navigate("/teachers")}
-              >
-                Učitelji
-              </button>
+              <div>
+                <button
+                  className="teachers-button"
+                  onClick={() => navigate("/teachers")}
+                >
+                  Učitelji
+                </button>
+                <button
+                  className="lections-button"
+                  onClick={() => navigate(`/lections/${user.id}`)}
+                >
+                  Moje lekcije
+                </button>
+              </div>
             )}
             {user.uloga === "Učitelj" && (
               <button
@@ -542,7 +554,6 @@ const ProfilePage = () => {
             </button>
           </div>
         </div>
-
       </div>
       {isEditModalOpen && (
         <div className="modal">
