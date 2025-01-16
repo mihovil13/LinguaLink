@@ -107,7 +107,7 @@ const Calendar = () => {
     }
   };
 
-  const handleDateClick = (info) => {
+  const handleDateClick = async (info) => {
     const clickedDate = new Date(info.dateStr);
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -131,6 +131,8 @@ const Calendar = () => {
             "15:00",
             "16:00",
         ];
+
+        await fetchAvailableTimes();
 
         const reservedTimes = reservedLessons
             .filter((lesson) => lesson.start.startsWith(info.dateStr))
@@ -194,6 +196,7 @@ const Calendar = () => {
           setTimeout(() => setShowNotification(false), 3000);
           setIsModalOpen(false);
 
+          await fetchAvailableTimes();
           const calendarApi = calendarRef.current.getApi();
           calendarApi.addEvent({
             title: `Nepotvrđeno: ${selectedTime}`,
@@ -352,3 +355,4 @@ const Calendar = () => {
 };
 
 export default Calendar;
+
