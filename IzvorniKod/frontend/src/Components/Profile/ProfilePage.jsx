@@ -526,6 +526,19 @@ const ProfilePage = () => {
                 Uredi profil
               </button>
             )}
+            {user.uloga === "Učenik" && (
+              <div className="first-row-profile-buttons">
+                <button
+                  className="teachers-button"
+                  onClick={() => navigate("/teachers")}
+                >
+                  Učitelji
+                </button>
+                </div>
+            )}
+            
+          </div>
+          <div className="profile-buttons">
             {(user.uloga === "Učenik" || user.uloga === "Učitelj") && (
               <button
                 className="zahtjevi-button"
@@ -534,16 +547,8 @@ const ProfilePage = () => {
                 Moji zahtjevi
               </button>
             )}
-          </div>
-          <div className="profile-buttons">
             {user.uloga === "Učenik" && (
-              <div>
-                <button
-                  className="teachers-button"
-                  onClick={() => navigate("/teachers")}
-                >
-                  Učitelji
-                </button>
+              <div className="first-row-profile-buttons">
                 <button
                   className="lections-button"
                   onClick={() => navigate(`/lections/${user.id}`)}
