@@ -3,17 +3,26 @@ import "./ProfilePage.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import logo_icon from "../Assets/logo-prototip3.png";
+import edit_icon from "../Assets/pencil.png";
+import profileimg from "../Assets/person.jpg";
 import { useUser } from "../../UserContext";
+
+const backend = "http://localhost:8080";
 
 const ProfilePage = () => {
   const navigate = useNavigate();
+  const getToken = () => {
+    return localStorage.getItem("token");
+  };
+
   const handleLogout = async () => {
     try {
-      const token = localStorage.getItem("token");
+      const token = getToken();
 
       if (token) {
+        // Poziv backendu za odjavu
         await axios.post(
-          "http://localhost:8080/api/auth/logout",
+          `${backend}/api/auth/logout`,
           {},
           {
             headers: {
@@ -23,19 +32,23 @@ const ProfilePage = () => {
         );
       }
 
-      // Ukloni token iz localStorage
+      // Resetiranje korisničkih podataka
+      setUser({});
+
+      // Brisanje tokena iz localStorage
       localStorage.removeItem("token");
 
-      // Preusmjeri korisnika na login stranicu
+      // Preusmjeravanje na glavnu stranicu
       navigate("/");
     } catch (error) {
-      console.error("Error during logout:", error);
+      console.error("Greška prilikom odjave:", error);
       alert("Došlo je do greške prilikom odjave.");
     }
   };
+
   const location = useLocation();
   // definiramo podatke u korisniku
-  const {user, setUser } = useUser() || {user:{}, setUser: () => {} };
+  const { user, setUser } = useUser() || { user: {}, setUser: () => {} };
 
   // preko Reactovog useState pratimo je li modal otvoren ili zatvoren
   // na pocetku je zatvoren
@@ -52,11 +65,8 @@ const ProfilePage = () => {
   // u ovom primjeru, polje ovisnosti je prazno (nalazi se na samom kraju hooka),
   // sto znaci da ce se hook izvrsiti prilikom ucitavanja stranice
 
-  useEffect(() => {
-    console.log("Doslo s backenda");
-    console.log(user.id);
-    console.log(user);
-  }, [user]);
+  const [showNotification, setShowNotification] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState("");
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -67,15 +77,12 @@ const ProfilePage = () => {
         if (token) {
           localStorage.setItem("token", token);
 
-          const response = await axios.get(
-            "http://localhost:8080/api/moj-profil",
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-                // slanje upita prema backendu, u headerima se salje token
-              },
-            }
-          );
+          const response = await axios.get(`${backend}/api/moj-profil`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              // slanje upita prema backendu, u headerima se salje token
+            },
+          });
 
           if (response.status === 200) {
             let {
@@ -93,8 +100,12 @@ const ProfilePage = () => {
               qualifications,
               satnica,
             } = response.data; // iz odgovora uzimamo navedene varijable
-            console.log("odgovor");
-            console.log(response.data);
+
+            languagesKnown = languagesKnown || [];
+            languagesToLearn = languagesToLearn || [];
+            languagesTeach = languagesTeach || [];
+            qualifications = qualifications || [];
+
             if (languagesKnown) {
               languagesKnown = languagesKnown.map((entry) => {
                 const [language, level] = entry.split("-");
@@ -123,7 +134,7 @@ const ProfilePage = () => {
 
             // azuriramo podatke s onima iz backenda
             setUser({
-              id : id || null,
+              id: id || null,
               ime: ime || "",
               prezime: prezime || "",
               email: email || "",
@@ -137,7 +148,6 @@ const ProfilePage = () => {
               qualifications: qualifications || [],
               satnica: satnica || "",
             });
-
 
             if (!response.data.uloga) {
               //ako korisnilk nema definiranu ulogu, prikazuje se modal za odabir uloge
@@ -164,27 +174,34 @@ const ProfilePage = () => {
 
   //modal za odabir uloge
   const handleRoleSelection = (role) => {
-    const updatedUser = { ...user, uloga: role };
-    setUser(updatedUser); //update varijable korisnika s odabranom ulogom
-    setRoleModalOpen(false); //zatvaranje modala
+  const updatedUser = { ...user, uloga: role };
+  setUser(updatedUser); // Ažuriraj korisnički objekt s odabranom ulogom
+  setRoleModalOpen(false); // Zatvori modal
 
-    //slanje podataka u updajtanom korisniku na backend
-    axios
-      .put("http://localhost:8080/api/moj-profil", updatedUser, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      })
-      .then((response) => {
-        if (response.status === 200) {
-          alert("Uloga uspješno postavljena!");
-        }
-      })
-      .catch((error) => {
-        console.error("Error saving role:", error);
-        alert("Došlo je do greške pri spremanju uloge.");
-      });
-  };
+  // Slanje podataka o ažuriranom korisniku na backend
+  axios
+    .put(`${backend}/api/moj-profil`, updatedUser, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
+    .then((response) => {
+      if (response.status === 200) {
+        setNotificationMessage("Uloga uspješno postavljena! 🎉"); // Postavi poruku
+        setShowNotification(true); // Prikaži notifikaciju
+
+        setTimeout(() => setShowNotification(false), 3000); // Sakrij notifikaciju nakon 3 sekunde
+      }
+    })
+    .catch((error) => {
+      console.error("Error saving role:", error);
+      setNotificationMessage("Došlo je do greške pri spremanju uloge. 😔");
+      setShowNotification(true);
+
+      setTimeout(() => setShowNotification(false), 3000);
+    });
+};
+
 
   const handleSaveProfile = async (updatedProfile = editedUser) => {
     if (isNaN(updatedProfile.satnica) || updatedProfile.satnica < 0) {
@@ -192,11 +209,11 @@ const ProfilePage = () => {
       return;
     }
 
+    console.log("Saljem na backend", updatedProfile);
+
     try {
-      console.log("Poslano na backend");
-      console.log(updatedProfile);
       const response = await axios.put(
-        "http://localhost:8080/api/moj-profil",
+        `${backend}/api/moj-profil`,
         updatedProfile,
         {
           headers: {
@@ -206,15 +223,22 @@ const ProfilePage = () => {
       );
 
       if (response.status === 200) {
-        setUser(editedUser); // spremili smo promjene
-        setEditModalOpen(false); // zatvaramo prozor za uredivanje
-        alert("Profil uspjesno spremljen");
+        setUser(editedUser); // Spremanje promjena
+        setEditModalOpen(false); // Zatvaranje modalnog prozora
+        setNotificationMessage("Profil uspješno spremljen! 🎉"); // Postavljanje poruke
+        setShowNotification(true); // Prikazivanje notifikacije
+
+        setTimeout(() => setShowNotification(false), 3000); // Sakrivanje notifikacije nakon 3 sekunde
       } else {
-        alert("Doslo je do greske prilikom spremanja profila");
+        setNotificationMessage("Došlo je do greške prilikom spremanja profila"); // Postavljanje poruke
+        setShowNotification(true); // Prikazivanje notifikacije
+        setTimeout(() => setShowNotification(false), 3000);
       }
     } catch (error) {
-      console.error("Error during profile saving:", error);
-      alert("Došlo je do greške prilikom spremanja profila.");
+      console.error("Greška prilikom spremanja profila:", error);
+      setNotificationMessage("Došlo je do greške prilikom spremanja profila"); // Postavljanje poruke
+      setShowNotification(true); // Prikazivanje notifikacije
+      setTimeout(() => setShowNotification(false), 3000)
     }
   };
 
@@ -301,10 +325,46 @@ const ProfilePage = () => {
     setEditedUser({ ...editedUser, [listType]: updatedList });
   };
 
+  const handleImageUrlUpload = async (imageUrl) => {
+    try {
+      const response = await axios.post(
+        `${backend}/api/moj-profil/upload-profile-image-url`, // Nova ruta koja očekuje URL slike
+        { imageUrl }, // Šaljemo URL slike u tijelu POST zahtjeva
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        alert("Slika uspješno promijenjena!");
+        setUser({ ...user, profileImageUrl: response.data.imageUrl }); // Ažuriraj korisnički profil s novim URL-om
+      } else {
+        alert("Provjeri konzolu");
+      }
+    } catch (error) {
+      console.error("Greška prilikom promjene slike: ", error);
+    }
+  };
+
+  const handleFileChange = (event) => {
+    const imageUrl = event.target.value; // Dohvati URL koji korisnik unosi u input
+    if (imageUrl) {
+      handleImageUrlUpload(imageUrl); // Pozovi funkciju za upload URL-a
+    }
+  };
+
   return (
     <div className="profile-page">
+      <div
+        id="notification"
+        className={`filter-notification ${showNotification ? "show" : ""}`}
+      >
+        {notificationMessage}
+      </div>
       <a href="/" className="logo-link">
-          <img src={logo_icon} alt="Logo" className="logo" />
+        <img src={logo_icon} alt="Logo" className="logo" />
       </a>
       {/* Modal za odabir uloge */}
       {isRoleModalOpen && (
@@ -405,7 +465,11 @@ const ProfilePage = () => {
             {user.qualifications && user.qualifications.length > 0 ? (
               <ul>
                 {user.qualifications.map((item, index) => (
-                  <li key={index}>{item.kvalifikacije}</li>
+                  <li key={index}>
+                    {item.kvalifikacije === "Izvorni_govornik"
+                      ? "Izvorni govornik"
+                      : item.kvalifikacije}
+                  </li>
                 ))}
               </ul>
             ) : (
@@ -430,29 +494,77 @@ const ProfilePage = () => {
 
       <div className="profile-header">
         <div className="profile-imagetext">
-          <img
-            src={
-              "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"
-            }
-            alt={`${user.ime}'s profile`}
-            className="profile-picture-large"
+          <div className="profile-image-container">
+            <img
+              src={user.profileImageUrl || profileimg}
+              alt={`${user.ime}'s profile picture`}
+              className="profile-picture-large"
+            />
+            <label htmlFor="input-file">
+              <img src={edit_icon} alt="Uredi sliku" />
+            </label>
+          </div>
+          <input
+            type="file"
+            accept="image/jpeg, image/png, image/jpg"
+            id="input-file"
+            onChange={handleFileChange}
           />
           <h1 className="profile-name">{user.ime}</h1>
           <h1 className="profile-surname">{user.prezime}</h1>
         </div>
         <div className="buttons">
           <div className="edit-button">
-            <button className="edit-profile-button" onClick={handleEditProfile}>
-              Uredi profil
-            </button>
+            {(user.uloga === "Učenik" || user.uloga === "Učitelj") && (
+              <button
+                className="edit-profile-button"
+                onClick={handleEditProfile}
+              >
+                Uredi profil
+              </button>
+            )}
+            {(user.uloga === "Učenik" || user.uloga === "Učitelj") && (
+              <button
+                className="zahtjevi-button"
+                onClick={() => navigate(`/requests/${user.id}`)}
+              >
+                Moji zahtjevi
+              </button>
+            )}
           </div>
           <div className="profile-buttons">
-            <button
-              className="teachers-button"
-              onClick={() => navigate("/teachers")}
-            >
-              Učitelji
-            </button>
+            {user.uloga === "Učenik" && (
+              <div>
+                <button
+                  className="teachers-button"
+                  onClick={() => navigate("/teachers")}
+                >
+                  Učitelji
+                </button>
+                <button
+                  className="lections-button"
+                  onClick={() => navigate(`/lections/${user.id}`)}
+                >
+                  Moje lekcije
+                </button>
+              </div>
+            )}
+            {user.uloga === "Učitelj" && (
+              <button
+                className="calendar-button"
+                onClick={() => navigate(`/calendar/${user.id}`)}
+              >
+                Moj kalendar
+              </button>
+            )}
+            {user.uloga === "Admin" && (
+              <button
+                className="admin-button"
+                onClick={() => navigate(`/users`)}
+              >
+                Korisnici
+              </button>
+            )}
             <button className="odjava-button" onClick={handleLogout}>
               Odjava
             </button>

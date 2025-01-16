@@ -9,6 +9,11 @@
     --fc-button-active-border-color: #311f40;
 }
 
+.fc {
+    width: 100vh; /* Postavite željenu širinu */
+    margin: 0 auto; /* Centrirajte kalendar, opcionalno */
+}
+
 /*ovaj dio koda postavlja today button da izgleda isto kao i ostali
   (pozadinska boja kada nije aktivan, kada se hovera iznad njega i kada je aktivan  */
 .fc-today-button {
@@ -41,6 +46,21 @@
     background-color: #f2eeed;
 }
 
+/* Promjena pokazivača na ručicu na prelasku mišem */
+.fc-daygrid-day {
+    cursor: pointer;
+}
+
+/* Stil za selektovani datum */
+.fc-daygrid-day.selected {
+    background-color: #add8e6 !important; /* Plava boja */
+}
+
+/* Reset prethodno selektovane ćelije */
+.fc-daygrid-day:not(.selected) {
+    background-color: #fff !important;
+}
+
 /*bojanje header retka iznad stupaca u #613c78, a teksta u bijelu*/
 .fc-col-header-cell {
     background-color: #613c78;
@@ -52,10 +72,6 @@
     background-color: white;
 }
 
-.fc {
-    width: 100vh; /* Postavite željenu širinu */
-    margin: 0 auto; /* Centrirajte kalendar, opcionalno */
-}
 
 .fc-previous-month {
     background-color: transparent;
@@ -68,48 +84,39 @@
     pointer-events: none;
 }
 
-/* Stil za dugmad dostupnih termina */
+
+.timeslots {
+    margin-top: 20px; 
+    text-align: center; 
+    background-color: white;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px;
+}
+
 .time-button {
+    flex: 1 1 calc(33.333% - 30px); 
+    text-align: center;
     margin: 5px;
-    padding: 10px 15px;
-    background-color: #5c2d91; /* Tamno ljubičasta boja */
-    color: white; /* Bijela boja teksta */
-    border: none; /* Bez okvira */
-    border-radius: 5px; /* Zaobljeni rubovi */
-    cursor: pointer; /* Promjena kursora na pokazivač */
+    padding: 10px;
+    background-color: #5c2d91;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    max-width: 120px; 
+    flex-wrap: nowrap;
 }
 
 .time-button:hover {
-    background-color: #7a42c3; /* Svjetlija ljubičasta na hover */
-}
-
-/* Stil za sekciju dostupnih termina */
-.timeslots {
-    margin-top: 20px; /* Razmak iznad */
-    text-align: center; /* Centrirani sadržaj */
-    background-color: white;
-}
-
-/* Stil za modalni prozor */
-.modal {
-    position: fixed; /* Osigurava da modal bude iznad ostalih elemenata */
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    padding: 20px;
-    border-radius: 10px;
-    height: 20vh;
-    width: 30vh;
-    background-color: white;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    text-align: center;
-    display: block;
-    align-content: center;
+    background-color: #7a42c3;
+    transform: scale(1.05); 
 }
 
 
 .fc {
-    z-index: 1 !important; /* Niži prioritet */
+    z-index: 1 !important; 
 }
 
 .fc-daygrid-day {
@@ -120,29 +127,66 @@ body {
     overflow: visible;
 }
 
-
-
-
-
-.modal h3 {
-    margin-top: 0;
-    color: #613c78; /* Tamnoljubičasta boja naslova */
+.modal-calendar {
+    position: fixed; 
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    border-radius: 10px;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);
+    text-align: center;
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: center;
+    min-height: 60vh;
+    width: 50vh; 
+    z-index: 999;
 }
-
-.modal p {
-    margin: 20px 0;
+.modal-content h3 {
+    font-size: 1.5rem;
     color: #333;
+    margin-bottom: 10px;
 }
 
-.modal-actions {
+.modal-content p {
+    font-size: 1.1rem;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+.modal-calendar-actions {
     display: flex;
-    justify-content: space-between; /* Ravnomjerno razmakni gumbe */
-    align-items: center; /* Poravnaj vertikalno */
+    justify-content: center;
     margin-top: 20px;
-    padding: 0 10px; /* Dodaj malo prostora sa strane */
+    display: flex;
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 0 10px; 
+    gap: 10px;
 }
 
+.confirm-button, .cancel-button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s;
+}
 
+.modal-calendar .text p {
+    margin: 10px 0; 
+    font-size: 1rem; 
+    color: #333; 
+  }
+  
+.modal-calendar .text strong {
+    color: #613c78; 
+}
+  
 .confirm-button {
     background-color: #613c78;
     color: white;
@@ -153,7 +197,8 @@ body {
 }
 
 .confirm-button:hover {
-    background-color: #4a2b5c;
+    background-color: #45a049;
+    transform: scale(1.05);
 }
 
 .cancel-button {
@@ -166,13 +211,90 @@ body {
 }
 
 .cancel-button:hover {
-    background-color: #bbb;
+    background-color: #c63936;
+    transform: scale(1.05);
 }
 
 .selected-datetime {
-    margin: 15px 0; /* Razmak iznad i ispod */
-    font-size: 1rem; /* Veličina teksta */
-    font-weight: bold; /* Podebljan tekst */
-    text-align: center; /* Centrirano */
-    color: #613c78; /* Ljubičasta nijansa, možeš prilagoditi */
+    margin: 15px 0; 
+    font-size: 1rem; 
+    font-weight: bold; 
+    text-align: center; 
+    color: #613c78; 
+}
+
+.times button{
+    flex-basis: calc(33.333% - 30px);
+
+}
+.time-button {
+    flex-basis: calc(33.333% - 30px);
+    text-align: center;
+    padding: 10px;
+    background-color: #613c78;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    max-width: 120px; 
+    height: 50px; 
+    box-sizing: border-box; 
+}
+
+.time-button:hover {
+    background-color: #9649ca;
+    transform: scale(1.05); 
+}
+
+.logo-link {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    text-decoration: none;
+  }
+  
+  .logo {
+    width: 55px;
+    height: 50px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+  }
+  
+  .logo:hover {
+    transform: scale(1.1);
+  }
+  
+  .logo-link img {
+      border-radius: 20%;
+      image-rendering: auto;
+  }
+
+
+
+@media (max-width: 768px) {
+    .time-button {
+        flex: 1 1 calc(50% - 20px); 
+        font-size: 12px;
+        padding: 6px;
+    }
+
+    .fc {
+        height: calc(100vh - 120px); 
+    }
+}
+
+@media (max-width: 480px) {
+    .time-button {
+        font-size: 10px;
+        padding: 5px;
+    }
+
+    .fc {
+        height: calc(100vh - 100px); 
+    }
+
+    .logo-link {
+        position: relative;
+    }
 }

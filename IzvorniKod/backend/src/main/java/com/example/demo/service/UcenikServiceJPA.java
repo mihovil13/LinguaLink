@@ -41,49 +41,69 @@ public class UcenikServiceJPA implements UcenikService {
         ucenik.setIme(body.get("ime").toString());
         ucenik.setPrezime(body.get("prezime").toString());
         ucenik.setEmail(body.get("email").toString());
+        if(body.get("languagesKnown") == null) {
+            System.out.println("langknown: ");
+            System.out.println(body.get("languagesKnown"));
+        }
 
        // Ucenik ucenik1 = ucenikRepository.getUcenikByEmail(ucenik.getEmail());
-        if (body.containsKey("languagesKnown")) {
+        if (body.containsKey("languagesKnown") && body.get("languagesKnown") != null) {
+            System.out.println("JEZIIk");
+
             List<Map<String,String>> jezici =(List<Map<String,String>>) body.get("languagesKnown");
             List<String> jezikOdvojeno = jezici.stream()
                     .map(lang -> lang.get("nazivJezika") + "-" + lang.get("razina")).toList();
-            System.out.println("JEZIIk");
+
             System.out.println(jezikOdvojeno);
             List<JezikRazina> dobraLista = new ArrayList<JezikRazina>();
             List<Jezik> pomocnaLista = new ArrayList<>();
+            List<Razina> pomocna2 = new ArrayList<>();
             Ucenik ucenik1 = ucenikRepository.getUcenikByEmail(ucenik.getEmail());
+            for(JezikRazina jezikRazina:ucenik1.getLanguagesKnown()){
+                jezikRazinaServiceJPA.delete(jezikRazina.getJezik_razina_id());
+            }
+
             for(String jezik:jezikOdvojeno){
                 Integer brojac = 0;
                 String[] jezik1 = jezik.split("-");
                 String jezik2 = jezik1[0];
 
                 String razina = jezik1[1];
+                System.out.println("Razina: ");
+                System.out.println(razina);
                 Razina razina1 = Razina.valueOf(razina);
                 Jezik jezik3 = jezikServiceJPA.getJezikByNazivJezika(jezik2);
                 pomocnaLista.add(jezik3);
-                for(JezikRazina jezikRazina: ucenik1.getLanguagesKnown()){
-                    if(!jezikRazina.getJezik().getNazivJezika().equals(jezik2)){
-                       brojac++;
-                    }
-                }
-                if(brojac==ucenik1.getLanguagesKnown().size()){
-                    JezikRazina jezikRazina2 = new JezikRazina(ucenik,jezik3,razina1);
-                    dobraLista.add(jezikRazina2);
-                }
+                pomocna2.add(razina1);
+                JezikRazina jezikRazina = new JezikRazina(ucenik,jezik3,razina1);
+                dobraLista.add(jezikRazina);
+
+//                for(JezikRazina jezikRazina: ucenik1.getLanguagesKnown()){
+//                    if(!jezikRazina.getJezik().getNazivJezika().equals(jezik2)){
+//                       brojac++;
+//                    }
+//                }
+//                if(brojac==ucenik1.getLanguagesKnown().size()){
+//                    JezikRazina jezikRazina2 = new JezikRazina(ucenik,jezik3,razina1);
+//                    dobraLista.add(jezikRazina2);
+//                }
             }
 
 
-
-                for(JezikRazina jezikRazina: ucenik1.getLanguagesKnown()){
-                    if(!pomocnaLista.contains(jezikRazina.getJezik())){
-                        System.out.println("NIJE U NOVOJ AL JE U STAROJ");
-                        System.out.println(jezikRazina.getJezik().getNazivJezika());
-                        jezikRazinaServiceJPA.delete(jezikRazina.getJezik_razina_id());
-                    }
-                }
+//                for(JezikRazina jezikRazina: ucenik1.getLanguagesKnown()){
+//
+//                    if(!pomocnaLista.contains(jezikRazina.getJezik())){
+//                        System.out.println("NIJE U NOVOJ AL JE U STAROJ");
+//                        System.out.println(jezikRazina.getJezik().getNazivJezika());
+//                        jezikRazinaServiceJPA.delete(jezikRazina.getJezik_razina_id());
+//                    }
+//                }
                 ucenik.setLanguagesKnown(dobraLista);
                 ucenikRepository.save(ucenik);
+
+
             }
+
 
             System.out.println("NOVALISTA");
             //System.out.println(novaLista);
@@ -114,9 +134,9 @@ public class UcenikServiceJPA implements UcenikService {
             */
            // ucenik.setLanguagesKnown((List<Map<String, String>>) body.get("languagesKnown"));
 
-        if (body.containsKey("languagesToLearn")) {
-            List<Map<String,String>> jezici =(List<Map<String,String>>) body.get("languagesToLearn");
-            List<String> jezikOdvojeno = jezici.stream()
+        if (body.containsKey("languagesToLearn") && body.get("languagesToLearn")!=null) {
+            List<Map<String,String>> jezici2 =(List<Map<String,String>>) body.get("languagesToLearn");
+            List<String> jezikOdvojeno = jezici2.stream()
                     .map(lang -> (String) lang.get("nazivJezika")).toList();
             List<Jezik> dobraLista = new ArrayList<Jezik>();
 
@@ -130,16 +150,15 @@ public class UcenikServiceJPA implements UcenikService {
             }
             System.out.println("DORA LISTA1");
             System.out.println(dobraLista);
-            Ucenik ucenik1 = ucenikRepository.getUcenikByEmail(ucenik.getEmail());
-            List<Jezik> novaLista = new ArrayList<>();
-            for(Jezik jezik:dobraLista){
-                if(!ucenik1.getLanguagesKnown().contains(jezik)){
-                    novaLista.add(jezik);
-                }
-            }
-            ucenik.setLanguagesToLearn(novaLista);
-            System.out.println(ucenik1.getLanguagesKnown().size());
-            System.out.println(dobraLista.size());
+//            Ucenik ucenik1 = ucenikRepository.getUcenikByEmail(ucenik.getEmail());
+//            List<Jezik> novaLista = new ArrayList<>();
+//            for(Jezik jezik:dobraLista){
+//                if(!ucenik1.getLanguagesKnown().contains(jezik)){
+//                    novaLista.add(jezik);
+//                }
+//            }
+            ucenik.setLanguagesToLearn(dobraLista);
+
 
 
             //ucenik.setLanguagesToLearn(dobraLista);

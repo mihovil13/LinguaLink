@@ -45,7 +45,10 @@ public class KorisnikGetMapper {
                 korisnikGetDTO.setCiljeviUcenja(ucenik.getCiljeviUcenja());
                 korisnikGetDTO.setStilPoducavanja(ucenik.getStilPoducavanja());
                 korisnikGetDTO.setLanguagesKnown(dobralista);
+
                 korisnikGetDTO.setLanguagesToLearn(ucenik.getLanguagesToLearn());
+                System.out.println("HULK2");
+                System.out.println(korisnikGetDTO.getLanguagesToLearn());
                 List<Jezik> languagesTeach = new ArrayList<>();
                 korisnikGetDTO.setLanguagesTeach(languagesTeach);
             }
@@ -63,17 +66,21 @@ public class KorisnikGetMapper {
                     System.out.println(q.toString());
                     if(q==(Qualifications.Izvorni_govornik)){
                         //System.out.println("JEJEJ");
-                        quals.add("Izvorni govornik");
+                        quals.add("Izvorni_govornik");
                     }else{
                         quals.add(q.toString());
                     }
 
                 }
+                System.out.println("U GTO ");
+                System.out.println(quals);
                 korisnikGetDTO.setQualifications(quals);
                 List<String> jezikRazinas = new ArrayList<>();
                 List<Jezik> jezici = new ArrayList<>();
                 korisnikGetDTO.setLanguagesKnown(jezikRazinas);
                 korisnikGetDTO.setLanguagesToLearn(jezici);
+                System.out.println("Jezici: ");
+                System.out.println(korisnikGetDTO.getLanguagesToLearn());
             }
         }
 

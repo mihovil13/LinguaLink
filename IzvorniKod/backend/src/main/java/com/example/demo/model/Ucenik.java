@@ -29,7 +29,7 @@ public class Ucenik extends Korisnik{
     private String ciljeviUcenja;
     private String stilPoducavanja;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "UcenikJezik",
             joinColumns = @JoinColumn(name = "user_id"),

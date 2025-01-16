@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.model.JezikRazina;
 import com.example.demo.repository.JezikRazinaRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,4 +16,6 @@ public class JezikRazinaServiceJPA implements JezikRazinaService{
     public void delete(Long id){
         jezikRazinaRepository.deleteByJezikRazinaID(id);
     }
+
+
 }

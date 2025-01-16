@@ -1,12 +1,16 @@
 import "./LoginSignup.css";
 import email_icon from "../Assets/email.png";
 import password_icon from "../Assets/password.png";
-import logo_icon from "../Assets/logo-prototip3.png"
+import logo_icon from "../Assets/logo-prototip3.png";
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
+const backend = "http://localhost:8080";
+
 const LoginSignup = () => {
+  const [error, setError] = useState("");
+  const [showNotification, setShowNotification] = useState(false);
   const navigate = useNavigate(); // za preusmjeravanje na login page
   const [loginData, setLoginData] = useState({
     email: "",
@@ -28,7 +32,7 @@ const LoginSignup = () => {
   const handleLogin = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/korisnici/login",
+        `${backend}/api/korisnici/login`,
         loginData
       );
 
@@ -36,28 +40,38 @@ const LoginSignup = () => {
         const token = response.data.token; // dohvaćamo token i spremamo ga
         localStorage.setItem("token", token);
 
-        const profileResponse = await axios.get(
-          "http://localhost:8080/api/moj-profil",
-          {
-            // slanje get zahtjeva prema backendu
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`, // u headerima šaljemo token
-            },
-          }
-        );
+        const profileResponse = await axios.get(`${backend}/api/moj-profil`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
 
         if (profileResponse.status === 200) {
-          navigate("/profile");
+          const role = profileResponse.data.uloga;
+          if (role === "Admin") {
+            navigate("/users");
+          } else {
+            navigate("/profile");
+          }
         }
       }
     } catch (error) {
-      alert(error.response?.data || "Došlo je do greške prilikom prijave");
+      setError(error.response?.data || "Došlo je do greške prilikom prijave");
+      setShowNotification(true);
+      setTimeout(() => setShowNotification(false), 3000);
     }
   };
 
   return (
-      
     <div className="container">
+      {error && (
+        <div
+          id="notification"
+          className={`filter-notification ${showNotification ? "show" : ""}`}
+        >
+          {error}
+        </div>
+      )}
       <a href="/" className="logo-link">
         <img src={logo_icon} alt="Logo" className="logo" />
       </a>

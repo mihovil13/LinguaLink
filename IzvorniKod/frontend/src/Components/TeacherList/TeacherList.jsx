@@ -13,8 +13,10 @@ const TeacherList = () => {
   const [styleFilters, setStyleFilters] = useState([]);
   const [filtersApplied, setFiltersApplied] = useState(false);
   const [qualificationFilters, setQualificationfilters] = useState([]);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const navigate = useNavigate();
-  const {user} = useUser();
+  const { user, setUser } = useUser();
+  const backend = "http://localhost:8080";
 
   const styles = [
     "Vizualni",
@@ -42,6 +44,43 @@ const TeacherList = () => {
   ];
 
   const qualifications = ["Profesor", "Izvorni govornik", "Certifikat"];
+  const toggleDropdown = () => setIsDropdownOpen((prev) => !prev);
+
+  const getToken = () => {
+    return localStorage.getItem("token");
+  };
+  
+
+  const handleLogout = async () => {
+    try {
+      const token = getToken();
+
+      if (token) {
+        // Poziv backendu za odjavu
+        await axios.post(
+          `${backend}/api/auth/logout`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+      }
+
+      // Resetiranje korisničkih podataka
+      setUser({});
+
+      // Brisanje tokena iz localStorage
+      localStorage.removeItem("token");
+
+      // Preusmjeravanje na glavnu stranicu
+      navigate("/");
+    } catch (error) {
+      console.error("Greška prilikom odjave:", error);
+      alert("Došlo je do greške prilikom odjave.");
+    }
+  };
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -57,46 +96,49 @@ const TeacherList = () => {
           },
         });
         if (response.status === 200) {
-          console.log(response.data);
-          //languagesTeach/qualifications podatak se iz backenda vraca kao string
-          //ovom funkcijom pretvaramo taj podatak u polje
           const teachersData = response.data.map((teacher) => ({
             ...teacher,
             languagesTeach: teacher.languagesTeach
               ? teacher.languagesTeach.map((lang) => lang.nazivJezika.trim())
-              : [], // Pretvorba jezika u niz,
+              : [],
             qualifications: teacher.qualifications
-              ? teacher.qualifications
-                  .map((qualification) => qualification.trim())
+              ? teacher.qualifications.map((qualification) =>
+                  qualification.trim()
+                )
               : [],
           }));
 
-        //ako je korisnik prijavljen, i ima jezike u listi, filtriraj učitelje prema njegovim jezicima
-        const filteredByUserLanguages = isLoggedIn && user.languagesToLearn.length > 0
-          ? teachersData.filter((teacher) =>
-              teacher.languagesTeach.some((lang) =>
-                user.languagesToLearn
-                  .map((l) => l.nazivJezika.trim())
-                  .includes(lang)
-              )
-            )
-          : teachersData; // ako korisnik nije prijavljen, prikazujemo sve
+          const filteredByUserLanguages =
+            token && user.languagesToLearn.length > 0
+              ? teachersData.filter((teacher) =>
+                  teacher.languagesTeach.some((lang) =>
+                    user.languagesToLearn
+                      .map((l) => l.nazivJezika.trim())
+                      .includes(lang)
+                  )
+                )
+              : teachersData;
 
-          setTeachers(filteredByUserLanguages);
+          setTeachers(teachersData);
           setFilteredTeachers(filteredByUserLanguages);
+
+          if (user.languagesToLearn.length > 0) {
+            const userLanguages = user.languagesToLearn.map((l) =>
+              l.nazivJezika.trim()
+            );
+            setLanguageFilters(userLanguages);
+          }
         }
       } catch (error) {
         console.error("Error fetching teacher list:", error);
-        // alert("Došlo je do greške prilikom dohvaćanja liste učitelja.");
       }
     };
 
     fetchTeacherData();
-  }, []);
+  }, [user]);
 
   const applyFilters = () => {
     const filtered = teachers.filter((teacher) => {
-      //uzimamo ucitelje koji u svom polju jezika koje poducavaju imaju neki od jezika iz filtra
       const matchesLanguage =
         languageFilters.length === 0 ||
         teacher.languagesTeach.some((lang) => languageFilters.includes(lang));
@@ -111,58 +153,36 @@ const TeacherList = () => {
           teacher.qualifications.includes(qualification)
         );
 
-      //vracamo ucitelje koji ispunjavaju oba filter uvjeta
       return matchesLanguage && matchesStyle && matchesQualification;
     });
 
-    setFilteredTeachers(filtered); //update liste filtriranih ucitelja
+    setFilteredTeachers(filtered);
     setFiltersApplied(true);
 
-    //prikaz oblacica s porukom
     const notification = document.querySelector(".filter-notification");
     notification.classList.add("show");
 
-    //skrivanje oblacica
     setTimeout(() => {
       notification.classList.remove("show");
     }, 3000);
   };
 
   const clearFilters = () => {
-    //reset svih filtera
     setLanguageFilters([]);
     setStyleFilters([]);
     setQualificationfilters([]);
     setFilteredTeachers(teachers);
     setFiltersApplied(false);
-
-    
-    if (user.languagesToLearn.length > 0) {
-      const filteredByUserLanguages = teachers.filter((teacher) =>
-        teacher.languagesTeach.some((lang) =>
-          user.languagesToLearn
-            .map((l) => l.nazivJezika.trim())
-            .includes(lang)
-        )
-      );
-      setFilteredTeachers(filteredByUserLanguages);
-    }
-
   };
 
-  //funkcija za izmjenu filtra jezika
   const handleLanguageFilterChange = (language) => {
-    //prev = trenutno stanje polja filtriranih jezika
     setLanguageFilters((prev) =>
       prev.includes(language)
-        ? //ako polje prev sadrži jezik ciji smo checkbox upravo izmijenili, to znaci da ga korisnik želi maknuti iz polja jezika po kojima filtriramo
-          prev.filter((lang) => lang !== language)
-        : //ako polje prev ne sadrži jezik ciji smo checkbox izmijenili, to znaci da ga korisnik zeli dodati u polje jezika po kojima filtriramo
-          [...prev, language]
+        ? prev.filter((lang) => lang !== language)
+        : [...prev, language]
     );
   };
 
-  //unkcija za izmjenu filtra po stilu učenja, radi na istom principu kao gornja funkcija za filter jezika
   const handleStyleFilterChange = (style) => {
     setStyleFilters((prev) =>
       prev.includes(style) ? prev.filter((s) => s !== style) : [...prev, style]
@@ -178,8 +198,8 @@ const TeacherList = () => {
   };
 
   const handleTeacherClick = (teacherId) => {
-    navigate(`/teacher/${teacherId}`)
-  }
+    navigate(`/teacher/${teacherId}`);
+  };
 
   return (
     <div
@@ -188,6 +208,30 @@ const TeacherList = () => {
       <a href="/" className="logo-link">
         <img src={logo_icon} alt="Logo" className="logo" />
       </a>
+
+      {isLoggedIn && (
+        <div className="user-profile">
+          <img
+            src="https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"
+            alt="Profile"
+            className="profile-icon"
+            onClick={toggleDropdown}
+          />
+          <span className="user-name" onClick={toggleDropdown}>
+            {user.ime} {user.prezime[0]}.
+          </span>
+          {isDropdownOpen && (
+            <div className="dropdown-menu">
+              <button onClick={() => navigate("/profile")}>Profil</button>
+              <button onClick={() => navigate(`/requests/${user.id}`)}>
+                Zahtjevi
+              </button>
+              <button onClick={handleLogout}>Odjava</button>
+            </div>
+          )}
+        </div>
+      )}
+
       <div className="filter-notification">Filtri primijenjeni</div>
 
       <div className="container">
@@ -218,10 +262,12 @@ const TeacherList = () => {
               </div>
             ))
           ) : (
-            <p className="empty-message">Nema dostupnih učitelja prema odabranim filtrima.</p>
+            <p className="empty-message">
+              Nema dostupnih učitelja prema odabranim filtrima.
+            </p>
           )}
         </div>
-     </div>
+      </div>
 
       {isLoggedIn && (
         <div className="filter-container">

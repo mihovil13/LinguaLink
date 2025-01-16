@@ -1,11 +1,13 @@
 package com.example.demo.service;
 
+import com.example.demo.DTO.PredavanjeDTO;
 import com.example.demo.model.Predavanje;
 import com.example.demo.repository.PredavanjeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PredavanjeServiceJPA implements PredavanjeService {
@@ -26,8 +28,23 @@ public class PredavanjeServiceJPA implements PredavanjeService {
     }
 
     @Override
-    public List<Predavanje> getPredavanjaByUciteljId(int uciteljId) {
-        return predavanjeRepository.findByUciteljId(uciteljId);
+    public List<PredavanjeDTO> getPredavanjaByUciteljId(int uciteljId) {
+        return predavanjeRepository.findByUciteljId(uciteljId)
+                .stream()
+                .map(predavanje -> {
+                    PredavanjeDTO dto = new PredavanjeDTO();
+                    dto.setPredavanjeId(predavanje.getPredavanjeId());
+                    dto.setUcenikId(predavanje.getUcenikId());
+                    dto.setUciteljId(predavanje.getUciteljId());
+                    dto.setDatumVrijemePocetka(predavanje.getDatumVrijemePocetka());
+                    dto.setPotvrdeno(predavanje.getPotvrdeno()); // Dodano
+                    dto.setUcenikIme(predavanje.getUcenik().getIme());
+                    dto.setUcenikPrezime(predavanje.getUcenik().getPrezime());
+                    dto.setUciteljIme(predavanje.getUcitelj().getIme());
+                    dto.setUciteljPrezime(predavanje.getUcitelj().getPrezime());
+                    return dto;
+                })
+                .toList();
     }
 
     @Override
@@ -39,7 +56,22 @@ public class PredavanjeServiceJPA implements PredavanjeService {
     }
 
     @Override
-    public List<Predavanje> getPredavanjaByUcenikId(int ucenikId) {
-        return predavanjeRepository.findByUcenikId(ucenikId);
+    public List<PredavanjeDTO> getPredavanjaByUcenikId(int ucenikId) {
+        return predavanjeRepository.findByUcenikId(ucenikId)
+                .stream()
+                .map(predavanje -> {
+                    PredavanjeDTO dto = new PredavanjeDTO();
+                    dto.setPredavanjeId(predavanje.getPredavanjeId());
+                    dto.setUcenikId(predavanje.getUcenikId());
+                    dto.setUciteljId(predavanje.getUciteljId());
+                    dto.setDatumVrijemePocetka(predavanje.getDatumVrijemePocetka());
+                    dto.setPotvrdeno(predavanje.getPotvrdeno()); // Dodano
+                    dto.setUcenikIme(predavanje.getUcenik().getIme());
+                    dto.setUcenikPrezime(predavanje.getUcenik().getPrezime());
+                    dto.setUciteljIme(predavanje.getUcitelj().getIme());
+                    dto.setUciteljPrezime(predavanje.getUcitelj().getPrezime());
+                    return dto;
+                })
+                .toList();
     }
 }

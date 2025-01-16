@@ -7,6 +7,7 @@ import axios from "axios";
 import Modal from "react-modal";
 import { useUser } from "../../UserContext";
 import { useLocation, useParams, useNavigate } from "react-router-dom";
+import logo_icon from "../Assets/logo-prototip3.png";
 
 const backend = "http://localhost:8080";
 
@@ -16,14 +17,13 @@ const getToken = () => {
   return localStorage.getItem("token");
 };
 
-// Funkcija za pronalazak prvog dana trenutnog mjeseca
 const getFirstDayOfCurrentMonth = () => {
   const today = new Date();
-  return new Date(today.getFullYear(), today.getMonth(), 1); // Prvi dan trenutnog mjeseca
+  return new Date(today.getFullYear(), today.getMonth(), 1);
 };
 
 const Calendar = () => {
-  const { user } = useUser();
+  const { user, setUser } = useUser();
   const { teacherId } = useParams();
   const calendarRef = useRef(null);
   const [selectedDate, setSelectedDate] = useState(null);
@@ -33,6 +33,8 @@ const Calendar = () => {
   const [selectedTime, setSelectedTime] = useState(null);
   const [reservedLessons, setReservedLessons] = useState([]);
   const navigate = useNavigate();
+  const [showNotification, setShowNotification] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   useEffect(() => {
     fetchAvailableTimes();
@@ -50,17 +52,26 @@ const Calendar = () => {
         }
       );
       if (response.status === 200) {
-        console.log("response");
-        console.log(response.data);
-        const events = response.data
-          .filter((lesson) => lesson.potvrdeno === 0 || lesson.potvrdeno === -1)
-          .map((lesson) => ({
-            id: lesson.predavanjeId,
-            title: lesson.potvrdeno === -1 ? "Nepotvrđeno" : "Rezervirano",
-            start: lesson.datumVrijemePocetka,
-            backgroundColor: lesson.potvrdeno === -1 ? "#ffc107" : "#613c78",
-          }));
+        const filteredLessons = response.data.filter(
+          (lesson) => lesson.potvrdeno !== -1
+        );
 
+        const events = filteredLessons.map((lesson) => ({
+          id: lesson.predavanjeId,
+          title:
+            lesson.potvrdeno === 0
+              ? "Nepotvrđeno"
+              : lesson.potvrdeno === 1
+              ? "Rezervirano"
+              : "Slobodno",
+          start: lesson.datumVrijemePocetka,
+          backgroundColor:
+            lesson.potvrdeno === 0
+              ? "#ffc107"
+              : lesson.potvrdeno === 1
+              ? "#613c78"
+              : "28a745",
+        }));
         setReservedLessons(events);
       }
     } catch (error) {
@@ -69,39 +80,88 @@ const Calendar = () => {
     }
   };
 
+  const handleLogout = async () => {
+    try {
+      const token = getToken();
+
+      if (token) {
+        await axios.post(
+          `${backend}/api/auth/logout`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+      }
+
+      setUser({});
+
+      localStorage.removeItem("token");
+
+      navigate("/");
+    } catch (error) {
+      console.error("Greška prilikom odjave:", error);
+      alert("Došlo je do greške prilikom odjave.");
+    }
+  };
+
   const handleDateClick = (info) => {
     const clickedDate = new Date(info.dateStr);
     const today = new Date();
-    today.setHours(1, 0, 0, 0);
+    today.setHours(0, 0, 0, 0);
 
     if (clickedDate >= today) {
-      setSelectedDate(info.dateStr);
+        setSelectedDate(info.dateStr);
 
-      const allTimes = ["09:00", "10:00", "11:00", "12:00", "13:00", "14:00"];
-
-      const reservedTimes = reservedLessons
-      .filter((lesson) => lesson.start.startsWith(info.dateStr)) // provjeri rezervacije za odabrani datum
-      .map((lesson) => {
-        const time = new Date(lesson.start).toTimeString().slice(0, 5); // izvuci vrijeme u formatu HH:mm
-        return time;
-      });
-
-      const availableTimes = allTimes.filter((time) => !reservedTimes.includes(time));
-
-
-      // ako je odabrani datum danasnji, filtriraj termine prema trenutnom vremenu
-      if (clickedDate.getTime() === today.getTime()) {
-        const now = new Date();
-        const filteredTimes = allTimes.filter((time) => {
-          const [hours, minutes] = time.split(":").map(Number);
-          const termTime = new Date();
-          termTime.setHours(hours, minutes, 0, 0);
-          return termTime > now; // zadrzi samo termine u buducnosti
+        document.querySelectorAll('.fc-daygrid-day').forEach(cell => {
+            cell.classList.remove('selected');
         });
-        setAvailableTimes(filteredTimes);
-      } else {
-        setAvailableTimes(availableTimes);
-      }
+
+        info.dayEl.classList.add('selected');
+
+        const allTimes = [
+            "09:00",
+            "10:00",
+            "11:00",
+            "12:00",
+            "13:00",
+            "14:00",
+            "15:00",
+            "16:00",
+        ];
+
+        const reservedTimes = reservedLessons
+            .filter((lesson) => lesson.start.startsWith(info.dateStr))
+            .map((lesson) => {
+                const time = new Date(lesson.start).toTimeString().slice(0, 5);
+                return time;
+            });
+
+        const availableTimes = allTimes.filter(
+            (time) => !reservedTimes.includes(time)
+        );
+
+
+
+
+        clickedDate.setHours(0, 0, 0, 0);
+
+        if (clickedDate.getTime() === today.getTime()) {
+            const now = new Date();
+            const filteredTimes = availableTimes.filter((time) => {
+                const [hours, minutes] = time.split(":").map(Number);
+                const termTime = new Date();
+                termTime.setHours(hours, minutes, 0, 0);
+                console.log(termTime);
+                console.log(now);
+                return termTime > now;
+            });
+            setAvailableTimes(filteredTimes);
+        } else {
+            setAvailableTimes(availableTimes);
+        }
     }
   };
 
@@ -111,8 +171,6 @@ const Calendar = () => {
   };
 
   const confirmReservation = async () => {
-    console.log(user.id);
-    console.log(teacherId);
     if (selectedDate && selectedTime && user.id !== teacherId) {
       const predavanjeData = {
         ucenikId: user.id,
@@ -132,19 +190,18 @@ const Calendar = () => {
           }
         );
         if (response.status === 200 || response.status === 201) {
-          alert("Rezervacija uspješno spremljena");
+          setShowNotification(true);
+          setTimeout(() => setShowNotification(false), 3000);
           setIsModalOpen(false);
 
-          // dodajemo tu rezervaciju u kalendar
           const calendarApi = calendarRef.current.getApi();
           calendarApi.addEvent({
-            title: `Rezervirano: ${selectedTime}`,
+            title: `Nepotvrđeno: ${selectedTime}`,
             start: `${selectedDate}T${selectedTime}:00`,
             allDay: false,
-            backgroundColor: "#613c78",
+            backgroundColor: "#ffc107",
           });
 
-          // iz slobodnih termina uklanjamo upravo dodani termin
           setAvailableTimes((prevTimes) =>
             prevTimes.filter((time) => time !== selectedTime)
           );
@@ -163,12 +220,48 @@ const Calendar = () => {
     }
   };
 
+  const formatEuropeanDate = (date) => {
+    const [year, month, day] = date.split("-");
+    return `${day}.${month}.${year}`;
+  };
+
   const closeModal = () => {
     setIsModalOpen(false);
   };
 
+  const toggleDropdown = () => setIsDropdownOpen((prev) => !prev);
+
   return (
     <div>
+      <div id="notification" className={`filter-notification ${showNotification ? 'show' : ''}`}>
+        Rezervacija uspješno spremljena!
+      </div>
+      <div className="user-profile">
+        <img
+          src="https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"
+          alt="Profile"
+          className="profile-icon"
+          onClick={toggleDropdown}
+        />
+        <span
+          className="user-name"
+          onClick={toggleDropdown}
+        >
+          {user.ime} {user.prezime[0]}.
+        </span>
+        {isDropdownOpen && (
+          <div className="dropdown-menu">
+            <button onClick={() => navigate("/profile")}>Profil</button>
+            <button onClick={() => navigate(`/requests/${user.id}`)}>Zahtjevi</button>
+            <button onClick={handleLogout}>
+              Odjava
+            </button>
+          </div>
+        )}
+      </div>
+      <a href="/" className="logo-link">
+        <img src={logo_icon} alt="Logo" className="logo" />
+      </a>
       <Fullcalendar
         ref={calendarRef}
         events={reservedLessons}
@@ -204,10 +297,11 @@ const Calendar = () => {
         }}
       />
 
-      <div className="timeslots">
-        {selectedDate && (
-          <div style={{ border: "1px solid #613c78" }}>
-            <h3>Dostupni termini za {selectedDate}:</h3>
+    {user.uloga !== "Učitelj" && (
+    <div className="timeslots">
+        {selectedDate ? (
+          <div>
+            <h3>Dostupni termini za {formatEuropeanDate(selectedDate)}:</h3>
             <div className="times">
               {availableTimes.map((time) => (
                 <button
@@ -220,37 +314,35 @@ const Calendar = () => {
               ))}
             </div>
           </div>
+        ) : (
+          <p>Molimo kliknite na datum za prikaz dostupnih termina.</p>
         )}
       </div>
+    )}
 
       {/* Modal za potvrdu rezervacije */}
       <Modal
         isOpen={isModalOpen}
         onRequestClose={closeModal}
-        className="modal"
+        className="modal-calendar"
         overlayClassName="overlay"
         ariaHideApp={false}
       >
-        <div className="modal">
-          <div className="title">
-            <h3>Potvrda rezervacije</h3>
-          </div>
-          <div className="text">
-            <p>Želite li potvrditi rezervaciju?</p>
-          </div>
-          <div className="terminTime">
-            {selectedDate && selectedTime && (
-              <p className="selected-datetime">
-                Datum: {selectedDate}, Vrijeme: {selectedTime}
-              </p>
-            )}
-          </div>
-          <div className="modal-actions">
+        <div className="modal-content">
+          <h3>📅 Potvrda rezervacije</h3>
+          <p>Želite li potvrditi rezervaciju za sljedeći termin?</p>
+          {selectedDate && selectedTime && (
+            <p>
+              <strong>Datum:</strong> {formatEuropeanDate(selectedDate)},{" "}
+              <strong>Vrijeme:</strong> {selectedTime}
+            </p>
+          )}
+          <div className="modal-calendar-actions">
             <button className="confirm-button" onClick={confirmReservation}>
-              Potvrdi
+              ✅ Potvrdi
             </button>
             <button className="cancel-button" onClick={closeModal}>
-              Odustani
+              ❌ Odustani
             </button>
           </div>
         </div>

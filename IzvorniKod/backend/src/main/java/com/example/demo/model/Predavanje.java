@@ -39,4 +39,29 @@ public class Predavanje {
         this.uciteljId = uciteljId;
         this.datumVrijemePocetka = datumVrijemePocetka;
     }
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "ucenik_id", insertable = false, updatable = false)
+    private Ucenik ucenik;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "ucitelj_id", insertable = false, updatable = false)
+    private Ucitelj ucitelj;
+
+    // Getteri i setteri za ucenik i ucitelj
+    public Ucenik getUcenik() {
+        return ucenik;
+    }
+
+    public void setUcenik(Ucenik ucenik) {
+        this.ucenik = ucenik;
+    }
+
+    public Ucitelj getUcitelj() {
+        return ucitelj;
+    }
+
+    public void setUcitelj(Ucitelj ucitelj) {
+        this.ucitelj = ucitelj;
+    }
 }
