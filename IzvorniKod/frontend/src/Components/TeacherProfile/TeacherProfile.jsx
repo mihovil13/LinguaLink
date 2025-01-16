@@ -169,6 +169,7 @@ const TeacherProfile = () => {
           <p>
             <strong>Uloga:</strong> {teacher.uloga}
           </p>
+          <button onClick={() => navigate(`/ratings/${teacherId}`)}>Recenzije učenika</button>
         </div>
 
         <div className="profile-jezici">

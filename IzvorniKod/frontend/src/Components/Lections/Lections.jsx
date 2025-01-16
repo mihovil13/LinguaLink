@@ -10,6 +10,7 @@ const backend = "http://localhost:8080";
 const Lections = () => {
   const { user } = useUser();
   const [predavanja, setPredavanja] = useState([]);
+  const [recenzije, setRecenzije] = useState([]);
   const [selectedPredavanje, setSelectedPredavanje] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [ocjena, setOcjena] = useState(1);
@@ -17,16 +18,35 @@ const Lections = () => {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchPredavanja = async () => {
-      if (!user.id || user.uloga !== "Učenik") {
-        navigate("/");
-        return;
-      }
+  const fetchPredavanja = async () => {
+    if (!user.id || user.uloga !== "Učenik") {
+      navigate("/");
+      return;
+    }
 
-      try {
-        const response = await axios.get(
-          `${backend}/api/dohvati-predavanja-ucenik/${user.id}`,
+    try {
+      const response = await axios.get(
+        `${backend}/api/dohvati-predavanja-ucenik/${user.id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        const currentTime = new Date().getTime();
+        const filteredPredavanja = response.data.filter((predavanje) => {
+          const vrijemePocetka = new Date(
+            predavanje.datumVrijemePocetka
+          ).getTime();
+          return vrijemePocetka < currentTime && predavanje.potvrdeno == 1;
+        });
+
+        setPredavanja(filteredPredavanja);
+
+        const recenzijeResponse = await axios.get(
+          `${backend}/api/recenzije-ucenik/${user.id}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -34,23 +54,20 @@ const Lections = () => {
           }
         );
 
-        if (response.status === 200) {
-          const currentTime = new Date().getTime();
-          const filteredPredavanja = response.data.filter((predavanje) => {
-            const vrijemePocetka = new Date(
-              predavanje.datumVrijemePocetka
-            ).getTime();
-            return vrijemePocetka < currentTime && predavanje.potvrdeno == 1;
-          });
-
-          setPredavanja(filteredPredavanja);
+        if (recenzijeResponse.status === 200) {
+          console.log("recenzije", recenzijeResponse.data);
+          setRecenzije(recenzijeResponse.data);
         }
-      } catch (error) {
-        console.error("Greška prilikom dohvaćanja lekcija:", error);
-      } finally {
-        setLoading(false);
       }
-    };
+    } catch (error) {
+      console.error("Greška prilikom dohvaćanja lekcija:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+
+  useEffect(() => {
 
     fetchPredavanja();
   }, [user, navigate]);
@@ -63,6 +80,12 @@ const Lections = () => {
     const hours = String(date.getHours()).padStart(2, "0");
     const minutes = String(date.getMinutes()).padStart(2, "0");
     return `${day}.${month}.${year}., ${hours}:${minutes}`;
+  };
+
+  const hasRecenzija = (predavanjeId) => {
+    return recenzije.some(
+      (recenzija) => recenzija.predavanje_id === predavanjeId
+    );
   };
 
   if (loading) {
@@ -105,6 +128,7 @@ const Lections = () => {
 
       if (response.status === 200) {
         alert("Recenzija uspješno spremljena!");
+        fetchPredavanja();
         handleCloseModal(); // Zatvori modal nakon što je recenzija spremljena
       }
     } catch (error) {
@@ -137,12 +161,18 @@ const Lections = () => {
                   </p>
                 </div>
                 <div className="right">
-                  <button
-                    onClick={() => handleOpenModal(predavanje)}
-                    className="review-button"
-                  >
-                    Ostavi Recenziju
-                  </button>
+                  {hasRecenzija(
+                    predavanje.predavanjeId || predavanje.recenzijaOstavljena
+                  ) ? (
+                    <p className="recenzija-status">Recenzija ostavljena</p>
+                  ) : (
+                    <button
+                      onClick={() => handleOpenModal(predavanje)}
+                      className="review-button"
+                    >
+                      Ostavi Recenziju
+                    </button>
+                  )}
                 </div>
               </div>
             ))

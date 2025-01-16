@@ -49,7 +49,7 @@ public class RecenzijeController {
         }
         return ResponseEntity.ok(lista);
     }
-    @GetMapping("/recenzije-ucenik/{id}")
+    @GetMapping("/api/recenzije-ucenik/{id}")
     public ResponseEntity<List<RecenzijaGetDTO>> sendRecenzijeUcenik(@PathVariable Long id) {
         List<RecenzijaGetDTO> lista = new ArrayList<>();
         Ucenik ucenik = ucenikServiceJPA.getUcenikById(id);

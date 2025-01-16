@@ -8,6 +8,7 @@ import TeacherProfile from "./Components/TeacherProfile/TeacherProfile";
 import Calendar from "./Components/Calendar/Calendar";
 import RequestList from "./Components/RequestList/RequestList";
 import Lections from "./Components/Lections/Lections";
+import Ratings from "./Components/Ratings/Ratings";
 import { UserProvider } from "./UserContext";
 import React from "react";
 import {
@@ -33,6 +34,7 @@ function App() {
             <Route path="/calendar/:teacherId" element={<Calendar />} />
             <Route path="/requests/:user_id" element={<RequestList />} />
             <Route path="/lections/:user_id" element={<Lections />} />
+            <Route path="/ratings/:teacherId" element={<Ratings />}/>
           </Routes>
         </UserProvider>
       </BrowserRouter>
