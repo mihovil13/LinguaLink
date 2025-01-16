@@ -1,15 +1,13 @@
 * {
-   box-sizing: border-box; /* Omogućava pravilno računanje širina */
+   box-sizing: border-box; 
 }
 
 .profile-page {
    width: 100%;
-   max-width: 1200px; /* Gornja granica širine */
-   margin: 0 auto; /* Centriranje */
-   padding: 10px; /* Dodavanje unutrašnjeg razmaka */
+   max-width: 1200px; 
+   margin: 0 auto; 
+   padding: 10px; 
 }
-
-
 
 .profile-page {
    width: 100%;
@@ -51,8 +49,8 @@
    width: 100%;
    min-width: 300px;
    max-width: 100%;
-   justify-content: center; /* Centriranje elemenata */
-   gap: 10px; /* Razmak između elemenata */
+   justify-content: center;
+   gap: 10px; 
 }
 
 
@@ -188,12 +186,22 @@
    cursor: pointer;
 }
 
+.recenzije-button {
+   margin: 100px 0px;
+}
+
+.recenzije-button:hover {
+   background-color: #e3c103;
+   color: #333;
+   transform: scale(1.05); 
+ } 
+
 @media (max-width: 768px) {
    .profile-page {
      flex-direction: column;
      height: auto; 
      width: 90vw;
-     margin-left: 20px;
+     margin-top: 60px;
    }
  
    .profile-sidebar {
@@ -217,23 +225,23 @@
 
    @media (max-width: 1024px) and (min-width: 768px) {
       .profile-header {
-          flex-direction: column; /* Poredak elemenata u stupcu */
-          align-items: center; /* Centriranje elemenata */
+          flex-direction: column; 
+          align-items: center; 
       }
    
       .profile-imagetext {
-          width: 100%; /* Ispravan omjer elemenata */
+          width: 100%; 
           text-align: center;
       }
    
       .profile-buttons {
-          flex-direction: column; /* Tipke jedna ispod druge */
+          flex-direction: column; 
           width: 100%;
           margin-top: 10px;
       }
    
       .edit-profile-button {
-          width: 90%; /* Bolje prilagođavanje manjoj širini */
+          width: 90%; 
       }
    }
 
@@ -254,7 +262,7 @@
    
       .buttons button {
           width: 100%;
-          max-width: 300px; /* Gornje ograničenje širine gumba */
+          max-width: 300px; 
       }
    }
    
@@ -274,6 +282,7 @@
    }
  
    .logo {
+      position: relative;
      width: 35px;
      height: 30px;
    }

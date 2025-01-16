@@ -9,10 +9,11 @@ import { useLocation, useParams } from "react-router-dom";
 const backend = "http://localhost:8080";
 
 const Ratings = () => {
-  const { user } = useUser();
+  const { user, setUser } = useUser();
   const { teacherId } = useParams();
   const [recenzije, setRecenzije] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -52,15 +53,79 @@ const Ratings = () => {
     return <p>Učitavanje recenzija...</p>;
   }
 
+  const getToken = () => {
+    return localStorage.getItem("token");
+  };
+
+  const toggleDropdown = () => setIsDropdownOpen((prev) => !prev);
+
+  const handleLogout = async () => {
+    try {
+      const token = getToken();
+
+      if (token) {
+        // Poziv backendu za odjavu
+        await axios.post(
+          `${backend}/api/auth/logout`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+      }
+
+      // Resetiranje korisničkih podataka
+      setUser({});
+
+      // Brisanje tokena iz localStorage
+      localStorage.removeItem("token");
+
+      // Preusmjeravanje na glavnu stranicu
+      navigate("/");
+    } catch (error) {
+      console.error("Greška prilikom odjave:", error);
+      alert("Došlo je do greške prilikom odjave.");
+    }
+  };
+
   return (
     <div className="parent-container">
       <a href="/" className="logo-link">
         <img src={logo_icon} alt="Logo" className="logo" />
       </a>
+      <div className="user-profile">
+        <img
+          src="https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"
+          alt="Profile"
+          className="profile-icon"
+          onClick={toggleDropdown}
+        />
+        <span
+          className="user-name"
+          onClick={toggleDropdown}
+        >
+          {user.ime} {user.prezime[0]}.
+        </span>
+
+        {isDropdownOpen && (
+          <div className="dropdown-menu">
+            <button onClick={() => navigate("/profile")}>Profil</button>
+            <button onClick={() => navigate(`/requests/${user.id}`)}>Zahtjevi</button>
+            {user.uloga === "Učitelj" && (
+              <button onClick={() => navigate(`/calendar/${user.id}`)}>Kalendar</button>
+            )}
+            <button onClick={handleLogout}>Odjava</button>
+          </div>
+        )}
+      </div>
 
       <div className="container">
-        <div className="text">Recenzije učenika</div>
-        <div className="underline"></div>
+        <footer>
+          <div className="text">Recenzije učenika</div>
+          <div className="underline"></div>
+        </footer>
         <div className="main-content"></div>
         {recenzije.length > 0 ? (
           recenzije.map((recenzija) => (
@@ -82,7 +147,7 @@ const Ratings = () => {
             </div>
           ))
         ) : (
-          <p>Trenutno nema recenzija za ovog učitelja.</p>
+          <p>Trenutno nema recenzija za učitelja.</p>
         )}
       </div>
     </div>

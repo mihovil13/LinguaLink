@@ -405,8 +405,9 @@ const ProfilePage = () => {
             <strong>Uloga:</strong> {user.uloga}
           </p>
           {user.uloga==="Učitelj" && (
-          <button onClick={() => navigate(`/ratings/${user.id}`)}>Recenzije učenika</button>
-        )};
+          <button className="recenzije-button" onClick={() => 
+            navigate(`/ratings/${user.id}`)}>⭐ Recenzije učenika</button>
+        )}
         </div>
         {user.uloga === "Učenik" && (
           <div className="profile-jezici">
