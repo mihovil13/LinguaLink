@@ -38,6 +38,10 @@ public class Ucitelj extends Korisnik {
     private Set<Qualifications> qualifications = new HashSet<>();
 
 
+    @OneToMany(mappedBy = "ucitelj",cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<Recenzija> recenzija2 = new ArrayList<>();
+
     public Ucitelj(String ime, String prezime, String email, String lozinka) {
         super(ime, prezime, email, lozinka);
     }
@@ -107,6 +111,15 @@ public class Ucitelj extends Korisnik {
     }
     public Integer getId(){
         return super.getUser_id();
+    }
+
+
+    public List<Recenzija> getRecenzija2() {
+        return recenzija2;
+    }
+
+    public void setRecenzija2(List<Recenzija> recenzija2) {
+        this.recenzija2 = recenzija2;
     }
 
 
