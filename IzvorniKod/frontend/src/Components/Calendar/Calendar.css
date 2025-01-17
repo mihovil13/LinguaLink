@@ -1,5 +1,3 @@
-/* ovo postavlja pozadinske boje buttona month, week, lijevo i desno
-   kada su aktivni, neaktivni i kada se hovera iznad njih */
 :root{
     --fc-button-text-color: #fff;
     --fc-button-bg-color: #613c78;
@@ -10,64 +8,71 @@
 }
 
 .fc {
-    width: 100vh; /* Postavite željenu širinu */
-    margin: 0 auto; /* Centrirajte kalendar, opcionalno */
+    width: 100vh;
+    height: 70vh; 
+    margin: 0 auto; 
+    box-sizing: border-box;
+    overflow-y: auto; 
 }
 
-/*ovaj dio koda postavlja today button da izgleda isto kao i ostali
-  (pozadinska boja kada nije aktivan, kada se hovera iznad njega i kada je aktivan  */
 .fc-today-button {
-    background-color: #613c78 !important; /* Postavlja istu pozadinsku boju kao ostali gumbi */
-    color: white !important;             /* Bijela boja fonta */
-    opacity: 1 !important;               /* Uklanja prozirnost */
-    border: none;                        /* Bez rubova */
+    background-color: #613c78 !important; 
+    color: white !important;            
+    opacity: 1 !important;               
+    border: none;                      
+}
+
+@media (max-width: 768px) {
+    .fc {
+        max-width: 100%; 
+        height: 70vh; 
+    }
+}
+
+@media (max-width: 480px) {
+    .fc {
+        max-width: 100%; 
+        height: 70vh; 
+    }
 }
 
 .fc-today-button:hover {
-    background-color: #482a5c !important; /* Hover efekt */
+    background-color: #482a5c !important; 
 }
 
 .fc-today-button:active {
-    background-color: #311f40 !important; /* Aktivni efekt */
+    background-color: #311f40 !important; 
 }
 
-/* postavlja pozadinsku boju stupca sa današnjim danom u prikazu tjedna na #f2eeed*/
 .fc-day-today .fc-timegrid-col-frame{
     background-color: #f2eeed;
 }
 
-/* ovo je za bojanje ćelija i stupaca (dana i sati) u kalendaru u bijelo*/
 .fc-day {
     background-color: #fff;
 }
 
-/*ovo je za bojanje stupca današnjeg dana u week prikazu tjedna u boju #f2eeed */
 .fc-day-today .fc-daygrid-day-frame{
     background-color: #f2eeed;
 }
 
-/* Promjena pokazivača na ručicu na prelasku mišem */
 .fc-daygrid-day {
     cursor: pointer;
 }
 
-/* Stil za selektovani datum */
 .fc-daygrid-day.selected {
-    background-color: #add8e6 !important; /* Plava boja */
+    background-color: #add8e6 !important; 
 }
 
-/* Reset prethodno selektovane ćelije */
 .fc-daygrid-day:not(.selected) {
     background-color: #fff !important;
 }
 
-/*bojanje header retka iznad stupaca u #613c78, a teksta u bijelu*/
 .fc-col-header-cell {
     background-color: #613c78;
     color: #fff;
 }
 
-/*ovo je za bojanje stupca sa satima u bijelo u prikazu tjedna*/
 .fc-timegrid-axis {
     background-color: white;
 }
@@ -280,7 +285,8 @@ body {
     }
 
     .fc {
-        height: calc(100vh - 120px); 
+        height: 70vh;
+        width: 100%;
     }
 }
 
@@ -296,5 +302,7 @@ body {
 
     .logo-link {
         position: relative;
+        width: 35px;
+        height: 30px
     }
 }

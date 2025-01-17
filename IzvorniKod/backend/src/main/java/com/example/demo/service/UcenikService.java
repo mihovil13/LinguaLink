@@ -12,5 +12,5 @@ public interface UcenikService {
     public void saveUcenik(Ucenik ucenik);
     public Ucenik getUcenik(String email);
     public ResponseEntity<?> updateUcenik(Ucenik ucenik, Map<String, Object> body);
-
+    public Ucenik  getUcenikById(Long id);
 }

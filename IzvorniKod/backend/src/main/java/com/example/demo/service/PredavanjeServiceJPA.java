@@ -74,4 +74,9 @@ public class PredavanjeServiceJPA implements PredavanjeService {
                 })
                 .toList();
     }
+
+    @Override
+    public Predavanje getPredavanjeById(Integer id) {
+        return predavanjeRepository.getPredavanjeByPredavanjeId(id);
+    }
 }

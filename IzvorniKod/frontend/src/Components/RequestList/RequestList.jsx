@@ -54,6 +54,8 @@ const RequestList = () => {
                 )
               : response.data.filter((req) => req.potvrdeno !== -1);
 
+              console.log("s backenda doslo", response.data);
+
           setRequests(filteredRequests);
         }
       } catch (error) {

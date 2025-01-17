@@ -1,15 +1,26 @@
+* {
+   box-sizing: border-box; 
+}
+
 .profile-page {
-   display: flex;
-   flex-wrap: wrap; 
-   justify-content: center;
-   align-items: flex-start;
-   height: auto; 
    width: 100%;
    max-width: 1200px; 
+   margin: 0 auto; 
+   padding: 10px; 
+}
+
+.profile-page {
+   width: 100%;
+   max-width: 1200px;
+   margin: 20px auto;
+   padding: 20px;
    background-color: #f9f9f9;
    border: 5px solid #ddd;
    border-radius: 10px;
-   margin: 20px auto;
+   display: flex;
+   flex-wrap: wrap;
+   justify-content: center;
+   align-items: flex-start;
    box-sizing: border-box;
 }
 
@@ -33,11 +44,15 @@
    text-align: center;
 }
 
+
 .profile-header {
-   display: flex;
-   align-items: center;
-   box-sizing: border-box;
+   width: 100%;
+   min-width: 300px;
+   max-width: 100%;
+   justify-content: center;
+   gap: 10px; 
 }
+
 
 .profile-imagetext {
    text-align: center;
@@ -75,9 +90,18 @@
    cursor: pointer;
 }
 
+.first-row-profile-buttons {
+   display: contents;
+    flex: 1 1;
+    width: 100%;
+    gap: 10px;
+    margin-top: 5px;
+}
+
 .teachers-button,
 .odjava-button ,
-.admin-button{
+.admin-button,
+.lections-button{
    flex: 1 1 calc(50% - 200px); 
    background-color: #613c78;
    color: #fff;
@@ -90,7 +114,8 @@
 .edit-profile-button:hover,
 .teachers-button:hover,
 .odjava-button:hover,
- .admin-button:hover{
+.admin-button:hover,
+.lections-button:hover{
    background-color: #4a2c5f;
 }
 
@@ -101,6 +126,10 @@
 .profile-image-container {
    position: relative;
    display: inline-block;
+   max-width: 150px; /* Maksimalna širina slike */
+    max-height: 150px; /* Maksimalna visina slike */
+    margin: 0 auto; /* Centriranje */
+    position: relative;
 }
 
 .profile-image-container label {
@@ -157,12 +186,22 @@
    cursor: pointer;
 }
 
+.recenzije-button {
+   margin: 100px 0px;
+}
+
+.recenzije-button:hover {
+   background-color: #e3c103;
+   color: #333;
+   transform: scale(1.05); 
+ } 
+
 @media (max-width: 768px) {
    .profile-page {
      flex-direction: column;
      height: auto; 
      width: 90vw;
-     margin-left: 20px;
+     margin-top: 60px;
    }
  
    .profile-sidebar {
@@ -178,10 +217,55 @@
      align-items: flex-start; 
      padding: 10px;
      flex-direction: row; 
+     flex-wrap: wrap;
      justify-content: center; 
      gap: 10px; 
  
    }
+
+   @media (max-width: 1024px) and (min-width: 768px) {
+      .profile-header {
+          flex-direction: column; 
+          align-items: center; 
+      }
+   
+      .profile-imagetext {
+          width: 100%; 
+          text-align: center;
+      }
+   
+      .profile-buttons {
+          flex-direction: column; 
+          width: 100%;
+          margin-top: 10px;
+      }
+   
+      .edit-profile-button {
+          width: 90%; 
+      }
+   }
+
+   @media (max-width: 768px) {
+      .profile-header {
+          flex-direction: column;
+          gap: 15px;
+      }
+   
+      .profile-imagetext {
+          margin-bottom: 15px;
+      }
+   
+      .buttons {
+          flex-direction: column;
+          align-items: center;
+      }
+   
+      .buttons button {
+          width: 100%;
+          max-width: 300px; 
+      }
+   }
+   
  
    .profile-buttons, .edit-button {
      flex-direction: column; 
@@ -191,12 +275,14 @@
  
    .calendar-button,
    .teachers-button,
-   .edit-button {
+   .edit-button,
+   .first-row-profile-buttons {
      width: 85%;
      margin-top: 10px;
    }
  
    .logo {
+      position: relative;
      width: 35px;
      height: 30px;
    }

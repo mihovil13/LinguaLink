@@ -415,6 +415,70 @@ const ProfilePage = () => {
                 </div>
               </div>
             </div>
+<<<<<<< HEAD
+=======
+          </div>
+        </div>
+      )}
+      <div className="profile-sidebar">
+        <div className="profile-podaci">
+          <span>Osobni podaci</span>
+          <p>
+            <strong>Ime:</strong> {user.ime}
+          </p>
+          <p>
+            <strong>Prezime:</strong> {user.prezime}
+          </p>
+          <p>
+            <strong>Email:</strong> {user.email}
+          </p>
+          <p>
+            <strong>Uloga:</strong> {user.uloga}
+          </p>
+          {user.uloga==="Učitelj" && (
+          <button className="recenzije-button" onClick={() => 
+            navigate(`/ratings/${user.id}`)}>⭐ Recenzije učenika</button>
+        )}
+        </div>
+        {user.uloga === "Učenik" && (
+          <div className="profile-jezici">
+            <span>Jezici koje znam</span>
+            {user.languagesKnown && user.languagesKnown.length > 0 ? (
+              <ul>
+                {user.languagesKnown.map((lang, index) => (
+                  <li key={index}>
+                    {lang.nazivJezika} - {lang.razina}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>Nema unesenih podataka o jezicima koje znate.</p>
+            )}
+
+            <span>Jezici koje želim naučiti</span>
+            {user.languagesToLearn && user.languagesToLearn.length > 0 ? (
+              <ul>
+                {user.languagesToLearn.map((lang, index) => (
+                  <li key={lang.jezik_id || index}>{lang.nazivJezika}</li>
+                ))}
+              </ul>
+            ) : (
+              <p>Nema unesenih podataka o jezicima koje želite naučiti.</p>
+            )}
+
+            <span>Preferirani stil podučavanja</span>
+            <p>
+              {user.stilPoducavanja ||
+                "Nema unesenih podataka o preferiranom stilu podučavanja."}
+            </p>
+
+            <span>Ciljevi učenja</span>
+            <p>
+              {user.ciljeviUcenja ||
+                "Nema unesenih podataka o ciljevima učenja."}
+            </p>
+          </div>
+>>>>>>> main
         )}
         <div className="profile-sidebar">
           <div className="profile-podaci">
@@ -541,15 +605,356 @@ const ProfilePage = () => {
               <button className="edit-profile-button" onClick={handleEditProfile}>
                 Uredi profil
               </button>
+<<<<<<< HEAD
+=======
+            )}
+            {user.uloga === "Učenik" && (
+              <div className="first-row-profile-buttons">
+                <button
+                  className="teachers-button"
+                  onClick={() => navigate("/teachers")}
+                >
+                  Učitelji
+                </button>
+                </div>
+            )}
+            
+          </div>
+          <div className="profile-buttons">
+            {(user.uloga === "Učenik" || user.uloga === "Učitelj") && (
+>>>>>>> main
               <button
                   className="zahtjevi-button"
                   onClick={() => navigate(`/requests/${user.id}`)}
               >
                 Moji zahtjevi
               </button>
+<<<<<<< HEAD
             </div>
             <div className="profile-buttons">
               {user.uloga === "Učenik" && (
+=======
+            )}
+            {user.uloga === "Učenik" && (
+              <div className="first-row-profile-buttons">
+                <button
+                  className="lections-button"
+                  onClick={() => navigate(`/lections/${user.id}`)}
+                >
+                  Moje lekcije
+                </button>
+              </div>
+            )}
+            {user.uloga === "Učitelj" && (
+              <button
+                className="calendar-button"
+                onClick={() => navigate(`/calendar/${user.id}`)}
+              >
+                Moj kalendar
+              </button>
+            )}
+            {user.uloga === "Admin" && (
+              <button
+                className="admin-button"
+                onClick={() => navigate(`/users`)}
+              >
+                Korisnici
+              </button>
+            )}
+            <button className="odjava-button" onClick={handleLogout}>
+              Odjava
+            </button>
+          </div>
+        </div>
+      </div>
+      {isEditModalOpen && (
+        <div className="modal">
+          <div className="modal-content">
+            {user.uloga === "Učenik" && (
+              <div className="scrollable-content">
+                <div className="jezici-koje-znam">
+                  <h3>Jezici koje znam</h3>
+                  {editedUser.languagesKnown.map((lang, index) => (
+                    <div key={index}>
+                      <select
+                        value={lang.nazivJezika}
+                        onChange={(e) =>
+                          handleInputChange(
+                            "nazivJezika",
+                            index,
+                            e.target.value,
+                            "languagesKnown"
+                          )
+                        }
+                      >
+                        <option value="" disabled>
+                          Odaberi jezik
+                        </option>
+                        <option value="Engleski">Engleski</option>
+                        <option value="Njemački">Njemački</option>
+                        <option value="Francuski">Francuski</option>
+                        <option value="Španjolski">Španjolski</option>
+                        <option value="Talijanski">Talijanski</option>
+                        <option value="Portugalski">Portugalski</option>
+                        <option value="Ruski">Ruski</option>
+                        <option value="Hindi">Hindi</option>
+                        <option value="Arapski">Arapski</option>
+                        <option value="Mandarinski">Mandarinski</option>
+                        <option value="Japanski">Japanski</option>
+                      </select>
+                      <select
+                        value={lang.razina}
+                        onChange={(e) =>
+                          handleInputChange(
+                            "razina",
+                            index,
+                            e.target.value,
+                            "languagesKnown"
+                          )
+                        }
+                      >
+                        <option value="početna">Početna</option>
+                        <option value="srednja">Srednja</option>
+                        <option value="napredna">Napredna</option>
+                      </select>
+                      <button
+                        onClick={() =>
+                          handleRemoveLanguage("languagesKnown", index)
+                        }
+                      >
+                        Ukloni
+                      </button>
+                    </div>
+                  ))}
+                  <button onClick={() => handleAddLanguage("languagesKnown")}>
+                    Dodaj jezik
+                  </button>
+                </div>
+
+                <div className="jezici-koje-zelim-nauciti">
+                  <h3>Jezici koje želim naučiti</h3>
+                  {editedUser.languagesToLearn.map((lang, index) => (
+                    <div key={index}>
+                      <select
+                        value={lang.nazivJezika}
+                        onChange={(e) =>
+                          handleInputChange(
+                            "nazivJezika",
+                            index,
+                            e.target.value,
+                            "languagesToLearn"
+                          )
+                        }
+                      >
+                        <option value="" disabled>
+                          Odaberi jezik
+                        </option>
+                        <option value="Engleski">Engleski</option>
+                        <option value="Njemački">Njemački</option>
+                        <option value="Francuski">Francuski</option>
+                        <option value="Španjolski">Španjolski</option>
+                        <option value="Talijanski">Talijanski</option>
+                        <option value="Portugalski">Portugalski</option>
+                        <option value="Ruski">Ruski</option>
+                        <option value="Hindi">Hindi</option>
+                        <option value="Arapski">Arapski</option>
+                        <option value="Mandarinski">Mandarinski</option>
+                        <option value="Japanski">Japanski</option>
+                      </select>
+                      <button
+                        onClick={() =>
+                          handleRemoveLanguage("languagesToLearn", index)
+                        }
+                      >
+                        Ukloni
+                      </button>
+                    </div>
+                  ))}
+                  <button onClick={() => handleAddLanguage("languagesToLearn")}>
+                    Dodaj jezik
+                  </button>
+                </div>
+
+                <div className="styles-section">
+                  <h3>Stilovi podučavanja jezika</h3>
+                  <div className="tooltip-container">
+                    <select
+                      value={editedUser.stilPoducavanja || ""}
+                      onChange={(e) =>
+                        handleInputChange(
+                          "stilPoducavanja",
+                          null,
+                          e.target.value,
+                          null
+                        )
+                      }
+                    >
+                      <option value="" disabled>
+                        Odaberi stil podučavanja
+                      </option>
+                      <option
+                        value="Vizualni"
+                        title="Osobe sklone vizualnom učenju vole čitati jer uživaju gledati riječi i slova ispred sebe. Također vole stvarati jezične poveznice pomoću kartica s riječima ili fotografija."
+                      >
+                        Vizualni
+                      </option>
+                      <option
+                        value="Auditorni"
+                        title="Kao što ime sugerira, auditorni učenici vole učiti kroz zvuk. Jako uživaju u interakciji i razgovoru s drugima te im nije nužno vidjeti riječi napisane."
+                      >
+                        Auditorni
+                      </option>
+                      <option
+                        value="Taktilni"
+                        title="Oni koji imaju sklonost taktilnom učenju uživaju manipulirati raznim nastavnim materijalima dok uče jezik. Obožavaju praktične aktivnosti koje uključuju rad rukama."
+                      >
+                        Taktilni
+                      </option>
+                      <option
+                        value="Kinestetički"
+                        title="Ovaj tip učenika voli uzimati duže pauze i biti fizički aktivan dok uči engleski. Ne vole dugo sjediti za stolom te uživaju u kretanju tijekom učenja."
+                      >
+                        Kinestetički
+                      </option>
+                      <option
+                        value="Analitički"
+                        title="Ove osobe vole usmjeriti svu pažnju na sitne detalje jezika. Uživaju učiti gramatička pravila i razbijati jezik na manje dijelove. Zbog fokusa na detalje, ponekad ne vide širu sliku pri učenju jezika."
+                      >
+                        Analitički
+                      </option>
+                      <option
+                        value="Globalni"
+                        title="Oni ne vole ulaziti u sitnice jezika niti ih zanima kako jezik funkcionira “iznutra”. Usmjereni su na širu sliku i ono što jezik predstavlja te žele prenositi ideje, ne opterećujući se savršenom gramatikom."
+                      >
+                        Globalni
+                      </option>
+                      <option
+                        value="Refleksivni"
+                        title="Ovi učenici vole razmišljati o jeziku, promišljati kako točno prenijeti svoje misli te analizirati svoj napredak u učenju jezika. Skloni su činiti manje pogrešaka, ali im je potrebno više vremena da prenesu poruku."
+                      >
+                        Refleksivni
+                      </option>
+                      <option
+                        value="Impulzivni"
+                        title="Ovi učenici su rođeni da riskiraju pri učenju engleskog. Žele govoriti, komunicirati i ne brinu se previše o gramatici. Stalno isprobavaju nove stvari, griješe i uče iz tih pogrešaka."
+                      >
+                        Impulzivni
+                      </option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="ciljevi-ucenja-section">
+                  <h3>Ciljevi učenja</h3>
+                  <div className="learning-goals-box">
+                    <textarea
+                      value={editedUser.ciljeviUcenja || ""}
+                      onChange={(e) => {
+                        setEditedUser({
+                          ...editedUser,
+                          ciljeviUcenja: e.target.value,
+                        });
+                      }}
+                      placeholder="Koji su vaši ciljevi učenja?"
+                    ></textarea>
+                  </div>
+                </div>
+              </div>
+            )}
+            {user.uloga === "Učitelj" && (
+              <div className="scrollable-content">
+                <div className="jezici-koje-znam">
+                  <h3>Jezici koje podučavam</h3>
+                  {editedUser.languagesTeach.map((lang, index) => (
+                    <div key={index}>
+                      <select
+                        value={lang.nazivJezika}
+                        onChange={(e) =>
+                          handleInputChange(
+                            "nazivJezika",
+                            index,
+                            e.target.value,
+                            "languagesTeach"
+                          )
+                        }
+                      >
+                        <option value="" disabled>
+                          Odaberi jezik
+                        </option>
+                        <option value="Engleski">Engleski</option>
+                        <option value="Njemački">Njemački</option>
+                        <option value="Francuski">Francuski</option>
+                        <option value="Španjolski">Španjolski</option>
+                        <option value="Talijanski">Talijanski</option>
+                        <option value="Portugalski">Portugalski</option>
+                        <option value="Ruski">Ruski</option>
+                        <option value="Hindi">Hindi</option>
+                        <option value="Arapski">Arapski</option>
+                        <option value="Mandarinski">Mandarinski</option>
+                        <option value="Japanski">Japanski</option>
+                      </select>
+                      <button
+                        onClick={() =>
+                          handleRemoveLanguage("languagesTeach", index)
+                        }
+                      >
+                        Ukloni
+                      </button>
+                    </div>
+                  ))}
+                  <button onClick={() => handleAddLanguage("languagesTeach")}>
+                    Dodaj jezik
+                  </button>
+                </div>
+                <div className="ciljevi-ucenja-section">
+                  <h3>Iskustvo</h3>
+                  <div className="learning-goals-box">
+                    <textarea
+                      value={editedUser.iskustvo || ""}
+                      onChange={(e) => {
+                        setEditedUser({
+                          ...editedUser,
+                          iskustvo: e.target.value,
+                        });
+                      }}
+                      placeholder="Koje je vaše iskustvo?"
+                    ></textarea>
+                  </div>
+                </div>
+                <div className="jezici-koje-znam">
+                  <h3>Kvalifikacije</h3>
+                  {editedUser.qualifications.map((kval, index) => (
+                    <div key={index}>
+                      <select
+                        value={kval.kvalifikacije}
+                        onChange={(e) =>
+                          handleInputChange(
+                            "kvalifikacije",
+                            index,
+                            e.target.value,
+                            "qualifications"
+                          )
+                        }
+                      >
+                        <option value="" disabled>
+                          Odaberi
+                        </option>
+                        <option value="Profesor">Profesor</option>
+                        <option value="Izvorni_govornik">
+                          Izvorni govornik
+                        </option>
+                        <option value="Certifikat">Certifikat</option>
+                      </select>
+                      <button
+                        onClick={() =>
+                          handleRemoveQualification("qualifications", index)
+                        }
+                      >
+                        Ukloni
+                      </button>
+                    </div>
+                  ))}
+>>>>>>> main
                   <button
                       className="teachers-button"
                       onClick={() => navigate("/teachers")}

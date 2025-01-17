@@ -13,4 +13,6 @@ public interface PredavanjeService {
     void updatePotvrdeno(Integer predavanjeId, Integer potvrdeno);
 
     List<PredavanjeDTO> getPredavanjaByUcenikId(int ucenikId); // Nova metoda
+
+    Predavanje getPredavanjeById(Integer id);
 }
