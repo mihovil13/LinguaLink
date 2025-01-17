@@ -44,7 +44,9 @@ public class Korisnik implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-
+    @Lob
+    @Column(name = "profilePicture", columnDefinition = "TEXT")
+    private String profilePicture;
 
     public Korisnik(@JsonProperty("ime") String ime,
                     @JsonProperty("prezime") String prezime,
@@ -72,6 +74,14 @@ public class Korisnik implements UserDetails {
         this.prezime = prezime;
         this.lozinka = lozinka;
         this.email = email;
+    }
+
+    public String getProfilePicture() {
+        return profilePicture;
+    }
+
+    public void setProfilePicture(String profilePicture) {
+        this.profilePicture = profilePicture;
     }
 
     public String getUloga() {
