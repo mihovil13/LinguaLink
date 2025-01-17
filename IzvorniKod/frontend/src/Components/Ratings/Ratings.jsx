@@ -4,7 +4,7 @@ import { useUser } from "../../UserContext";
 import logo_icon from "../Assets/logo-prototip3.png";
 import "./Ratings.css";
 import { useNavigate } from "react-router-dom";
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 const backend = "http://localhost:8080";
 
@@ -34,7 +34,7 @@ const Ratings = () => {
         );
 
         if (response.status === 200) {
-            console.log("recenzije", response.data);
+          console.log("recenzije", response.data);
           setRecenzije(response.data);
         } else {
           console.error("Greška prilikom dohvaćanja recenzija.");
@@ -53,18 +53,13 @@ const Ratings = () => {
     return <p>Učitavanje recenzija...</p>;
   }
 
-  const getToken = () => {
-    return localStorage.getItem("token");
-  };
-
   const toggleDropdown = () => setIsDropdownOpen((prev) => !prev);
 
   const handleLogout = async () => {
     try {
-      const token = getToken();
+      const token = localStorage.getItem("token");
 
       if (token) {
-        // Poziv backendu za odjavu
         await axios.post(
           `${backend}/api/auth/logout`,
           {},
@@ -76,18 +71,28 @@ const Ratings = () => {
         );
       }
 
-      // Resetiranje korisničkih podataka
       setUser({});
-
-      // Brisanje tokena iz localStorage
       localStorage.removeItem("token");
-
-      // Preusmjeravanje na glavnu stranicu
       navigate("/");
     } catch (error) {
       console.error("Greška prilikom odjave:", error);
       alert("Došlo je do greške prilikom odjave.");
     }
+  };
+
+  const renderStars = (rating) => {
+    const stars = [];
+    for (let i = 1; i <= 5; i++) {
+      stars.push(
+        <span
+          key={i}
+          className={`star ${i <= rating ? "filled" : ""}`}
+        >
+          ★
+        </span>
+      );
+    }
+    return stars;
   };
 
   return (
@@ -132,16 +137,18 @@ const Ratings = () => {
             <div key={recenzija.predavanje_id} className="rating">
               <div className="left">
                 <p>
-                  <strong>Ocjena:</strong> {recenzija.ocjena} / 5
-                </p>
-                <p>
                   <strong>Učenik:</strong> {recenzija.ime}{" "}
                   {recenzija.prezime}
                 </p>
               </div>
-              <div className="right">
+              <div className="comment-box">
                 <p>
-                  <strong>Komentar:</strong> {recenzija.komentar}
+                  <strong>Ocjena: </strong>
+                  <span className="stars">{renderStars(recenzija.ocjena)}</span>
+                </p>
+                <p>
+                  <strong>Komentar: </strong> 
+                  "{recenzija.komentar}"
                 </p>
               </div>
             </div>

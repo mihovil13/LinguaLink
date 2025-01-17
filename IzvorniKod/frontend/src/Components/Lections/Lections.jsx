@@ -8,14 +8,19 @@ import "./Lections.css";
 const backend = "http://localhost:8080";
 
 const Lections = () => {
-  const { user } = useUser();
+  const { user, setUser } = useUser();
   const [predavanja, setPredavanja] = useState([]);
   const [recenzije, setRecenzije] = useState([]);
   const [selectedPredavanje, setSelectedPredavanje] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
-  const [ocjena, setOcjena] = useState(1);
+  const [ocjena, setOcjena] = useState(0);
   const [komentar, setKomentar] = useState("");
   const [loading, setLoading] = useState(true);
+  const [hoverOcjena, setHoverOcjena] = useState(0);
+  const [showNotification, setShowNotification] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const toggleDropdown = () => setIsDropdownOpen((prev) => !prev);
+
   const navigate = useNavigate();
 
   const fetchPredavanja = async () => {
@@ -40,7 +45,7 @@ const Lections = () => {
           const vrijemePocetka = new Date(
             predavanje.datumVrijemePocetka
           ).getTime();
-          return vrijemePocetka < currentTime && predavanje.potvrdeno == 1;
+          return vrijemePocetka < currentTime && predavanje.potvrdeno === 1;
         });
 
         setPredavanja(filteredPredavanja);
@@ -55,7 +60,6 @@ const Lections = () => {
         );
 
         if (recenzijeResponse.status === 200) {
-          console.log("recenzije", recenzijeResponse.data);
           setRecenzije(recenzijeResponse.data);
         }
       }
@@ -66,9 +70,7 @@ const Lections = () => {
     }
   };
 
-
   useEffect(() => {
-
     fetchPredavanja();
   }, [user, navigate]);
 
@@ -99,7 +101,7 @@ const Lections = () => {
 
   const handleCloseModal = () => {
     setModalVisible(false);
-    setOcjena(1);
+    setOcjena(0);
     setKomentar("");
   };
 
@@ -127,13 +129,39 @@ const Lections = () => {
       );
 
       if (response.status === 200) {
-        alert("Recenzija uspješno spremljena!");
+        setShowNotification(true);
+        setTimeout(() => setShowNotification(false), 3000);
         fetchPredavanja();
-        handleCloseModal(); // Zatvori modal nakon što je recenzija spremljena
+        handleCloseModal();
       }
     } catch (error) {
       console.error("Greška prilikom spremanja recenzije:", error);
       alert("Došlo je do greške pri spremanju recenzije.");
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      const token = localStorage.getItem("token");
+
+      if (token) {
+        await axios.post(
+          `${backend}/api/auth/logout`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+      }
+
+      setUser({});
+      localStorage.removeItem("token");
+      navigate("/");
+    } catch (error) {
+      console.error("Greška prilikom odjave:", error);
+      alert("Došlo je do greške prilikom odjave.");
     }
   };
 
@@ -142,7 +170,34 @@ const Lections = () => {
       <a href="/" className="logo-link">
         <img src={logo_icon} alt="Logo" className="logo" />
       </a>
+      <div id="notification" className={`filter-notification ${showNotification ? 'show' : ''}`}>
+        Recenzija uspješno spremljena!
+      </div>
+      <div className="user-profile">
+        <img
+          src="https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"
+          alt="Profile"
+          className="profile-icon"
+          onClick={toggleDropdown}
+        />
+        <span
+          className="user-name"
+          onClick={toggleDropdown}
+        >
+          {user.ime} {user.prezime[0]}.
+        </span>
 
+        {isDropdownOpen && (
+          <div className="dropdown-menu">
+            <button onClick={() => navigate("/profile")}>Profil</button>
+            <button onClick={() => navigate(`/requests/${user.id}`)}>Zahtjevi</button>
+            {user.uloga === "Učitelj" && (
+              <button onClick={() => navigate(`/calendar/${user.id}`)}>Kalendar</button>
+            )}
+            <button onClick={handleLogout}>Odjava</button>
+          </div>
+        )}
+      </div>
       <div className="container">
         <div className="text">Moja predavanja</div>
         <div className="underline"></div>
@@ -152,11 +207,11 @@ const Lections = () => {
               <div key={predavanje.predavanjeId} className="lection">
                 <div className="left">
                   <p>
-                    <strong>Učitelj:</strong> {predavanje.uciteljIme}{" "}
+                    <strong>Učitelj:</strong> {predavanje.uciteljIme} {" "}
                     {predavanje.uciteljPrezime}
                   </p>
                   <p>
-                    <strong>Vrijeme početka:</strong>{" "}
+                    <strong>Vrijeme početka:</strong> {" "}
                     {formatDate(predavanje.datumVrijemePocetka)}
                   </p>
                 </div>
@@ -170,7 +225,7 @@ const Lections = () => {
                       onClick={() => handleOpenModal(predavanje)}
                       className="review-button"
                     >
-                      Ostavi Recenziju
+                      Napiši recenziju
                     </button>
                   )}
                 </div>
@@ -179,33 +234,40 @@ const Lections = () => {
           ) : (
             <p>Nemate predavanja u prošlosti.</p>
           )}
-
           {modalVisible && (
-            <div className="modal">
-              <div className="modal-content">
-                <h2>Ostavite recenziju</h2>
-                <div className="modal-body">
-                  <label>Ocjena (1-5):</label>
-                  <input
-                    type="number"
-                    min="1"
-                    max="5"
-                    value={ocjena}
-                    onChange={(e) => setOcjena(Number(e.target.value))}
-                  />
-                  <label>Komentar:</label>
-                  <textarea
-                    value={komentar}
-                    onChange={(e) => setKomentar(e.target.value)}
-                  />
+          <div className="modal-lecture">
+            <div className="modal-lecture-content">
+              <h2>Ostavite recenziju</h2>
+              <div className="modal-lecture-body">
+                <label>Ocjena:</label>
+                <div className="rating-container">
+                  {[1, 2, 3, 4, 5].map((value) => (
+                    <span
+                      key={value}
+                      className={`star ${value <= (hoverOcjena || ocjena) ? "filled" : ""}`}
+                      onClick={() => setOcjena(value)}
+                      onMouseEnter={() => setHoverOcjena(value)}
+                      onMouseLeave={() => setHoverOcjena(0)}
+                    >
+                      ★
+                    </span>
+                  ))}
                 </div>
-                <div className="modal-actions">
-                  <button onClick={handleSubmitReview}>Spremi</button>
-                  <button onClick={handleCloseModal}>Zatvori</button>
-                </div>
+                <label>Komentar:</label>
+                <textarea
+                  value={komentar}
+                  onChange={(e) => setKomentar(e.target.value)}
+                  placeholder="Ostavite komentar ovdje..."
+                />
+              </div>
+              <div className="modal-lecture-actions">
+                <button onClick={handleSubmitReview}>Spremi</button>
+                <button onClick={handleCloseModal}>Zatvori</button>
               </div>
             </div>
-          )}
+          </div>
+        )}
+
         </div>
       </div>
     </div>
