@@ -78,15 +78,14 @@
   }
   
   button {
-    padding: 12px 24px;
+    padding: 10px 24px;
     background-color: #613c78;
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 10px;
     font-size: 1.1rem;
     cursor: pointer;
-    margin-top: 20px;
-    width: 100%;
+    width: auto;
     transition: background-color 0.3s ease;
   }
   
@@ -149,6 +148,11 @@
     margin-right: 15px;
   }
 
+  .right {
+    display: flex ;
+    flex-direction: column;
+    margin: 10px;
+  }
     
   p {
     font-size: 1.2rem;

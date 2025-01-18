@@ -348,6 +348,5 @@
   div.right {
     display:flexbox;
     justify-content: center !important;
-    align-items: center !important;
   }
   
