@@ -104,4 +104,9 @@ public class KorisnikServiceJPA implements KorisnikService {
             return false; // Korisnik s danim ID-em ne postoji
         }
     }
+
+    @Override
+    public void save(Korisnik korisnik) {
+        korisnikRepository.save(korisnik);
+    }
 }

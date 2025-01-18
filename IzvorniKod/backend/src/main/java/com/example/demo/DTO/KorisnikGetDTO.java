@@ -20,8 +20,9 @@ public class KorisnikGetDTO {
     //private String languagesTeach;
     private String stilPoducavanja;
     private String ciljeviUcenja;
+    private String profilePicture;
 
-    public KorisnikGetDTO(Integer id, String ime, String prezime,String email, List<Jezik> languagesTeach, List<Jezik> languagesToLearn, List<String> languagesKnown, String uloga) {
+    public KorisnikGetDTO(Integer id, String ime, String prezime,String email, List<Jezik> languagesTeach, List<Jezik> languagesToLearn, List<String> languagesKnown, String uloga, String profilePicture) {
         this.id = id;
         this.ime = ime;
         this.prezime = prezime;
@@ -30,6 +31,7 @@ public class KorisnikGetDTO {
         this.languagesToLearn = languagesToLearn;
         this.languagesKnown = languagesKnown;
         this.uloga = uloga;
+        this.profilePicture = profilePicture;
     }
 
     public KorisnikGetDTO(String ime, String uloga, String prezime) {
@@ -143,6 +145,14 @@ public class KorisnikGetDTO {
 
     public void setUloga(String uloga) {
         this.uloga = uloga;
+    }
+
+    public String getProfilePicture() {
+        return profilePicture;
+    }
+
+    public void setProfilePicture(String profilePicture) {
+        this.profilePicture = profilePicture;
     }
 
 }
