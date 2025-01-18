@@ -77,13 +77,8 @@
     padding: 12px 20px;
     font-size: 1rem;
   }
-  
 
-  
-  
-
-  
-  .main-content {
+    .main-content {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -97,10 +92,7 @@
     min-height: 50px;
     margin-bottom: 10px;
   }
-  
 
-  
-  
   button {
     padding: 12px 24px;
     background-color: #613c78;
@@ -117,8 +109,6 @@
   button:hover {
     background-color: #4d2763;
   }
-  
-
   
   .request-container {
     display: flex;
@@ -140,7 +130,12 @@
   }
   
 
-
+  .actions {
+    display: flex;
+    flex-direction: column; 
+    gap: 10px; 
+    width: 100%; 
+  }
   
   footer {
     display: grid;
@@ -176,8 +171,6 @@
     border-radius: 50%;
     margin-right: 15px;
   }
-  
-
   
   p {
     font-size: 1.2rem;

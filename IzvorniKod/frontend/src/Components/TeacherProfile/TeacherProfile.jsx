@@ -148,6 +148,7 @@ const TeacherProfile = () => {
           <div className="dropdown-menu">
             <button onClick={() => navigate("/profile")}>Profil</button>
             <button onClick={() => navigate(`/requests/${user.id}`)}>Zahtjevi</button>
+            <button onClick={() => navigate(`/lections/${user.id}`)}>Lekcije</button>
             <button onClick={handleLogout}>
               Odjava
             </button>

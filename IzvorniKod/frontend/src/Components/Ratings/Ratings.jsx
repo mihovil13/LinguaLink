@@ -121,6 +121,7 @@ const Ratings = () => {
             {user.uloga === "Učitelj" && (
               <button onClick={() => navigate(`/calendar/${user.id}`)}>Kalendar</button>
             )}
+            <button onClick={() => navigate(`/lections/${user.id}`)}>Lekcije</button>
             <button onClick={handleLogout}>Odjava</button>
           </div>
         )}

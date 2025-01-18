@@ -11,7 +11,11 @@ const Features = () => {
     {
       title: "Pronađi profesora",
       description: "Pristupi mreži kvalificiranih profesora.",
-      action: () => navigate("/teachers"), 
+      action: () => {
+        if(user.uloga!=="Učitelj" || user.uloga === "Učenik") {
+          navigate("/teachers");
+        }        
+      },
     },
     {
         title: "Uči jezik",
@@ -31,7 +35,7 @@ const Features = () => {
           if (user) {
             navigate(`/lections/${user.id}`); 
           } else {
-            
+            navigate("/login", { state: { returnTo: "/profile" } }); 
           }
         },
       },
