@@ -11,8 +11,8 @@
   .container
   {
     flex: 1;
-    min-width: 50vw; /* Postavljena minimalna širina */
-    max-width: 90vw; /* Povećana maksimalna širina */
+    min-width: 50vw; 
+    max-width: 90vw; 
     height: auto;
     background-color: white;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -24,21 +24,6 @@
     
   }
 
-  .status-accepted {
-    color: #4caf50; /* Zelena boja za prihvaćeno */
-    font-weight: bold;
-  }
-  
-  .status-rejected {
-    color: #f44336; /* Crvena boja za odbijeno */
-    font-weight: bold;
-  }
-  
-  .status-pending {
-    color: #613c78; /* Ljubičasta boja za nepotvrđeno */
-    font-weight: bold;
-  }
-  
   
   @media (max-width: 1024px) {
     .parent-container {
@@ -47,7 +32,7 @@
   
     .container{
       max-width: 95%;
-      min-width: auto; /* Minimalna širina za bolju vidljivost */
+      min-width: auto; 
       margin-left: 50px;
       overflow-x: hidden;
     }
@@ -61,7 +46,7 @@
   
     .container{
       max-width: 90%;
-      min-width: auto; /* Uklonjeno ograničenje širine */
+      min-width: auto;
     }
   }
   
@@ -71,14 +56,13 @@
     overflow-y: auto;
   }
   
-
   
   button {
     padding: 12px 20px;
     font-size: 1rem;
   }
-
-    .main-content {
+  
+  .main-content {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -92,49 +76,41 @@
     min-height: 50px;
     margin-bottom: 10px;
   }
-
+  
   button {
-    padding: 12px 24px;
+    padding: 10px 24px;
     background-color: #613c78;
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 10px;
     font-size: 1.1rem;
     cursor: pointer;
-    margin-top: 20px;
-    width: 100%;
+    width: auto;
     transition: background-color 0.3s ease;
   }
   
   button:hover {
     background-color: #4d2763;
   }
-  
-  .request-container {
+    
+  .rating {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
     border: 1px solid #ccc;
     border-radius: 5px;
-    padding: 10px;
-    margin: 10px 0;
+    padding: 5px;
+    margin: 5px 0;
     height: auto;
     background-color: #f9f9f9;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    gap: 15px;
   }
   
-  .request-container:hover {
+  .rating:hover {
     cursor: pointer;
     background-color: #dad7d9;
-  }
-  
-
-  .actions {
-    display: flex;
-    flex-direction: column; 
-    gap: 10px; 
-    width: 100%; 
   }
   
   footer {
@@ -158,24 +134,50 @@
     margin-bottom: 15px;
   }
   
-  .request-container > p {
+  .rating > p {
     font-size: 1rem;
     font-weight: 600;
     margin: 0;
     color: #333;
   }
   
-  .request-container > img {
+  .rating > img {
     width: 50px;
     height: 50px;
     border-radius: 50%;
     margin-right: 15px;
   }
-  
-  p {
-    font-size: 1.2rem;
-    font-weight: 400;
+
+  .right {
+    display: flex ;
+    flex-direction: column;
+    margin: 10px;
   }
+    
+  p {
+    font-size: 1.1rem;
+    font-weight: 400;
+    margin: 10px 0px;
+    flex: wrap;
+  }
+
+  .comment-box {
+    position: relative;
+    background-color: rgba(255, 255, 255, 0.9);
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    margin: 10px 0;
+    font-size: 1.1rem;
+    color: #333;
+    backdrop-filter: blur(5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 260px;
+    word-wrap: break-word; 
+    overflow-wrap: break-word; 
+    white-space: normal;
+  }
+  
   
 
   .logo-link {

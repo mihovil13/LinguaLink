@@ -463,6 +463,14 @@ const ProfilePage = () => {
           <p>
             <strong>Uloga:</strong> {user.uloga}
           </p>
+          {user.uloga === "Učitelj" && (
+            <button
+              className="recenzije-button"
+              onClick={() => navigate(`/ratings/${user.id}`)}
+            >
+              ⭐ Recenzije učenika
+            </button>
+          )}
         </div>
         {user.uloga === "Učenik" && (
           <div className="profile-jezici">
@@ -570,25 +578,55 @@ const ProfilePage = () => {
         </div>
         <div className="buttons">
           <div className="edit-button">
-            <button className="edit-profile-button" onClick={handleEditProfile}>
-              Uredi profil
-            </button>
-            <button
-              className="zahtjevi-button"
-              onClick={() => navigate(`/requests/${user.id}`)}
-            >
-              Moji zahtjevi
-            </button>
-          </div>
-          <div className="profile-buttons">
-            {user.uloga === "Učenik" && (
+            {(user.uloga === "Učenik" || user.uloga === "Učitelj") && (
               <button
-                className="teachers-button"
-                onClick={() => navigate("/teachers")}
+                className="edit-profile-button"
+                onClick={handleEditProfile}
               >
-                Učitelji
+                Uredi profil
               </button>
             )}
+            {user.uloga === "Učenik" && (
+              <div className="first-row-profile-buttons">
+                <button
+                  className="teachers-button"
+                  onClick={() => navigate("/teachers")}
+                >
+                  Učitelji
+                </button>
+              </div>
+            )}
+            {user.uloga === "Učitelj" && (
+              <div className="first-row-profile-buttons">
+                <button
+                  className="lections-button"
+                  onClick={() => navigate(`/lections/${user.id}`)}
+                >
+                  Odrađene lekcije
+                </button>
+              </div>
+            )}
+          </div>
+          <div className="profile-buttons">
+            {(user.uloga === "Učenik" || user.uloga === "Učitelj") && (
+              <button
+                className="zahtjevi-button"
+                onClick={() => navigate(`/requests/${user.id}`)}
+              >
+                Moji zahtjevi
+              </button>
+            )}
+            {user.uloga === "Učenik" && (
+              <div className="first-row-profile-buttons">
+                <button
+                  className="lections-button"
+                  onClick={() => navigate(`/lections/${user.id}`)}
+                >
+                  Moje lekcije
+                </button>
+              </div>
+            )}
+
             {user.uloga === "Učitelj" && (
               <button
                 className="calendar-button"

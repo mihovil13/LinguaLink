@@ -148,6 +148,7 @@ const TeacherProfile = () => {
           <div className="dropdown-menu">
             <button onClick={() => navigate("/profile")}>Profil</button>
             <button onClick={() => navigate(`/requests/${user.id}`)}>Zahtjevi</button>
+            <button onClick={() => navigate(`/lections/${user.id}`)}>Lekcije</button>
             <button onClick={handleLogout}>
               Odjava
             </button>
@@ -169,6 +170,8 @@ const TeacherProfile = () => {
           <p>
             <strong>Uloga:</strong> {teacher.uloga}
           </p>
+          <button className="recenzije-button" onClick={() => 
+            navigate(`/ratings/${teacherId}`)}>⭐ Recenzije učenika</button>
         </div>
 
         <div className="profile-jezici">

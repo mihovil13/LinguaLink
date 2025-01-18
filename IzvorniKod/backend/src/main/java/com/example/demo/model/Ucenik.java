@@ -42,6 +42,10 @@ public class Ucenik extends Korisnik{
     @JsonManagedReference
     private List<JezikRazina> languagesKnown = new ArrayList<JezikRazina>();
 
+    @OneToMany(mappedBy = "ucenik",cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<Recenzija> recenzije = new ArrayList<Recenzija>();
+
     public void setCiljeviUcenja(String ciljeviUcenja) {
         this.ciljeviUcenja = ciljeviUcenja;
     }
@@ -137,6 +141,17 @@ public class Ucenik extends Korisnik{
 
     public void setLanguagesKnown(List<JezikRazina> languagesKnown) {
         this.languagesKnown = languagesKnown;
+    }
+
+    public List<Recenzija> getRecenzije() {
+        return recenzije;
+    }
+
+    public void setRecenzije(List<Recenzija> recenzije) {
+        this.recenzije = recenzije;
+    }
+    public Integer getId(){
+        return super.getUser_id();
     }
 }
 

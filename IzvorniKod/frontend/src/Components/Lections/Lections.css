@@ -25,6 +25,7 @@
   }
 
   
+
   @media (max-width: 1024px) {
     .parent-container {
       gap: 15px;
@@ -50,23 +51,12 @@
     }
   }
   
-  
   .main-content {
     flex: 1;
     overflow-y: auto;
   }
   
-
   
-  button {
-    padding: 12px 20px;
-    font-size: 1rem;
-  }
-  
-
-  
-  
-
   
   .main-content {
     display: flex;
@@ -83,27 +73,22 @@
     margin-bottom: 10px;
   }
   
-
-  
-  
   button {
-    padding: 12px 24px;
+    width: 100px; /* Nova širina */
+    padding: 12px 20px;
     background-color: #613c78;
     color: white;
     border: none;
     border-radius: 5px;
-    font-size: 1.1rem;
+    font-size: 1rem;
     cursor: pointer;
-    margin-top: 20px;
-    width: 100%;
+    margin-top: 10px;
     transition: background-color 0.3s ease;
-  }
+}
   
   button:hover {
     background-color: #4d2763;
   }
-  
-
   
   .lection {
     display: flex;
@@ -125,8 +110,6 @@
   }
   
 
-
-  
   footer {
     display: grid;
   }
@@ -137,16 +120,7 @@
     font-weight: 700;
     text-align: center;
   }
-  
-  .underline {
-    justify-self: center;
-    width: 8vw;
-    height: 6px;
-    background: #613c78;
-    border-radius: 9px;
-    margin-top: 10px;
-    margin-bottom: 15px;
-  }
+
   
   .lection > p {
     font-size: 1rem;
@@ -162,13 +136,161 @@
     margin-right: 15px;
   }
   
-
-  
   p {
     font-size: 1.2rem;
     font-weight: 400;
   }
-  
+
+  .underline {
+    align-self: center;
+    width: 8vw;
+    height: 6px;
+    background: #613c78;
+    border-radius: 9px;
+    margin-top: 10px;
+    margin-bottom: 15px;
+}
+
+.lection{
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
+
+
+
+.modal-lecture {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
+  width: 400px;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.modal-lecture-content {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  color: #333;
+}
+
+.modal-lecture-content h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #72bcd2;
+  font-size: 1.5rem;
+}
+
+.modal-lecture-body label {
+  display: block;
+  margin: 8px;
+  font-weight: bold;
+  color: #4a5568;
+}
+
+.modal-lecture-body input,
+.modal-lecture-body textarea {
+  width: calc(100% - 16px);
+  padding: 8px;
+  margin-bottom: 16px;
+  border: 1px solid #cbd5e0;
+  border-radius: 5px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.modal-lecture-body input:focus,
+.modal-lecture-body textarea:focus {
+  border-color: #72bcd2;
+}
+
+.modal-lecture-actions {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.modal-lecture-actions button {
+  padding: 5px 7px;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  width: auto;
+}
+
+.modal-lecture-actions button:first-child {
+  background-color: #72bcd2;
+  color: #fff;
+}
+.modal-lecture-actions button:first-child:hover {
+  background-color:#5bb7d3;
+  transform: scale(1.02);
+}
+
+.modal-lecture-actions button:last-child {
+  background-color: #e53e3e;
+  color: #fff;
+}
+
+.modal-lecture-actions button:last-child:hover {
+  background-color: #c53030;
+  transform: scale(1.02);
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -55%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+
+
+/* Overlay */
+.modal-lecture-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 999;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.rating-container {
+  display: flex;
+  gap: 5px;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.star {
+  color: #ccc;
+  transition: color 0.2s ease-in-out;
+}
+
+.star.filled {
+  color: #f4c430; /* Zlatna za popunjene zvjezdice */
+}
+
+.recenzija-status {
+  color: #4d2763;
+  font-weight: 600;
+}
 
   .logo-link {
     position: absolute;
@@ -192,6 +314,15 @@
       border-radius: 20%;
       image-rendering: auto;
   }
+  .teacher-view {
+    display: flex;
+    align-items: center; /* Vertikalno centriranje elemenata */
+    justify-content: space-between; /* Ravnomjeran razmak između elemenata */
+    gap: 20px; /* Razmak između elemenata */
+  }
+  
+  
+
   
   @media (max-width: 1024px) {
 
@@ -212,5 +343,10 @@
       padding: 0; /* Uklanja nepotreban padding */
       overflow-y: auto; /* Omogućuje skrolanje liste ako je preduga */
     }
+  }
+
+  div.right {
+    display:flexbox;
+    justify-content: center !important;
   }
   
