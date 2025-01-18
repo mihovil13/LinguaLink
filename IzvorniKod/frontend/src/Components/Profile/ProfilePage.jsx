@@ -67,7 +67,10 @@ const ProfilePage = () => {
               ime,
               prezime,
               email,
+<<<<<<< HEAD
               slika,
+=======
+>>>>>>> mimi_4
               uloga,
               languagesKnown,
               languagesToLearn,
@@ -78,6 +81,10 @@ const ProfilePage = () => {
               qualifications,
               satnica,
             } = response.data;
+<<<<<<< HEAD
+=======
+            let slika = "data:image/jpeg;base64," + response.data.slika;
+>>>>>>> mimi_4
 
             const profileImageUrl = slika ? base64ToImage(slika) : "";
 
@@ -383,6 +390,7 @@ const ProfilePage = () => {
   const handleApi = async (convertedImage) => {
     try {
       const response = await axios.post(
+<<<<<<< HEAD
         `${backend}/api/spremi-sliku`,
         { email: user.email, slika: convertedImage },
         {
@@ -390,6 +398,15 @@ const ProfilePage = () => {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         }
+=======
+          `${backend}/api/spremi-sliku`,
+          { email: user.email, slika: convertedImage },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+>>>>>>> mimi_4
       );
 
       if (response.status === 200) {
@@ -401,6 +418,7 @@ const ProfilePage = () => {
   };
 
   return (
+<<<<<<< HEAD
     <div className="profile-page">
       <div
         id="notification"
@@ -422,6 +440,164 @@ const ProfilePage = () => {
                 onClick={() => handleRoleSelection("Učenik")}
               >
                 Učenik
+=======
+      <div className="profile-page">
+        <div
+            id="notification"
+            className={`filter-notification ${showNotification ? "show" : ""}`}
+        >
+          {notificationMessage}
+        </div>
+        <a href="/" className="logo-link">
+          <img src={logo_icon} alt="Logo" className="logo" />
+        </a>
+        {isRoleModalOpen && (
+            <div className="role-modal">
+              <div className="role-modal-content">
+                <h2>Upozorenje</h2>
+                <p>Vaša uloga nije definirana. Molimo odaberite svoju ulogu:</p>
+                <div className="role-buttons">
+                  <button
+                      className="role-button"
+                      onClick={() => handleRoleSelection("Učenik")}
+                  >
+                    Učenik
+                  </button>
+                  <button
+                      className="role-button"
+                      onClick={() => handleRoleSelection("Učitelj")}
+                  >
+                    Učitelj
+                  </button>
+                </div>
+              </div>
+            </div>
+        )}
+        <div className="profile-sidebar">
+          <div className="profile-podaci">
+            <span>Osobni podaci</span>
+            <p>
+              <strong>Ime:</strong> {user.ime}
+            </p>
+            <p>
+              <strong>Prezime:</strong> {user.prezime}
+            </p>
+            <p>
+              <strong>Email:</strong> {user.email}
+            </p>
+            <p>
+              <strong>Uloga:</strong> {user.uloga}
+            </p>
+          </div>
+          {user.uloga === "Učenik" && (
+              <div className="profile-jezici">
+                <span>Jezici koje znam</span>
+                {user.languagesKnown && user.languagesKnown.length > 0 ? (
+                    <ul>
+                      {user.languagesKnown.map((lang, index) => (
+                          <li key={index}>
+                            {lang.nazivJezika} - {lang.razina}
+                          </li>
+                      ))}
+                    </ul>
+                ) : (
+                    <p>Nema unesenih podataka o jezicima koje znate.</p>
+                )}
+
+                <span>Jezici koje želim naučiti</span>
+                {user.languagesToLearn && user.languagesToLearn.length > 0 ? (
+                    <ul>
+                      {user.languagesToLearn.map((lang, index) => (
+                          <li key={lang.jezik_id || index}>{lang.nazivJezika}</li>
+                      ))}
+                    </ul>
+                ) : (
+                    <p>Nema unesenih podataka o jezicima koje želite naučiti.</p>
+                )}
+
+                <span>Preferirani stil podučavanja</span>
+                <p>
+                  {user.stilPoducavanja ||
+                      "Nema unesenih podataka o preferiranom stilu podučavanja."}
+                </p>
+
+                <span>Ciljevi učenja</span>
+                <p>
+                  {user.ciljeviUcenja ||
+                      "Nema unesenih podataka o ciljevima učenja."}
+                </p>
+              </div>
+          )}
+
+          {user.uloga === "Učitelj" && (
+              <div className="profile-jezici">
+                <span>Jezici koje podučavam</span>
+                {user.languagesTeach && user.languagesTeach.length > 0 ? (
+                    <ul>
+                      {user.languagesTeach.map((lang, index) => (
+                          <li key={lang.jezik_id || index}>{lang.nazivJezika}</li>
+                      ))}
+                    </ul>
+                ) : (
+                    <p>Nema unesenih podataka o jezicima.</p>
+                )}
+
+                <span>Iskustvo</span>
+                <p>{user.iskustvo || "Nema unesenih podataka o iskustvu."}</p>
+
+                <span>Kvalifikacije</span>
+                {user.qualifications && user.qualifications.length > 0 ? (
+                    <ul>
+                      {user.qualifications.map((item, index) => (
+                          <li key={index}>{item.kvalifikacije}</li>
+                      ))}
+                    </ul>
+                ) : (
+                    <p>Nema unesenih podataka o kvalifikacijama.</p>
+                )}
+
+                <span>Stil podučavanja</span>
+                <p>
+                  {user.stilPoducavanja ||
+                      "Nema unesenih podataka o stilu podučavanja."}
+                </p>
+
+                <span>Satnica</span>
+                <p>
+                  {user.satnica
+                      ? `${user.satnica}€/h`
+                      : "Nema unesenih podataka o satnici."}
+                </p>
+              </div>
+          )}
+        </div>
+
+        <div className="profile-header">
+          <div className="profile-imagetext">
+            <div className="profile-image-container">
+              <img
+                  src={user.slika || default_profile}
+                  alt={`${user.ime}'s profile`}
+                  className="profile-picture-large"
+              />
+              <label htmlFor="input-file">
+                <img src={edit_icon} alt="Uredi sliku" />
+              </label>
+            </div>
+            <input
+                type="file"
+                accept="image/*"
+                id="input-file"
+                onChange={handleImage}
+            />
+            <h1 className="profile-name">{user.ime}</h1>
+            <h1 className="profile-surname">{user.prezime}</h1>
+          </div>
+          <div className="buttons">
+            <div className="edit-button">
+              <button className="edit-profile-button" onClick={handleEditProfile}>
+                Uredi profil
+>>>>>>> mimi_4
               </button>
               <button
                 className="role-button"

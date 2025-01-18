@@ -3,6 +3,7 @@ package com.example.demo.DTO;
 import com.example.demo.model.Jezik;
 import com.example.demo.model.JezikRazina;
 
+import java.util.Base64;
 import java.util.List;
 
 public class KorisnikGetDTO {
@@ -20,9 +21,9 @@ public class KorisnikGetDTO {
     //private String languagesTeach;
     private String stilPoducavanja;
     private String ciljeviUcenja;
-    private String profilePicture; // Dodano: atribut za sliku
+    private String slika; // Dodano: atribut za sliku
 
-    public KorisnikGetDTO(Integer id, String ime, String prezime,String email, List<Jezik> languagesTeach, List<Jezik> languagesToLearn, List<String> languagesKnown, String uloga, String profilePicture) {
+    public KorisnikGetDTO(Integer id, String ime, String prezime,String email, List<Jezik> languagesTeach, List<Jezik> languagesToLearn, List<String> languagesKnown, String uloga, String slika) {
         this.id = id;
         this.ime = ime;
         this.prezime = prezime;
@@ -31,7 +32,18 @@ public class KorisnikGetDTO {
         this.languagesToLearn = languagesToLearn;
         this.languagesKnown = languagesKnown;
         this.uloga = uloga;
-        this.profilePicture = profilePicture;
+        this.slika = slika;
+    }
+
+    public KorisnikGetDTO(Integer id, String ime, String prezime,String email, List<Jezik> languagesTeach, List<Jezik> languagesToLearn, List<String> languagesKnown, String uloga) {
+        this.id = id;
+        this.ime = ime;
+        this.prezime = prezime;
+        this.email = email;
+        this.languagesTeach = languagesTeach;
+        this.languagesToLearn = languagesToLearn;
+        this.languagesKnown = languagesKnown;
+        this.uloga = uloga;
     }
 
     public KorisnikGetDTO(String ime, String uloga, String prezime) {
@@ -147,11 +159,11 @@ public class KorisnikGetDTO {
         this.uloga = uloga;
     }
 
-    public String getProfilePicture() {
-        return profilePicture;
+    public String getSlika() {
+        return slika;
     }
 
-    public void setProfilePicture(String profilePicture) {
-        this.profilePicture = profilePicture;
+    public void setSlika(byte[] slika) {
+        this.slika = Base64.getEncoder().encodeToString(slika);
     }
 }
