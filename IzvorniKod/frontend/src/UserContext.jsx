@@ -11,6 +11,7 @@ export const UserProvider = ({ children }) => {
     ime: "",
     prezime: "",
     email: "",
+    profilePicture: "",
     uloga: "",
     languagesKnown: [{ nazivJezika: "", razina: "početna" }],
     languagesToLearn: [{ nazivJezika: "" }],
@@ -42,7 +43,8 @@ export const UserProvider = ({ children }) => {
             }
           );
           if (response.status === 200) {
-            setUser(response.data);
+            console.log(response.data);
+            // setUser(response.data);
           }
         } catch (error) {
           console.error("Greška prilikom dohvaćanja korisnika:", error);

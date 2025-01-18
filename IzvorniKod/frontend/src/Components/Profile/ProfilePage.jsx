@@ -79,6 +79,12 @@ const ProfilePage = () => {
               satnica,
             } = response.data;
 
+            const profileImageUrl = profilePicture
+              ? base64ToImage(profilePicture)
+              : "";
+
+            profilePicture = profileImageUrl;
+
             languagesKnown = languagesKnown || [];
             languagesToLearn = languagesToLearn || [];
             languagesTeach = languagesTeach || [];
@@ -332,7 +338,15 @@ const ProfilePage = () => {
 
     if (selectedImage) {
       const base64String = await convertToBase64(selectedImage);
-      await handleApi(base64String);
+      const imageDetails = base64ToImage(base64String);
+
+      if (imageDetails) {
+        console.log(`Image URL: ${imageDetails.url}`);
+        console.log(`Image Extension: ${imageDetails.extension}`);
+
+        setProfileImage(imageDetails.url);
+        await handleApi(base64String);
+      }
     }
     e.target.value = "";
   };
@@ -346,11 +360,33 @@ const ProfilePage = () => {
     });
   };
 
-  const handleApi = async (profileImage) => {
+  const base64ToImage = (base64String) => {
+    const matches = base64String.match(/^data:(.+);base64,(.+)$/);
+    if (!matches) {
+      console.error("Invalid base64 string");
+      return null;
+    }
+
+    const mimeType = matches[1];
+    const data = matches[2];
+    const extension = mimeType.split("/")[1];
+
+    const binary = atob(data);
+    const array = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i++) {
+      array[i] = binary.charCodeAt(i);
+    }
+    const blob = new Blob([array], { type: mimeType });
+    const url = URL.createObjectURL(blob);
+
+    return { url, extension };
+  };
+
+  const handleApi = async (convertedImage) => {
     try {
       const response = await axios.post(
         `${backend}/api/spremi-sliku`,
-        { email: user.email, profilePicture: profileImage },
+        { email: user.email, profilePicture: convertedImage },
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -360,18 +396,6 @@ const ProfilePage = () => {
 
       if (response.status === 200) {
         console.log("Slika je poslana na backend");
-
-        const profileResponse = await axios.get(`${backend}/api/moj-profil`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
-
-        if (profileResponse.status === 200) {
-          const slika = profileResponse.data.profilePicture;
-          console.log("Ucitana slika: ", slika);
-          setProfileImage(slika);
-        }
       }
     } catch (error) {
       console.error("Error during image upload: ", error);
@@ -514,7 +538,7 @@ const ProfilePage = () => {
         <div className="profile-imagetext">
           <div className="profile-image-container">
             <img
-              src={profileImage || default_profile}
+              src={user.profilePicture || default_profile}
               alt={`${user.ime}'s profile`}
               className="profile-picture-large"
             />
