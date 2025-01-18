@@ -67,7 +67,7 @@ const ProfilePage = () => {
               ime,
               prezime,
               email,
-              profilePicture,
+              slika,
               uloga,
               languagesKnown,
               languagesToLearn,
@@ -79,11 +79,9 @@ const ProfilePage = () => {
               satnica,
             } = response.data;
 
-            const profileImageUrl = profilePicture
-              ? base64ToImage(profilePicture)
-              : "";
+            const profileImageUrl = slika ? base64ToImage(slika) : "";
 
-            profilePicture = profileImageUrl;
+            slika = profileImageUrl;
 
             languagesKnown = languagesKnown || [];
             languagesToLearn = languagesToLearn || [];
@@ -121,7 +119,7 @@ const ProfilePage = () => {
               ime: ime || "",
               prezime: prezime || "",
               email: email || "",
-              profilePicture: profilePicture || "",
+              slika: slika || "",
               uloga: uloga || "",
               languagesKnown: languagesKnown || [],
               languagesToLearn: languagesToLearn || [],
@@ -386,7 +384,7 @@ const ProfilePage = () => {
     try {
       const response = await axios.post(
         `${backend}/api/spremi-sliku`,
-        { email: user.email, profilePicture: convertedImage },
+        { email: user.email, slika: convertedImage },
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -538,7 +536,7 @@ const ProfilePage = () => {
         <div className="profile-imagetext">
           <div className="profile-image-container">
             <img
-              src={user.profilePicture || default_profile}
+              src={user.slika || default_profile}
               alt={`${user.ime}'s profile`}
               className="profile-picture-large"
             />
