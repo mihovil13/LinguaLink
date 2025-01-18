@@ -23,18 +23,20 @@ public class KorisnikGetMapper {
     }
 
 
-
-    public  KorisnikGetDTO korisnikGetDTO(Korisnik korisnik) {
+    public KorisnikGetDTO korisnikGetDTO(Korisnik korisnik) {
         KorisnikGetDTO korisnikGetDTO = new KorisnikGetDTO();
         korisnikGetDTO.setIme(korisnik.getIme());
         korisnikGetDTO.setPrezime(korisnik.getPrezime());
         korisnikGetDTO.setId(korisnik.getUser_id());
         korisnikGetDTO.setUloga(korisnik.getUloga());
         korisnikGetDTO.setEmail(korisnik.getEmail());
+        if (korisnik.getSlika() != null) {
+            korisnikGetDTO.setSlika(korisnik.getSlika());
+        }
         System.out.println("HULK1");
         System.out.println(korisnik.getUloga());
-        if(korisnik.getUloga()!=null){
-            if(korisnik.getUloga().equals("Učenik")){
+        if (korisnik.getUloga() != null) {
+            if (korisnik.getUloga().equals("Učenik")) {
                 Ucenik ucenik = ucenikServiceJPA.getUcenik(korisnik.getEmail());
                 List<JezikRazina> listaJezikaRazine = ucenik.getLanguagesKnown();
                 List<String> dobralista = listaJezikaRazine.stream()
@@ -52,7 +54,7 @@ public class KorisnikGetMapper {
                 List<Jezik> languagesTeach = new ArrayList<>();
                 korisnikGetDTO.setLanguagesTeach(languagesTeach);
             }
-             if(korisnik.getUloga().equals("Učitelj")){
+            if (korisnik.getUloga().equals("Učitelj")) {
                 Ucitelj ucitelj = uciteljServiceJPA.getUciteljiByEmail(korisnik.getEmail());
                 korisnikGetDTO.setLanguagesTeach(ucitelj.getLanguagesTeach());
                 korisnikGetDTO.setIskustvo(ucitelj.getIskustvo());
@@ -62,12 +64,12 @@ public class KorisnikGetMapper {
                 List<String> quals = new ArrayList<>();
                 //System.out.println("HELLO");
 
-                for(Qualifications q : qualifications){
+                for (Qualifications q : qualifications) {
                     System.out.println(q.toString());
-                    if(q==(Qualifications.Izvorni_govornik)){
+                    if (q == (Qualifications.Izvorni_govornik)) {
                         //System.out.println("JEJEJ");
                         quals.add("Izvorni_govornik");
-                    }else{
+                    } else {
                         quals.add(q.toString());
                     }
 

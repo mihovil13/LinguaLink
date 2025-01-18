@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from "react";
-import "./ProfilePage.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
+import "./ProfilePage.css";
 import logo_icon from "../Assets/logo-prototip3.png";
 import edit_icon from "../Assets/pencil.png";
-import profileimg from "../Assets/person.jpg";
+import default_profile from "../Assets/person.jpg";
 import { useUser } from "../../UserContext";
 
 const backend = "http://localhost:8080";
 
 const ProfilePage = () => {
   const navigate = useNavigate();
+
   const handleLogout = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -38,24 +39,10 @@ const ProfilePage = () => {
   };
 
   const location = useLocation();
-  // definiramo podatke u korisniku
   const { user, setUser } = useUser() || { user: {}, setUser: () => {} };
-
-  // preko Reactovog useState pratimo je li modal otvoren ili zatvoren
-  // na pocetku je zatvoren
-  const [isEditModalOpen, setEditModalOpen] = useState(false);
-
-  //stanje za modal odabira uloge
-  const [isRoleModalOpen, setRoleModalOpen] = useState(false);
-
-  // stvaramo stanje koje pohranjuje privremene podatke korisnika kad uredujemo profil
   const [editedUser, setEditedUser] = useState(user);
-
-  // useEffect je hook koji upravlja stvarima poput dohvacanja podataka, manipulacije DOM-a itd...
-  // sastoji se od funkcije, i od polja ovisnosti koje nareduje kada ce se funkcija izvrsiti
-  // u ovom primjeru, polje ovisnosti je prazno (nalazi se na samom kraju hooka),
-  // sto znaci da ce se hook izvrsiti prilikom ucitavanja stranice
-
+  const [isEditModalOpen, setEditModalOpen] = useState(false);
+  const [isRoleModalOpen, setRoleModalOpen] = useState(false);
   const [showNotification, setShowNotification] = useState(false);
   const [notificationMessage, setNotificationMessage] = useState("");
 
@@ -71,7 +58,6 @@ const ProfilePage = () => {
           const response = await axios.get(`${backend}/api/moj-profil`, {
             headers: {
               Authorization: `Bearer ${token}`,
-              // slanje upita prema backendu, u headerima se salje token
             },
           });
 
@@ -81,7 +67,6 @@ const ProfilePage = () => {
               ime,
               prezime,
               email,
-              profilePicture,
               uloga,
               languagesKnown,
               languagesToLearn,
@@ -91,7 +76,12 @@ const ProfilePage = () => {
               iskustvo,
               qualifications,
               satnica,
-            } = response.data; // iz odgovora uzimamo navedene varijable
+            } = response.data;
+            let slika = "data:image/jpeg;base64," + response.data.slika;
+
+            const profileImageUrl = slika ? base64ToImage(slika) : "";
+
+            slika = profileImageUrl;
 
             languagesKnown = languagesKnown || [];
             languagesToLearn = languagesToLearn || [];
@@ -124,13 +114,12 @@ const ProfilePage = () => {
               });
             }
 
-            // azuriramo podatke s onima iz backenda
             setUser({
               id: id || null,
               ime: ime || "",
               prezime: prezime || "",
               email: email || "",
-              profilePicture: profilePicture || "",
+              slika: slika || "",
               uloga: uloga || "",
               languagesKnown: languagesKnown || [],
               languagesToLearn: languagesToLearn || [],
@@ -143,7 +132,6 @@ const ProfilePage = () => {
             });
 
             if (!response.data.uloga) {
-              //ako korisnilk nema definiranu ulogu, prikazuje se modal za odabir uloge
               setRoleModalOpen(true);
             }
           }
@@ -195,8 +183,6 @@ const ProfilePage = () => {
       return;
     }
 
-    console.log("Saljem na backend", updatedProfile);
-
     try {
       const response = await axios.put(
           `${backend}/api/moj-profil`,
@@ -209,12 +195,12 @@ const ProfilePage = () => {
       );
 
       if (response.status === 200) {
-        setUser(editedUser); // Spremanje promjena
-        setEditModalOpen(false); // Zatvaranje modalnog prozora
-        setNotificationMessage("Profil uspješno spremljen! 🎉"); // Postavljanje poruke
-        setShowNotification(true); // Prikazivanje notifikacije
+        setUser(editedUser);
+        setEditModalOpen(false);
+        setNotificationMessage("Profil uspješno spremljen! 🎉");
+        setShowNotification(true);
 
-        setTimeout(() => setShowNotification(false), 3000); // Sakrivanje notifikacije nakon 3 sekunde
+        setTimeout(() => setShowNotification(false), 3000);
       } else {
         alert("Došlo je do greške prilikom spremanja profila.");
       }
@@ -230,9 +216,6 @@ const ProfilePage = () => {
     // index = indeks u listi koju uredujem (liste su languagesToLearn, languagesKnown, languagesTeach i qualifications)
     // value = nova vrijednost koju korisnik unosi
     // listType = odreduje koju listu uredujemo
-
-    // azuriranje za ime, prezime, email, uloga, stilPoducavanja, ciljeviUcenja,
-    // iskustvo, kvalifikacije, satnica
 
     if (!listType) {
       setEditedUser({ ...editedUser, [field]: value });
@@ -290,7 +273,7 @@ const ProfilePage = () => {
 
   // funkciju koristimo za uklanjanje jezika
   const handleRemoveLanguage = (listType, index) => {
-    const updatedList = editedUser[listType].filter((_, i) => i !== index); // izostavlja element na danom indexu
+    const updatedList = editedUser[listType].filter((_, i) => i !== index);
     setEditedUser({ ...editedUser, [listType]: updatedList });
   };
 
@@ -307,38 +290,45 @@ const ProfilePage = () => {
     setEditedUser({ ...editedUser, [listType]: updatedList });
   };
 
-  // const handleImageUrlUpload = async (imageUrl) => {
-  //   try {
-  //     const response = await axios.post(
-  //       `${backend}/api/moj-profil/upload-profile-image-url`, // Nova ruta koja očekuje URL slike
-  //       { imageUrl }, // Šaljemo URL slike u tijelu POST zahtjeva
-  //       {
+  // svaki put kad promjenimo sliku, zelim da se ta slika pohrani
+  // sliku prvo spremamo kakva je, pretvaramo u base64 string
+  // nakon pretvaranja u string, POST u backend da se tam spremi
+  // nakon spremanja u backend, dohvacamo istu tu sliku s backenda i prikazujemo je kao base64
+
+  // useEffect(() => {}, [])
+  // [] je dependency array, odnosno kaj treba slusat da bi se pokretal kod unutar useEffect-a
+  // hocu da svaki put kad uploadam sliku korisnika, da se ona posalje u backend
+  // da se prije tog pretvori u base64 string
+  // nakon tog ju hocu dohvatit i postavit ju kao profilnu sliku
+
+  const [profileImage, setProfileImage] = useState("");
+
+  // kad se prvi put pokrene stranica, hocu provjerit u backendu jel imamo koji podatak o slici
+  // ako nemamo, ucitamo sliku kao i inace
+
+  // ovo zapravo ne treba jer vec imamo hook za to
+
+  // useEffect(() => {
+  //   const fetchUserProfilePicture = async () => {
+  //     try {
+  //       console.log("Jel se ovo pokrenulo?");
+  //       const response = await axios.get(`${backend}/api/moj-profil`, {
   //         headers: {
   //           Authorization: `Bearer ${localStorage.getItem("token")}`,
   //         },
+  //       });
+
+  //       if (response.status === 200) {
+  //         console.log(response.data.profilePicture);
   //       }
-  //     );
-
-  //     if (response.status === 200) {
-  //       alert("Slika uspješno promijenjena!");
-  //       setUser({ ...user, profileImageUrl: response.data.imageUrl }); // Ažuriraj korisnički profil s novim URL-om
-  //     } else {
-  //       alert("Provjeri konzolu");
+  //     } catch (error) {
+  //       console.error("Greška stari: ", error);
+  //       alert("Greška");
   //     }
-  //   } catch (error) {
-  //     console.error("Greška prilikom promjene slike: ", error);
-  //   }
-  // };
+  //   };
 
-  // const handleFileChange = (event) => {
-  //   const imageUrl = event.target.value; // Dohvati URL koji korisnik unosi u input
-  //   if (imageUrl) {
-  //     handleImageUrlUpload(imageUrl); // Pozovi funkciju za upload URL-a
-  //   }
-  // };
-
-  const [profilePicture, setImage] = useState(null);
-  const [profileImageUrl, setProfileImageUrl] = useState("");
+  //   fetchUserProfilePicture();
+  // }, []);
 
   const handleImage = async (e) => {
     const selectedImage = e.target.files[0];
@@ -346,10 +336,17 @@ const ProfilePage = () => {
 
     if (selectedImage) {
       const base64String = await convertToBase64(selectedImage);
-      setImage(base64String);
+      const imageDetails = base64ToImage(base64String);
 
-      await handleApi(base64String);
+      if (imageDetails) {
+        console.log(`Image URL: ${imageDetails.url}`);
+        console.log(`Image Extension: ${imageDetails.extension}`);
+
+        setProfileImage(imageDetails.url);
+        await handleApi(base64String);
+      }
     }
+    e.target.value = "";
   };
 
   const convertToBase64 = (file) => {
@@ -361,11 +358,33 @@ const ProfilePage = () => {
     });
   };
 
-  const handleApi = async (base64String) => {
+  const base64ToImage = (base64String) => {
+    const matches = base64String.match(/^data:(.+);base64,(.+)$/);
+    if (!matches) {
+      console.error("Invalid base64 string");
+      return null;
+    }
+
+    const mimeType = matches[1];
+    const data = matches[2];
+    const extension = mimeType.split("/")[1];
+
+    const binary = atob(data);
+    const array = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i++) {
+      array[i] = binary.charCodeAt(i);
+    }
+    const blob = new Blob([array], { type: mimeType });
+    const url = URL.createObjectURL(blob);
+
+    return { url, extension };
+  };
+
+  const handleApi = async (convertedImage) => {
     try {
       const response = await axios.post(
           `${backend}/api/spremi-sliku`,
-          { email: user.email, profilePicture: base64String },
+          { email: user.email, slika: convertedImage },
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -374,8 +393,7 @@ const ProfilePage = () => {
       );
 
       if (response.status === 200) {
-        console.log("Upload successful: ", response.data);
-        setProfileImageUrl(base64String);
+        console.log("Slika je poslana na backend");
       }
     } catch (error) {
       console.error("Error during image upload: ", error);
@@ -393,7 +411,6 @@ const ProfilePage = () => {
         <a href="/" className="logo-link">
           <img src={logo_icon} alt="Logo" className="logo" />
         </a>
-        {/* Modal za odabir uloge */}
         {isRoleModalOpen && (
             <div className="role-modal">
               <div className="role-modal-content">
@@ -519,8 +536,8 @@ const ProfilePage = () => {
           <div className="profile-imagetext">
             <div className="profile-image-container">
               <img
-                  src={profileImageUrl || profileimg}
-                  alt={`${user.ime}'s profile picture`}
+                  src={user.slika || default_profile}
+                  alt={`${user.ime}'s profile`}
                   className="profile-picture-large"
               />
               <label htmlFor="input-file">

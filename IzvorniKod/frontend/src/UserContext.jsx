@@ -11,6 +11,7 @@ export const UserProvider = ({ children }) => {
     ime: "",
     prezime: "",
     email: "",
+    slika: "",
     uloga: "",
     languagesKnown: [{ nazivJezika: "", razina: "početna" }],
     languagesToLearn: [{ nazivJezika: "" }],
