@@ -95,37 +95,6 @@ const TeacherProfile = () => {
     return localStorage.getItem("token");
   };
 
-  const handleLogout = async () => {
-    try {
-      const token = getToken();
-
-      if (token) {
-        // Poziv backendu za odjavu
-        await axios.post(
-          `${backend}/api/auth/logout`,
-          {},
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-      }
-
-      // Resetiranje korisničkih podataka
-      setUser({});
-
-      // Brisanje tokena iz localStorage
-      localStorage.removeItem("token");
-
-      // Preusmjeravanje na glavnu stranicu
-      navigate("/");
-    } catch (error) {
-      console.error("Greška prilikom odjave:", error);
-      alert("Došlo je do greške prilikom odjave.");
-    }
-  };
-
   return (
     <div className="profile-page">
       <a href="/" className="logo-link">
@@ -149,9 +118,6 @@ const TeacherProfile = () => {
             <button onClick={() => navigate("/profile")}>Profil</button>
             <button onClick={() => navigate(`/requests/${user.id}`)}>Zahtjevi</button>
             <button onClick={() => navigate(`/lections/${user.id}`)}>Lekcije</button>
-            <button onClick={handleLogout}>
-              Odjava
-            </button>
           </div>
         )}
       </div>

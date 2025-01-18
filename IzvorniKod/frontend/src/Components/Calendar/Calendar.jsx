@@ -80,33 +80,6 @@ const Calendar = () => {
     }
   };
 
-  const handleLogout = async () => {
-    try {
-      const token = getToken();
-
-      if (token) {
-        await axios.post(
-          `${backend}/api/auth/logout`,
-          {},
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-      }
-
-      setUser({});
-
-      localStorage.removeItem("token");
-
-      navigate("/");
-    } catch (error) {
-      console.error("Greška prilikom odjave:", error);
-      alert("Došlo je do greške prilikom odjave.");
-    }
-  };
-
   const handleDateClick = async (info) => {
     const clickedDate = new Date(info.dateStr);
     const today = new Date();
@@ -257,9 +230,6 @@ const Calendar = () => {
             <button onClick={() => navigate("/profile")}>Profil</button>
             <button onClick={() => navigate(`/requests/${user.id}`)}>Zahtjevi</button>
             <button onClick={() => navigate(`/lections/${user.id}`)}>Lekcije</button>
-            <button onClick={handleLogout}>
-              Odjava
-            </button>
           </div>
         )}
       </div>

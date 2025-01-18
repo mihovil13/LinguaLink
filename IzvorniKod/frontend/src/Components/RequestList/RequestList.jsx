@@ -152,37 +152,6 @@ const RequestList = () => {
     return localStorage.getItem("token");
   };
 
-  const handleLogout = async () => {
-    try {
-      const token = getToken();
-
-      if (token) {
-        // Poziv backendu za odjavu
-        await axios.post(
-          `${backend}/api/auth/logout`,
-          {},
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-      }
-
-      // Resetiranje korisničkih podataka
-      setUser({});
-
-      // Brisanje tokena iz localStorage
-      localStorage.removeItem("token");
-
-      // Preusmjeravanje na glavnu stranicu
-      navigate("/");
-    } catch (error) {
-      console.error("Greška prilikom odjave:", error);
-      alert("Došlo je do greške prilikom odjave.");
-    }
-  };
-
   return (
     <div className="parent-container">
       <div id="notification" className={`filter-notification ${showNotification ? 'show' : ''}`}>
@@ -210,7 +179,6 @@ const RequestList = () => {
               <button onClick={() => navigate(`/calendar/${user.id}`)}>Kalendar</button>
             )}
             <button onClick={() => navigate(`/lections/${user.id}`)}>Lekcije</button>
-            <button onClick={handleLogout}>Odjava</button>
           </div>
         )}
       </div>

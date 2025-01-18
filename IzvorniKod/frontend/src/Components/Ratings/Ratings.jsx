@@ -55,31 +55,6 @@ const Ratings = () => {
 
   const toggleDropdown = () => setIsDropdownOpen((prev) => !prev);
 
-  const handleLogout = async () => {
-    try {
-      const token = localStorage.getItem("token");
-
-      if (token) {
-        await axios.post(
-          `${backend}/api/auth/logout`,
-          {},
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-      }
-
-      setUser({});
-      localStorage.removeItem("token");
-      navigate("/");
-    } catch (error) {
-      console.error("Greška prilikom odjave:", error);
-      alert("Došlo je do greške prilikom odjave.");
-    }
-  };
-
   const renderStars = (rating) => {
     const stars = [];
     for (let i = 1; i <= 5; i++) {
@@ -122,7 +97,6 @@ const Ratings = () => {
               <button onClick={() => navigate(`/calendar/${user.id}`)}>Kalendar</button>
             )}
             <button onClick={() => navigate(`/lections/${user.id}`)}>Lekcije</button>
-            <button onClick={handleLogout}>Odjava</button>
           </div>
         )}
       </div>

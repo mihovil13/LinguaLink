@@ -143,31 +143,6 @@ const Lections = () => {
     }
   };
 
-  const handleLogout = async () => {
-    try {
-      const token = localStorage.getItem("token");
-
-      if (token) {
-        await axios.post(
-          `${backend}/api/auth/logout`,
-          {},
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-      }
-
-      setUser({});
-      localStorage.removeItem("token");
-      navigate("/");
-    } catch (error) {
-      console.error("Greška prilikom odjave:", error);
-      alert("Došlo je do greške prilikom odjave.");
-    }
-  };
-
   return (
     <div className="parent-container">
       <a href="/" className="logo-link">
@@ -197,7 +172,6 @@ const Lections = () => {
             {user.uloga === "Učitelj" && (
               <button onClick={() => navigate(`/calendar/${user.id}`)}>Kalendar</button>
             )}
-            <button onClick={handleLogout}>Odjava</button>
           </div>
         )}
       </div>

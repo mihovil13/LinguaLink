@@ -62,37 +62,6 @@ const UserList = () => {
   const getToken = () => {
     return localStorage.getItem("token");
   };
-  
-  const handleLogout = async () => {
-    try {
-      const token = getToken();
-
-      if (token) {
-        // Poziv backendu za odjavu
-        await axios.post(
-          `${backend}/api/auth/logout`,
-          {},
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-      }
-
-      // Resetiranje korisničkih podataka
-      setUser({});
-
-      // Brisanje tokena iz localStorage
-      localStorage.removeItem("token");
-
-      // Preusmjeravanje na glavnu stranicu
-      navigate("/");
-    } catch (error) {
-      console.error("Greška prilikom odjave:", error);
-      alert("Došlo je do greške prilikom odjave.");
-    }
-  };
 
   return (
     <div className={`parent-container logged-out}`}>
@@ -115,9 +84,6 @@ const UserList = () => {
         {isDropdownOpen && (
           <div className="dropdown-menu">
             <button onClick={() => navigate("/profile")}>Profil</button>
-            <button onClick={handleLogout}>
-              Odjava
-            </button>
           </div>
         )}
       </div>
