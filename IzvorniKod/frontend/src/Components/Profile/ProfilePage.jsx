@@ -518,7 +518,7 @@ const ProfilePage = () => {
           <h1 className="profile-surname">{user.prezime}</h1>
         </div>
         <div className="buttons">
-          <div className="edit-button">
+        <div className="edit-button">
             {(user.uloga === "Učenik" || user.uloga === "Učitelj") && (
               <button
                 className="edit-profile-button"
@@ -537,14 +537,15 @@ const ProfilePage = () => {
                 </button>
                 </div>
             )}
-            {user.uloga ==="Učitelj" && (
-              <button
-                className="lections-button"
-                onClick={() => navigate(`/lections/${user.id}`)}
-              >
-              Odrađene lekcije
-              </button>
-              
+            {user.uloga === "Učitelj"&& (
+              <div className="first-row-profile-buttons">
+                <button
+                  className="lections-button"
+                  onClick={() => navigate(`/lections/${user.id}`)}
+                >
+                  Odrađene lekcije
+                </button>
+              </div>
             )}
           </div>
           <div className="profile-buttons">
@@ -988,4 +989,5 @@ const ProfilePage = () => {
 };
 
 export default ProfilePage;
+
 
