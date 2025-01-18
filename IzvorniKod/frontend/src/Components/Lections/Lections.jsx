@@ -24,11 +24,6 @@ const Lections = () => {
   const navigate = useNavigate();
 
   const fetchPredavanja = async () => {
-    if (!user.id) {
-      navigate("/");
-      return;
-    }
-
     try {
       const apiUrl =
         user.uloga === "Učenik"

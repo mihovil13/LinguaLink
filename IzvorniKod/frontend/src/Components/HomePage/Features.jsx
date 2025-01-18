@@ -1,11 +1,11 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./HomePage.css";
-import { useUser } from "../../UserContext"; // Pretpostavljamo da koristite kontekst za korisnika.
+import { useUser } from "../../UserContext";
 
 const Features = () => {
   const navigate = useNavigate();
-  const { user } = useUser(); // Preuzimanje informacija o korisniku.
+  const { user } = useUser(); 
 
   const features = [
     {
@@ -21,10 +21,10 @@ const Features = () => {
         title: "Uči jezik",
         description: "Koristi interaktivne alate za učenje jezika.",
         action: () => {
-          if (user) {
+          if (user.id) {
             navigate("/profile"); 
           } else {
-            navigate("/login", { state: { returnTo: "/profile" } }); 
+            navigate("/register"); 
           }
         },
       },
@@ -32,10 +32,10 @@ const Features = () => {
         title: "Praćenje napretka",
         description: "Prati svoj napredak kroz aplikaciju.",
         action: () => {
-          if (user) {
+          if (user.id) {
             navigate(`/lections/${user.id}`); 
           } else {
-            navigate("/login", { state: { returnTo: "/profile" } }); 
+            navigate("/register"); 
           }
         },
       },
