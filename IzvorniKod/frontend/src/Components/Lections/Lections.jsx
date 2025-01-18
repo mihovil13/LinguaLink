@@ -24,14 +24,18 @@ const Lections = () => {
   const navigate = useNavigate();
 
   const fetchPredavanja = async () => {
-    if (!user.id || user.uloga !== "Učenik") {
+    if (!user.id) {
       navigate("/");
       return;
     }
 
     try {
+      const apiUrl =
+        user.uloga === "Učenik"
+          ? `${backend}/api/dohvati-predavanja-ucenik/${user.id}`
+          : `${backend}/api/dohvati-predavanja/${user.id}`;
       const response = await axios.get(
-        `${backend}/api/dohvati-predavanja-ucenik/${user.id}`,
+        apiUrl,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -49,6 +53,10 @@ const Lections = () => {
         });
 
         setPredavanja(filteredPredavanja);
+
+        const recenzijeUrl = user.uloga === "Učenik"
+        ? `${backend}/api/recenzije-ucenik/${user.id}`
+        : `${backend}/api/recenzije/${user.id}`;
 
         const recenzijeResponse = await axios.get(
           `${backend}/api/recenzije-ucenik/${user.id}`,
@@ -199,42 +207,74 @@ const Lections = () => {
         )}
       </div>
       <div className="container">
-        <div className="text">Moja predavanja</div>
+        <div className="text">Moje lekcije</div>
         <div className="underline"></div>
         <div className="main-content">
           {predavanja.length > 0 ? (
             predavanja.map((predavanje) => (
               <div key={predavanje.predavanjeId} className="lection">
-                <div className="left">
-                  <p>
-                    <strong>Učitelj:</strong> {predavanje.uciteljIme} {" "}
-                    {predavanje.uciteljPrezime}
-                  </p>
-                  <p>
-                    <strong>Vrijeme početka:</strong> {" "}
-                    {formatDate(predavanje.datumVrijemePocetka)}
-                  </p>
-                </div>
-                <div className="right">
-                  {hasRecenzija(
-                    predavanje.predavanjeId || predavanje.recenzijaOstavljena
-                  ) ? (
-                    <p className="recenzija-status">Recenzija ostavljena</p>
-                  ) : (
-                    <button
-                      onClick={() => handleOpenModal(predavanje)}
-                      className="review-button"
-                    >
-                      Napiši recenziju
-                    </button>
-                  )}
-                </div>
+                {user.uloga === "Učenik" ? (
+                  <>
+                    <div className="left">
+                      <p>
+                        <strong>Učitelj:</strong> {predavanje.uciteljIme} {" "}
+                        {predavanje.uciteljPrezime}
+                      </p>
+                      <p>
+                        <strong>Vrijeme početka:</strong> {formatDate(predavanje.datumVrijemePocetka)}
+                      </p>
+                    </div>
+                    <div className="right">
+                      {hasRecenzija(predavanje.predavanjeId) ? (
+                        <>
+                        <p className="recenzija-status">Recenzija ostavljena</p>
+                        <button>
+                          Prikaz materijala
+                        </button>
+
+                        </>
+                      ) : (
+                        <>
+                        <button
+                          onClick={() => handleOpenModal(predavanje)}
+                          className="review-button"
+                        >
+                          Napiši recenziju
+                        </button>
+                        <button>
+                          Prikaz materijala
+                        </button>
+                      </>
+                      )}
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="left">
+                      <p>
+                        <strong>Učenik:</strong> {predavanje.ucenikIme} {" "}
+                        {predavanje.ucenikPrezime}
+                      </p>
+                      <p>
+                        <strong>Vrijeme početka:</strong> {formatDate(predavanje.datumVrijemePocetka)}
+                      </p>
+                    </div>
+                    <div className="right">
+                        <button>
+                          Upload lekcije
+                        </button>
+                        <button>
+                          Prikaz materijala
+                        </button>
+                    </div>
+                  </>
+                )}
               </div>
             ))
           ) : (
             <p>Nemate predavanja u prošlosti.</p>
           )}
-          {modalVisible && (
+          {modalVisible && user.uloga === "Učenik" && (
           <div className="modal-lecture">
             <div className="modal-lecture-content">
               <h2>Ostavite recenziju</h2>
@@ -275,3 +315,4 @@ const Lections = () => {
 };
 
 export default Lections;
+

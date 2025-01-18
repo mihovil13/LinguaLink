@@ -24,6 +24,8 @@
     
   }
 
+  
+
   @media (max-width: 1024px) {
     .parent-container {
       gap: 15px;
@@ -54,10 +56,7 @@
     overflow-y: auto;
   }
   
-  button {
-    padding: 12px 20px;
-    font-size: 1rem;
-  }
+  
   
   .main-content {
     display: flex;
@@ -75,17 +74,17 @@
   }
   
   button {
-    padding: 12px 24px;
+    width: 100px; /* Nova širina */
+    padding: 12px 20px;
     background-color: #613c78;
     color: white;
     border: none;
     border-radius: 5px;
-    font-size: 1.1rem;
+    font-size: 1rem;
     cursor: pointer;
-    margin-top: 20px;
-    width: 100%;
+    margin-top: 10px;
     transition: background-color 0.3s ease;
-  }
+}
   
   button:hover {
     background-color: #4d2763;
@@ -155,15 +154,11 @@
 .lection{
   align-items: center;
   gap: 10px;
+  width: 100%;
 }
 
-.review-button {
-  border-radius: 10px;
-  margin: 0px;
-  font-size: 1rem;
-  padding: 10px 15px;
 
-}
+
 
 .modal-lecture {
   position: fixed;
@@ -222,7 +217,7 @@
 }
 
 .modal-lecture-actions button {
-  padding: 10px 15px;
+  padding: 5px 7px;
   font-size: 1.1rem;
   border: none;
   border-radius: 10px;
@@ -261,6 +256,8 @@
     transform: translate(-50%, -50%);
   }
 }
+
+
 
 /* Overlay */
 .modal-lecture-overlay {
@@ -317,6 +314,15 @@
       border-radius: 20%;
       image-rendering: auto;
   }
+  .teacher-view {
+    display: flex;
+    align-items: center; /* Vertikalno centriranje elemenata */
+    justify-content: space-between; /* Ravnomjeran razmak između elemenata */
+    gap: 20px; /* Razmak između elemenata */
+  }
+  
+  
+
   
   @media (max-width: 1024px) {
 
@@ -337,5 +343,11 @@
       padding: 0; /* Uklanja nepotreban padding */
       overflow-y: auto; /* Omogućuje skrolanje liste ako je preduga */
     }
+  }
+
+  div.right {
+    display:flexbox;
+    justify-content: center !important;
+    align-items: center !important;
   }
   
