@@ -1,35 +1,26 @@
-# Koristi OpenJDK 21 kao osnovni image
+# Prva faza: Build faza
 FROM openjdk:21-jdk-slim AS builder
 
-# Postavi radni direktorij unutar containera
-WORKDIR /app
-
-# Kopiraj fajlove iz repozitorija unutar backend direktorija
-COPY IzvorniKod/backend/.mvn .mvn
-COPY IzvorniKod/backend/mvnw IzvorniKod/backend/pom.xml ./
+# Kopiraj potrebne datoteke
+COPY ../../.mvn .mvn
+COPY ../../mvnw .
+COPY ../../pom.xml .
+COPY ../../src src
 
 # Postavi dozvole za mvnw
 RUN chmod +x mvnw
 
-# Pokreni Maven build (skidanje dependencija odvojeno radi cache-a)
-RUN ./mvnw dependency:go-offline
+# Izvrši Maven build
+RUN ./mvnw clean package
 
-# Kopiraj src direktorij
-COPY IzvorniKod/backend/src src
-
-# Buildaj aplikaciju
-RUN ./mvnw clean package -DskipTests
-
-# Koristi manji JDK image za pokretanje aplikacije
+# Druga faza: Deploy faza
 FROM openjdk:21-jdk-slim
 
-WORKDIR /app
+# Kopiraj izgrađeni JAR file
+COPY --from=builder target/*.jar /app.jar
 
-# Kopiraj generirani JAR iz prethodnog builda
-COPY --from=builder /app/target/*.jar app.jar
-
-# Expose porta (mora biti isti kao u Spring konfiguraciji)
+# Otvori port 8080
 EXPOSE 8080
 
 # Pokreni aplikaciju
-CMD ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-jar", "/app.jar", "-web -webAllowOthers -tcp -tcpAllowOthers -browser"]
