@@ -537,7 +537,15 @@ const ProfilePage = () => {
                 </button>
                 </div>
             )}
-            
+            {user.uloga ==="Učitelj" && (
+              <button
+                className="lections-button"
+                onClick={() => navigate(`/lections/${user.id}`)}
+              >
+              Odrađene lekcije
+              </button>
+              
+            )}
           </div>
           <div className="profile-buttons">
             {(user.uloga === "Učenik" || user.uloga === "Učitelj") && (
@@ -558,6 +566,10 @@ const ProfilePage = () => {
                 </button>
               </div>
             )}
+
+            
+
+            
             {user.uloga === "Učitelj" && (
               <button
                 className="calendar-button"
@@ -976,3 +988,4 @@ const ProfilePage = () => {
 };
 
 export default ProfilePage;
+
