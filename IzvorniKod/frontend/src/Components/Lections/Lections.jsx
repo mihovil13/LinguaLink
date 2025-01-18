@@ -59,7 +59,7 @@ const Lections = () => {
         : `${backend}/api/recenzije/${user.id}`;
 
         const recenzijeResponse = await axios.get(
-          `${backend}/api/recenzije-ucenik/${user.id}`,
+          recenzijeUrl,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
