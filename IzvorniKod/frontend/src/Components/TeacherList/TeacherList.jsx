@@ -16,7 +16,7 @@ const TeacherList = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const navigate = useNavigate();
   const { user, setUser } = useUser();
-  const backend = "http://lingualink-backend-better:8080";
+  const backend = "https://lingualink-rxoa.onrender.com";
 
   const styles = [
     "Vizualni",

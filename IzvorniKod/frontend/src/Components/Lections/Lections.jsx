@@ -5,7 +5,7 @@ import logo_icon from "../Assets/logo-prototip3.png";
 import { useNavigate } from "react-router-dom";
 import "./Lections.css";
 
-const backend = "http://lingualink-backend-better:8080";
+const backend = "https://lingualink-rxoa.onrender.com";
 
 const Lections = () => {
   const { user, setUser } = useUser();

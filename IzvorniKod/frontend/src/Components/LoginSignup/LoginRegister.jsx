@@ -30,7 +30,7 @@ const LoginRegister = () => {
   const handleRegister = async () => {
     try {
       const registerResponse = await axios.post(
-        "http://lingualink-backend-better:8080/api/korisnici/register",
+        "https://lingualink-rxoa.onrender.com/api/korisnici/register",
         formData
       );
 
@@ -50,7 +50,7 @@ const LoginRegister = () => {
         console.log("Trenutni korisnik: ", userData);
 
         const profileResponse = await axios.get(
-          "http://lingualink-backend-better:8080/api/moj-profil",
+          "https://lingualink-rxoa.onrender.com/api/moj-profil",
           {
             headers: {
               Authorization: `Bearer ${userData.token}`,
@@ -179,7 +179,7 @@ const LoginRegister = () => {
       <div className="submit-container">
         <div className="submit">
           <a
-            href="http://lingualink-backend-better:8080/oauth2/authorization/github"
+            href="https://lingualink-rxoa.onrender.com/oauth2/authorization/github"
             className="oauth2-btn2"
           >
             <img

@@ -6,7 +6,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const backend = "http://lingualink-backend-better:8080";
+const backend = "https://lingualink-rxoa.onrender.com";
 
 const LoginSignup = () => {
   const [error, setError] = useState("");

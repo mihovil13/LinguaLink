@@ -9,7 +9,7 @@ import { useUser } from "../../UserContext";
 import { useLocation, useParams, useNavigate } from "react-router-dom";
 import logo_icon from "../Assets/logo-prototip3.png";
 
-const backend = "http://lingualink-backend-better:8080";
+const backend = "https://lingualink-rxoa.onrender.com";
 
 Modal.setAppElement("#root");
 
