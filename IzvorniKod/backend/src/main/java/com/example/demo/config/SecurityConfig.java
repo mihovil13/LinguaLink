@@ -64,7 +64,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:3000")); // Dozvoljeno porijeklo
+        configuration.setAllowedOrigins(List.of("https://lingualink-frontend-v1.onrender.com")); // Dozvoljeno porijeklo
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Dozvoljene metode
         configuration.setAllowedHeaders(List.of("*")); // Dozvoljeni zaglavlja
         configuration.setAllowCredentials(true); // Omogućuje prijenos kolačića/autentifikacije
