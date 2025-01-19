@@ -1,26 +1,28 @@
-# Prva faza: Build faza
+# Prva faza: Build
 FROM openjdk:21-jdk-slim AS builder
+WORKDIR /app
 
-# Kopiraj potrebne datoteke
-COPY ../../.mvn .mvn
-COPY ../../mvnw .
-COPY ../../pom.xml .
-COPY ../../src src
+# Kopiraj Maven konfiguraciju i kod
+COPY .mvn .mvn
+COPY mvnw .
+COPY pom.xml .
+COPY src src
 
-# Postavi dozvole za mvnw
+# Omogući izvršavanje mvnw
 RUN chmod +x mvnw
 
-# Izvrši Maven build
-RUN ./mvnw clean package
+# Izgradi aplikaciju
+RUN ./mvnw clean package -DskipTests
 
-# Druga faza: Deploy faza
+# Druga faza: Deploy
 FROM openjdk:21-jdk-slim
+WORKDIR /app
 
-# Kopiraj izgrađeni JAR file
-COPY --from=builder target/*.jar /app.jar
+# Kopiraj izgrađeni JAR file iz build faze
+COPY --from=builder /app/target/*.jar app.jar
 
-# Otvori port 8080
+# Postavi port koji će Render koristiti
 EXPOSE 8080
 
 # Pokreni aplikaciju
-ENTRYPOINT ["java", "-jar", "/app.jar", "-web -webAllowOthers -tcp -tcpAllowOthers -browser"]
+ENTRYPOINT ["java", "-jar", "app.jar"]
