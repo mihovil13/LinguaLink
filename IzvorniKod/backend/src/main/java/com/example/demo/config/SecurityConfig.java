@@ -54,7 +54,7 @@ public class SecurityConfig {
                 )
                 .logout(logout -> logout
                         .logoutUrl("/logout")
-                        .logoutSuccessUrl("http://localhost:3000/login?logout=true") // Preusmjeravanje nakon logout-a
+                        .logoutSuccessUrl("https://lingualink-frontend-v1.onrender.com/login?logout=true") // Preusmjeravanje nakon logout-a
                         .clearAuthentication(true) // Briše autentifikaciju u sigurnosnom kontekstu
                         .invalidateHttpSession(true)); // Invalida HTTP sesiju nakon logout-a;
 
