@@ -22,7 +22,7 @@ WORKDIR /app
 COPY --from=builder /app/target/*.jar app.jar
 
 # Postavi port koji će Render koristiti
-EXPOSE 8080
+EXPOSE 10000
 
 # Pokreni aplikaciju
 ENTRYPOINT ["java", "-jar", "app.jar"]
