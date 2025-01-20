@@ -11,6 +11,7 @@ const backend = "http://localhost:8080";
 
 const ProfilePage = () => {
   const navigate = useNavigate();
+  const default_profile_picture = "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg";
   const getToken = () => {
     return localStorage.getItem("token");
   };
@@ -588,9 +589,9 @@ const ProfilePage = () => {
         <div className="profile-imagetext">
           <div className="profile-image-container">
             <img
-              src={user.slika}
+              src={user.slika || default_profile_picture}
               alt={
-                "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"
+                `${user.ime}'s profile picture`
               }
               className="profile-picture-large"
             />
