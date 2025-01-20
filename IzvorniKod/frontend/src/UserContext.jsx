@@ -43,6 +43,8 @@ export const UserProvider = ({ children }) => {
             }
           );
           if (response.status === 200) {
+            response.data.slika = "data:image/png;base64," + response.data.slika;
+            console.log("USER CONTEXT", response.data);
             setUser(response.data);
           }
         } catch (error) {
