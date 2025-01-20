@@ -11,6 +11,7 @@ export const UserProvider = ({ children }) => {
     ime: "",
     prezime: "",
     email: "",
+    slika: "",
     uloga: "",
     languagesKnown: [{ nazivJezika: "", razina: "početna" }],
     languagesToLearn: [{ nazivJezika: "" }],
@@ -25,7 +26,7 @@ export const UserProvider = ({ children }) => {
   const location = useLocation();
 
   useEffect(() => {
-    if (location.pathname === "/profile") {
+    if (location.pathname === "/profile" || location.pathname == "" || location.pathname === "/" || location.pathname === "/register") {
       return;
     }
 
