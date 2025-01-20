@@ -12,8 +12,8 @@
 .container,
 .filter-container {
   flex: 1;
-  min-width: 425px; /* Postavljena minimalna širina */
-  max-width: 48%; /* Povećana maksimalna širina */
+  min-width: 425px; 
+  max-width: 48%; 
   height: auto;
   background-color: white;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -33,7 +33,7 @@
   .container,
   .filter-container {
     max-width: 95%;
-    min-width: auto; /* Minimalna širina za bolju vidljivost */
+    min-width: auto;
     margin-left: 50px;
     overflow-x: hidden;
   }
@@ -49,11 +49,10 @@
   .container,
   .filter-container {
     max-width: 90%;
-    min-width: auto; /* Uklonjeno ograničenje širine */
+    min-width: auto;
 
   }
 }
-
 
 .main-content {
   flex: 1;
@@ -192,7 +191,7 @@ button {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  width: 48%;
+  width: 60%;
 }
 
 .filter-group label {
@@ -210,6 +209,57 @@ button {
   font-size: 0.9rem;
   font-weight: 400;
   color: #555;
+}
+
+.filter-group,
+.filter-group-satnica {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.filter-group-satnica {
+  margin-top: 15px;
+}
+
+.filter-options {
+  display: flex;
+  flex-wrap: wrap; 
+  gap: 10px;
+}
+
+.filter-group-satnica .filter-options input {
+  flex: 1;
+  max-width: 95px; 
+  padding: 5px; 
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  border-color: #613c78;
+  border-width: 1.2px;
+}
+
+.filter-group-satnica .filter-options input:focus {
+  border-color: #613c78;
+  outline: none;
+  box-shadow: 0 0 5px rgba(97, 60, 120, 0.8);
+}
+
+
+@media (max-width: 768px) {
+  .filters-container {
+    gap: 15px; 
+  }
+
+  .filter-options {
+    flex-direction: column; 
+    gap: 5px; 
+  }
+
+  .filter-group-satnica .filter-options input {
+    max-width: 100px; 
+    font-size: 0.8rem; 
+  }
 }
 
 button {
@@ -408,44 +458,39 @@ p {
   background-color: #4d2763;
 }
 
-.filter-buttons {
+.filter-buttons-list {
   display: flex;
   justify-content: space-evenly; 
   flex-wrap: wrap;
+  margin-top: 10px;
 }
 
-/* Responsive Styles */
 @media screen and (max-width: 768px) {
-  /* Adjust the positioning of the profile for smaller screens */
   .user-profile {
     top: 10px;
     right: 10px;
   }
 
-  /* Decrease the profile icon size */
   .profile-icon {
     width: 30px;
     height: 30px;
   }
 
-  /* Reduce font size of user name */
   .user-name {
     font-size: 1rem;
   }
 
-  /* Adjust dropdown positioning for small screens */
   .dropdown-menu {
-    top: 40px; /* Adjust dropdown menu position */
+    top: 40px; 
   }
 
   .dropdown-menu button {
-    padding: 8px 10px; /* Adjust padding */
-    font-size: 0.9rem; /* Adjust font size */
+    padding: 8px 10px; 
+    font-size: 0.9rem; 
   }
 }
 
 @media screen and (max-width: 480px) {
-  /* Further adjustments for very small screens */
   .user-profile {
     top: 5px;
     right: 5px;
@@ -462,12 +507,12 @@ p {
 
   .dropdown-menu {
     top: 40px;
-    width: 180px; /* Even smaller dropdown width */
+    width: 180px; 
   }
 
   .dropdown-menu button {
-    padding: 6px 10px; /* Smaller padding */
-    font-size: 0.8rem; /* Smaller font size */
+    padding: 6px 10px; 
+    font-size: 0.8rem; 
   }
 }
 
@@ -484,21 +529,21 @@ p {
   .container {
     grid-area: container;
     width: 100%;
-    height: auto; /* Automatski visina prema sadržaju */
+    height: auto; 
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    padding: 10px; /* Dodan padding za unutarnji razmak */
+    padding: 10px; 
     background-color: white;
-    border-radius: 5px; /* Lagano zaokruživanje */
+    border-radius: 5px; 
   }
 
   .filter-container {
     grid-area: filter-container;
     width: auto;
-    height: auto; /* Automatski visina prema sadržaju */
+    height: auto;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    padding: 10px; /* Dodan padding za unutarnji razmak */
+    padding: 10px; 
     background-color: white;
-    border-radius: 5px; /* Lagano zaokruživanje */
+    border-radius: 5px; 
   }
 
   .main-content {

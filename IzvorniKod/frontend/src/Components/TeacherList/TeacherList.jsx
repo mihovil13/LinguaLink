@@ -357,27 +357,26 @@ const TeacherList = () => {
                   </label>
                 ))}
               </div>
-            </div>
-
-            <div className="filter-group">
+              <div className="filter-group-satnica">
               <label>Filtriraj po satnici (€/h):</label>
               <div className="filter-options">
                 <input
                   type="text"
-                  placeholder="Minimalna satnica"
+                  placeholder="Min. satnica"
                   value={minHourlyRate}
                   onChange={(e) => handleMinHourlyRateChange(e.target.value)}
                 />
                 <input
                   type="text"
-                  placeholder="Maksimalna satnica"
+                  placeholder="Max. satnica"
                   value={maxHourlyRate}
                   onChange={(e) => handleMaxHourlyRateChange(e.target.value)}
                 />
               </div>
             </div>
+            </div>
           </div>
-          <div className=" filter-buttons">
+          <div className=" filter-buttons-list">
             <button onClick={applyFilters}>Primijeni filtre</button>
             <div className="clear-filters">
               <button onClick={clearFilters}>Poništi filtre</button>
