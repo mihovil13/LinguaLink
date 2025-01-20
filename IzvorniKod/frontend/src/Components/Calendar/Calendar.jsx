@@ -42,8 +42,14 @@ const Calendar = () => {
 
   const fetchAvailableTimes = async () => {
     try {
+      const token = getToken();
       const response = await axios.get(
-        `${backend}/api/dohvati-predavanja/${teacherId}`
+        `${backend}/api/dohvati-predavanja/${teacherId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       if (response.status === 200) {
         const filteredLessons = response.data.filter(
@@ -70,6 +76,7 @@ const Calendar = () => {
       }
     } catch (error) {
       console.error("Greška prilikom dohvaćanja predavanja:", error);
+      alert("Provjeri konzolu");
     }
   };
 
@@ -205,6 +212,7 @@ const Calendar = () => {
       >
         Rezervacija uspješno spremljena!
       </div>
+      { user.uloga==="Učenik" && (
       <div className="user-profile">
         <img
           src="https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"
@@ -227,6 +235,7 @@ const Calendar = () => {
           </div>
         )}
       </div>
+      )}
       <a href="/" className="logo-link">
         <img src={logo_icon} alt="Logo" className="logo" />
       </a>

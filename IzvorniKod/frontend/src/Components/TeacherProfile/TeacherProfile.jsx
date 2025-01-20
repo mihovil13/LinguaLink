@@ -207,12 +207,14 @@ const TeacherProfile = () => {
         </div>
         <div className="buttons">
           <div className="edit-button">
+            {user.uloga === "Učenik" && (
             <button
               className="calendar-button"
               onClick={() => navigate(`/calendar/${teacherId}`)}
             >
               Prikaz kalendara
             </button>
+            )}
           </div>
           <div className="profile-buttons">
             <button

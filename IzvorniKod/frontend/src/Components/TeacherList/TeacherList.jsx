@@ -79,7 +79,7 @@ const TeacherList = () => {
           }));
 
           const filteredByUserLanguages =
-            token && user.languagesToLearn.length > 0
+            user.id && user.languagesToLearn.length > 0
               ? teachersData.filter((teacher) =>
                   teacher.languagesTeach.some((lang) =>
                     user.languagesToLearn
@@ -301,7 +301,7 @@ const TeacherList = () => {
         </div>
       </div>
 
-      {isLoggedIn && (
+      {user.id && (
         <div className="filter-container">
           <footer>
             <div className="text">Filtriranje učitelja</div>

@@ -25,12 +25,13 @@ export const UserProvider = ({ children }) => {
   const location = useLocation();
 
   useEffect(() => {
-    if (location.pathname === "/profile") {
+    const token = localStorage.getItem("token");
+
+    if (location.pathname === "/profile" || !user.id) {
       return;
     }
 
     const fetchUser = async () => {
-      const token = localStorage.getItem("token");
       if (token) {
         try {
           const response = await axios.get(

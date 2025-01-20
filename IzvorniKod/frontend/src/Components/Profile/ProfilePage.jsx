@@ -33,7 +33,21 @@ const ProfilePage = () => {
       }
 
       // Resetiranje korisničkih podataka
-      setUser({});
+      setUser({
+        id: null,
+        ime: "",
+        prezime: "",
+        email: "",
+        uloga: "",
+        languagesKnown: [{ nazivJezika: "", razina: "početna" }],
+        languagesToLearn: [{ nazivJezika: "" }],
+        languagesTeach: [{ nazivJezika: "" }],
+        stilPoducavanja: "",
+        ciljeviUcenja: "",
+        iskustvo: "",
+        qualifications: [{ kvalifikacije: "" }],
+        satnica: "",    
+      });
 
       // Brisanje tokena iz localStorage
       localStorage.removeItem("token");
