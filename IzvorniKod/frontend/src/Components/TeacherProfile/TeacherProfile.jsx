@@ -7,7 +7,7 @@ import { useUser } from "../../UserContext";
 
 
 const TeacherProfile = () => {
-  const backend = "http://localhost:8080";
+  const backend = "https://lingualink-rxoa.onrender.com";
   const { teacherId } = useParams(); //izvlacimo teacherId iz url-a
   const navigate = useNavigate();
   const location = useLocation();
