@@ -47,7 +47,7 @@ const ProfilePage = () => {
         ciljeviUcenja: "",
         iskustvo: "",
         qualifications: [{ kvalifikacije: "" }],
-        satnica: "",    
+        satnica: "",
       });
 
       // Brisanje tokena iz localStorage
@@ -194,34 +194,33 @@ const ProfilePage = () => {
 
   //modal za odabir uloge
   const handleRoleSelection = (role) => {
-  const updatedUser = { ...user, uloga: role };
-  setUser(updatedUser); // Ažuriraj korisnički objekt s odabranom ulogom
-  setRoleModalOpen(false); // Zatvori modal
+    const updatedUser = { ...user, uloga: role };
+    setUser(updatedUser); // Ažuriraj korisnički objekt s odabranom ulogom
+    setRoleModalOpen(false); // Zatvori modal
 
-  // Slanje podataka o ažuriranom korisniku na backend
-  axios
-    .put(`${backend}/api/moj-profil`, updatedUser, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    })
-    .then((response) => {
-      if (response.status === 200) {
-        setNotificationMessage("Uloga uspješno postavljena! 🎉"); // Postavi poruku
-        setShowNotification(true); // Prikaži notifikaciju
+    // Slanje podataka o ažuriranom korisniku na backend
+    axios
+      .put(`${backend}/api/moj-profil`, updatedUser, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+      .then((response) => {
+        if (response.status === 200) {
+          setNotificationMessage("Uloga uspješno postavljena! 🎉"); // Postavi poruku
+          setShowNotification(true); // Prikaži notifikaciju
 
-        setTimeout(() => setShowNotification(false), 3000); // Sakrij notifikaciju nakon 3 sekunde
-      }
-    })
-    .catch((error) => {
-      console.error("Error saving role:", error);
-      setNotificationMessage("Došlo je do greške pri spremanju uloge. 😔");
-      setShowNotification(true);
+          setTimeout(() => setShowNotification(false), 3000); // Sakrij notifikaciju nakon 3 sekunde
+        }
+      })
+      .catch((error) => {
+        console.error("Error saving role:", error);
+        setNotificationMessage("Došlo je do greške pri spremanju uloge. 😔");
+        setShowNotification(true);
 
-      setTimeout(() => setShowNotification(false), 3000);
-    });
-};
-
+        setTimeout(() => setShowNotification(false), 3000);
+      });
+  };
 
   const handleSaveProfile = async (updatedProfile = editedUser) => {
     if (isNaN(updatedProfile.satnica) || updatedProfile.satnica < 0) {
@@ -258,7 +257,7 @@ const ProfilePage = () => {
       console.error("Greška prilikom spremanja profila:", error);
       setNotificationMessage("Došlo je do greške prilikom spremanja profila"); // Postavljanje poruke
       setShowNotification(true); // Prikazivanje notifikacije
-      setTimeout(() => setShowNotification(false), 3000)
+      setTimeout(() => setShowNotification(false), 3000);
     }
   };
 
@@ -489,10 +488,14 @@ const ProfilePage = () => {
           <p>
             <strong>Uloga:</strong> {user.uloga}
           </p>
-          {user.uloga==="Učitelj" && (
-          <button className="recenzije-button" onClick={() => 
-            navigate(`/ratings/${user.id}`)}>⭐ Recenzije učenika</button>
-        )}
+          {user.uloga === "Učitelj" && (
+            <button
+              className="recenzije-button"
+              onClick={() => navigate(`/ratings/${user.id}`)}
+            >
+              ⭐ Recenzije učenika
+            </button>
+          )}
         </div>
         {user.uloga === "Učenik" && (
           <div className="profile-jezici">
@@ -586,7 +589,9 @@ const ProfilePage = () => {
           <div className="profile-image-container">
             <img
               src={user.slika}
-              alt={"https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"}
+              alt={
+                "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"
+              }
               className="profile-picture-large"
             />
             <label htmlFor="input-file">
@@ -597,13 +602,13 @@ const ProfilePage = () => {
             type="file"
             accept="image/png"
             id="input-file"
-            onChange={handleFileChange}
+            onChange={handleImage}
           />
           <h1 className="profile-name">{user.ime}</h1>
           <h1 className="profile-surname">{user.prezime}</h1>
         </div>
         <div className="buttons">
-        <div className="edit-button">
+          <div className="edit-button">
             {(user.uloga === "Učenik" || user.uloga === "Učitelj") && (
               <button
                 className="edit-profile-button"
@@ -620,9 +625,9 @@ const ProfilePage = () => {
                 >
                   Učitelji
                 </button>
-                </div>
+              </div>
             )}
-            {user.uloga === "Učitelj"&& (
+            {user.uloga === "Učitelj" && (
               <div className="first-row-profile-buttons">
                 <button
                   className="lections-button"
@@ -653,9 +658,6 @@ const ProfilePage = () => {
               </div>
             )}
 
-            
-
-            
             {user.uloga === "Učitelj" && (
               <button
                 className="calendar-button"
@@ -1074,5 +1076,3 @@ const ProfilePage = () => {
 };
 
 export default ProfilePage;
-
-
