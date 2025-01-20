@@ -30,7 +30,7 @@ const LoginRegister = () => {
   const handleRegister = async () => {
     try {
       const registerResponse = await axios.post(
-        "http://localhost:8080/api/korisnici/register",
+        "https://lingualink-rxoa.onrender.com/api/korisnici/register",
         formData
       );
 
@@ -50,7 +50,7 @@ const LoginRegister = () => {
         console.log("Trenutni korisnik: ", userData);
 
         const profileResponse = await axios.get(
-          "http://localhost:8080/api/moj-profil",
+          "https://lingualink-rxoa.onrender.com/api/moj-profil",
           {
             headers: {
               Authorization: `Bearer ${userData.token}`,
