@@ -24,10 +24,10 @@ export const UserProvider = ({ children }) => {
 
   const location = useLocation();
 
-  useEffect(() => {
+  useEffect( () => {
     const token = localStorage.getItem("token");
 
-    if (location.pathname === "/profile" || !user.id) {
+    if (location.pathname === "/profile" || !token) {
       return;
     }
 
@@ -44,6 +44,7 @@ export const UserProvider = ({ children }) => {
           );
           if (response.status === 200) {
             setUser(response.data);
+            console.log("U USER CONTEXT KORISNIK JE", user);
           }
         } catch (error) {
           console.error("Greška prilikom dohvaćanja korisnika:", error);
