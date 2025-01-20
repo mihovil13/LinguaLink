@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.model.Korisnik;
+import com.example.demo.model.Role;
 import com.example.demo.model.Ucenik;
 import com.example.demo.model.Ucitelj;
 import com.example.demo.repository.KorisnikRepository;
@@ -42,12 +43,12 @@ public class KorisnikServiceJPA implements KorisnikService {
         Korisnik korisnik1 = new Korisnik(username,korisnik.getEmail(), korisnik.getLozinka(), korisnik.getUloga());
         if(korisnik.getUloga().equals("Učenik")){
             System.out.println("ucenik");
-            Ucenik ucenik = new Ucenik(korisnik.getIme(),korisnik.getPrezime(),korisnik.getEmail(),korisnik.getLozinka(), korisnik.getUloga());
+            Ucenik ucenik = new Ucenik(korisnik.getIme(),korisnik.getPrezime(),korisnik.getEmail(),korisnik.getLozinka(), korisnik.getUloga(), Role.ROLE_USER);
             ucenikRepository.save(ucenik);
         }
         if(korisnik.getUloga().equals("Učitelj")){
             System.out.println("ucitelj");
-            Ucitelj ucitelj = new Ucitelj(korisnik.getIme(),korisnik.getPrezime(),korisnik.getEmail(),korisnik.getLozinka(), korisnik.getUloga());
+            Ucitelj ucitelj = new Ucitelj(korisnik.getIme(),korisnik.getPrezime(),korisnik.getEmail(),korisnik.getLozinka(), korisnik.getUloga(), Role.ROLE_USER);
             uciteljRepository.save(ucitelj);
         }
 
@@ -68,12 +69,12 @@ public class KorisnikServiceJPA implements KorisnikService {
         if (body.containsKey("uloga") && korisnik.getUloga()==null) {
             korisnik.setUloga((String) body.get("uloga"));
             if(korisnik.getUloga().equals("Učitelj")){
-                Ucitelj ucitelj = new Ucitelj(korisnik.getIme(),korisnik.getPrezime(),korisnik.getEmail(),korisnik.getLozinka(), korisnik.getUloga());
+                Ucitelj ucitelj = new Ucitelj(korisnik.getIme(),korisnik.getPrezime(),korisnik.getEmail(),korisnik.getLozinka(), korisnik.getUloga(), Role.ROLE_USER);
                 korisnikRepository.delete(korisnik);
                 uciteljRepository.save(ucitelj);
             }
             if(korisnik.getUloga().equals("Učenik")){
-                Ucenik ucenik = new Ucenik(korisnik.getIme(),korisnik.getPrezime(),korisnik.getEmail(),korisnik.getLozinka(), korisnik.getUloga());
+                Ucenik ucenik = new Ucenik(korisnik.getIme(),korisnik.getPrezime(),korisnik.getEmail(),korisnik.getLozinka(), korisnik.getUloga(), Role.ROLE_USER);
                 korisnikRepository.delete(korisnik);
                 ucenikRepository.save(ucenik);
             }
