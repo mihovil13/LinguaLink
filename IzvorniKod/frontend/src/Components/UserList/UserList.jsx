@@ -24,9 +24,12 @@ const UserList = () => {
         if (response.status === 200) {
           const userData = response.data;
           setUsers(userData);
+        } else {
+          navigate("/profile"); // Ako nije 200, preusmjeri na /profile
         }
       } catch (error) {
         console.error("Error: ", error);
+        navigate("/profile"); // Preusmjeri na /profile u slučaju greške
       }
     };
 
