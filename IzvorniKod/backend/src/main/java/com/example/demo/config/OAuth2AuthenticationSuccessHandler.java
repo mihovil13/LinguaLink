@@ -33,7 +33,7 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
         String jwt = jwtService.generateToken(user);
 
         // Redirect to frontend with JWT as a query parameter
-        String redirectUrl = "http://localhost:3000/profile?token=" + jwt;
+        String redirectUrl = "https://lingualink-frontend-v1.onrender.com/profile?token=" + jwt;
         response.sendRedirect(redirectUrl);
     }
 }
