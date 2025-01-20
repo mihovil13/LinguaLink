@@ -9,7 +9,7 @@ Ovaj projekt je rezultat timskog rada u sklopu projeknog zadatka kolegija [Progr
 # Pristup aplikaciji
 > Poveznica za pristup aplikaciji:
 >
-> https://lingualink-frontend-z3ss.onrender.com/
+> https://lingualink-frontend-v1.onrender.com/
 
 # Članovi tima 
 > Popis članova tima/linkovi/ glavni doprinos
