@@ -62,7 +62,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
                 .email(email)
                 .uloga(null)
                 .lozinka("default_lozinka_za_oauth2") // Note: Consider a more secure password handling method
-                .role(Role.USER)
+                .role(Role.ROLE_USER)
                 .build();
 
         // Save the new user to the database
