@@ -179,7 +179,7 @@ const LoginRegister = () => {
       <div className="submit-container">
         <div className="submit">
           <a
-            href="http://localhost:8080/oauth2/authorization/github"
+            href="https://lingualink-rxoa.onrender.com/oauth2/authorization/github"
             className="oauth2-btn2"
           >
             <img
