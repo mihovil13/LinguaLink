@@ -12,6 +12,8 @@ const TeacherList = () => {
   const [languageFilters, setLanguageFilters] = useState([]);
   const [styleFilters, setStyleFilters] = useState([]);
   const [filtersApplied, setFiltersApplied] = useState(false);
+  const [minHourlyRate, setMinHourlyRate] = useState("");
+  const [maxHourlyRate, setMaxHourlyRate] = useState("");
   const [qualificationFilters, setQualificationfilters] = useState([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const navigate = useNavigate();
@@ -49,7 +51,7 @@ const TeacherList = () => {
   const getToken = () => {
     return localStorage.getItem("token");
   };
-  
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -87,6 +89,8 @@ const TeacherList = () => {
                 )
               : teachersData;
 
+          console.log(teachersData);
+
           setTeachers(teachersData);
           setFilteredTeachers(filteredByUserLanguages);
 
@@ -106,6 +110,11 @@ const TeacherList = () => {
   }, [user]);
 
   const applyFilters = () => {
+    if (maxHourlyRate && parseFloat(minHourlyRate) > parseFloat(maxHourlyRate)) {
+      setMinHourlyRate("");
+      showErrorMessage();
+      return;
+    }
     const filtered = teachers.filter((teacher) => {
       const matchesLanguage =
         languageFilters.length === 0 ||
@@ -121,7 +130,18 @@ const TeacherList = () => {
           teacher.qualifications.includes(qualification)
         );
 
-      return matchesLanguage && matchesStyle && matchesQualification;
+      const matchesHourlyRate =
+        (!minHourlyRate && !maxHourlyRate) || //ako nisu postavljeni filteri za satnicu, nema filtriranja
+        (teacher.satnica !== null && //provjera da satnica ucitelja nije null
+          (!minHourlyRate || teacher.satnica >= Number(minHourlyRate)) &&
+          (!maxHourlyRate || teacher.satnica <= Number(maxHourlyRate)));
+
+      return (
+        matchesLanguage &&
+        matchesStyle &&
+        matchesQualification &&
+        matchesHourlyRate
+      );
     });
 
     setFilteredTeachers(filtered);
@@ -139,8 +159,19 @@ const TeacherList = () => {
     setLanguageFilters([]);
     setStyleFilters([]);
     setQualificationfilters([]);
+    setMinHourlyRate("");
+    setMaxHourlyRate("");
     setFilteredTeachers(teachers);
     setFiltersApplied(false);
+  };
+
+  const showErrorMessage = () => {
+    const notification = document.querySelector(".error-message");
+    notification.classList.add("show");
+
+    setTimeout(() => {
+      notification.classList.remove("show");
+    }, 3000);
   };
 
   const handleLanguageFilterChange = (language) => {
@@ -165,6 +196,36 @@ const TeacherList = () => {
     );
   };
 
+  //uvjet, value mora biti broj i vrijednost mora biti veca ili jednaka 0
+  const handleMinHourlyRateChange = (value) => {
+    if (!/^\d*\.?\d*$/.test(value)) {
+      setMinHourlyRate(""); // Ako unos nije  broj, resetira na prazan string
+      return;
+    }
+
+    if (Number(value) < 0) {
+      setMinHourlyRate("");
+      return;
+    }
+
+    setMinHourlyRate(value);
+  };
+
+  const handleMaxHourlyRateChange = (value) => {
+    if (!/^\d*\.?\d*$/.test(value)) {
+      setMaxHourlyRate(""); // ako unos nije  broj, resetira na prazan string
+      return;
+    }
+
+    // Provjera za negativne brojeve
+    if (Number(value) < 0) {
+      setMaxHourlyRate("");
+      return;
+    }
+
+    setMaxHourlyRate(value);
+  };
+
   const handleTeacherClick = (teacherId) => {
     navigate(`/teacher/${teacherId}`);
   };
@@ -177,7 +238,7 @@ const TeacherList = () => {
         <img src={logo_icon} alt="Logo" className="logo" />
       </a>
 
-      {isLoggedIn && (
+      {user.uloga === "Učenik" && (
         <div className="user-profile">
           <img
             src="https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"
@@ -194,13 +255,16 @@ const TeacherList = () => {
               <button onClick={() => navigate(`/requests/${user.id}`)}>
                 Zahtjevi
               </button>
-              <button onClick={() => navigate(`/lections/${user.id}`)}>Lekcije</button>
+              <button onClick={() => navigate(`/lections/${user.id}`)}>
+                Lekcije
+              </button>
             </div>
           )}
         </div>
       )}
 
       <div className="filter-notification">Filtri primijenjeni</div>
+      <div className="error-message">Minimalna satnica ne može biti veća od maksimalne satnice.</div>
 
       <div className="container">
         <footer>
@@ -292,6 +356,24 @@ const TeacherList = () => {
                     {qualification}
                   </label>
                 ))}
+              </div>
+            </div>
+
+            <div className="filter-group">
+              <label>Filtriraj po satnici (€/h):</label>
+              <div className="filter-options">
+                <input
+                  type="text"
+                  placeholder="Minimalna satnica"
+                  value={minHourlyRate}
+                  onChange={(e) => handleMinHourlyRateChange(e.target.value)}
+                />
+                <input
+                  type="text"
+                  placeholder="Maksimalna satnica"
+                  value={maxHourlyRate}
+                  onChange={(e) => handleMaxHourlyRateChange(e.target.value)}
+                />
               </div>
             </div>
           </div>

@@ -957,7 +957,7 @@ const ProfilePage = () => {
                 <div className="satnica-section">
                   <h3>Satnica (cijena po satu)</h3>
                   <input
-                    type="number"
+                    type="text"
                     value={editedUser.satnica || ""}
                     onChange={(e) => {
                       const value = e.target.value;

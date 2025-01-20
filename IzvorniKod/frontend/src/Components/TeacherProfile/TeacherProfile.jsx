@@ -5,7 +5,6 @@ import axios from "axios";
 import logo_icon from "../Assets/logo-prototip3.png";
 import { useUser } from "../../UserContext";
 
-
 const TeacherProfile = () => {
   const backend = "http://localhost:8080";
   const { teacherId } = useParams(); //izvlacimo teacherId iz url-a
@@ -25,7 +24,6 @@ const TeacherProfile = () => {
   const { user, setUser } = useUser();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const toggleDropdown = () => setIsDropdownOpen((prev) => !prev);
-  
 
   //dohvat podataka o ucitelju prilikom prvog ucitavanja stranice
   useEffect(() => {
@@ -100,27 +98,30 @@ const TeacherProfile = () => {
       <a href="/" className="logo-link">
         <img src={logo_icon} alt="Logo" className="logo" />
       </a>
-      <div className="user-profile">
-        <img
-          src="https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"
-          alt="Profile"
-          className="profile-icon"
-          onClick={toggleDropdown}
-        />
-        <span
-          className="user-name"
-          onClick={toggleDropdown}
-        >
-          {user.ime} {user.prezime[0]}.
-        </span>
-        {isDropdownOpen && (
-          <div className="dropdown-menu">
-            <button onClick={() => navigate("/profile")}>Profil</button>
-            <button onClick={() => navigate(`/requests/${user.id}`)}>Zahtjevi</button>
-            <button onClick={() => navigate(`/lections/${user.id}`)}>Lekcije</button>
-          </div>
-        )}
-      </div>
+      {user.uloga === "Učenik" && (
+        <div className="user-profile">
+          <img
+            src="https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"
+            alt="Profile"
+            className="profile-icon"
+            onClick={toggleDropdown}
+          />
+          <span className="user-name" onClick={toggleDropdown}>
+            {user.ime} {user.prezime[0]}.
+          </span>
+          {isDropdownOpen && (
+            <div className="dropdown-menu">
+              <button onClick={() => navigate("/profile")}>Profil</button>
+              <button onClick={() => navigate(`/requests/${user.id}`)}>
+                Zahtjevi
+              </button>
+              <button onClick={() => navigate(`/lections/${user.id}`)}>
+                Lekcije
+              </button>
+            </div>
+          )}
+        </div>
+      )}
       <div className="profile-sidebar">
         <div className="profile-podaci">
           <span>Osobni podaci</span>
@@ -136,8 +137,14 @@ const TeacherProfile = () => {
           <p>
             <strong>Uloga:</strong> {teacher.uloga}
           </p>
-          <button className="recenzije-button" onClick={() => 
-            navigate(`/ratings/${teacherId}`)}>⭐ Recenzije učenika</button>
+          {user.uloga === "Učenik" && (
+            <button
+              className="recenzije-button"
+              onClick={() => navigate(`/ratings/${teacherId}`)}
+            >
+              ⭐ Recenzije učenika
+            </button>
+          )}
         </div>
 
         <div className="profile-jezici">
@@ -161,7 +168,11 @@ const TeacherProfile = () => {
           {teacher.qualifications && teacher.qualifications.length > 0 ? (
             <ul>
               {teacher.qualifications.map((item, index) => (
-                <li key={index}>{item.kvalifikacije === "Izvorni_govornik" ? "Izvorni govornik" : item.kvalifikacije}</li>
+                <li key={index}>
+                  {item.kvalifikacije === "Izvorni_govornik"
+                    ? "Izvorni govornik"
+                    : item.kvalifikacije}
+                </li>
               ))}
             </ul>
           ) : (
@@ -182,7 +193,6 @@ const TeacherProfile = () => {
           </p>
         </div>
       </div>
-
       <div className="profile-header">
         <div className="profile-imagetext">
           <img

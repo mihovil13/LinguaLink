@@ -42,14 +42,8 @@ const Calendar = () => {
 
   const fetchAvailableTimes = async () => {
     try {
-      const token = getToken();
       const response = await axios.get(
-        `${backend}/api/dohvati-predavanja/${teacherId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        `${backend}/api/dohvati-predavanja/${teacherId}`
       );
       if (response.status === 200) {
         const filteredLessons = response.data.filter(
@@ -76,7 +70,6 @@ const Calendar = () => {
       }
     } catch (error) {
       console.error("Greška prilikom dohvaćanja predavanja:", error);
-      alert("Provjeri konzolu");
     }
   };
 
@@ -86,57 +79,54 @@ const Calendar = () => {
     today.setHours(0, 0, 0, 0);
 
     if (clickedDate >= today) {
-        setSelectedDate(info.dateStr);
+      setSelectedDate(info.dateStr);
 
-        document.querySelectorAll('.fc-daygrid-day').forEach(cell => {
-            cell.classList.remove('selected');
+      document.querySelectorAll(".fc-daygrid-day").forEach((cell) => {
+        cell.classList.remove("selected");
+      });
+
+      info.dayEl.classList.add("selected");
+
+      const allTimes = [
+        "09:00",
+        "10:00",
+        "11:00",
+        "12:00",
+        "13:00",
+        "14:00",
+        "15:00",
+        "16:00",
+      ];
+
+      await fetchAvailableTimes();
+
+      const reservedTimes = reservedLessons
+        .filter((lesson) => lesson.start.startsWith(info.dateStr))
+        .map((lesson) => {
+          const time = new Date(lesson.start).toTimeString().slice(0, 5);
+          return time;
         });
 
-        info.dayEl.classList.add('selected');
+      const availableTimes = allTimes.filter(
+        (time) => !reservedTimes.includes(time)
+      );
 
-        const allTimes = [
-            "09:00",
-            "10:00",
-            "11:00",
-            "12:00",
-            "13:00",
-            "14:00",
-            "15:00",
-            "16:00",
-        ];
+      clickedDate.setHours(0, 0, 0, 0);
 
-        await fetchAvailableTimes();
-
-        const reservedTimes = reservedLessons
-            .filter((lesson) => lesson.start.startsWith(info.dateStr))
-            .map((lesson) => {
-                const time = new Date(lesson.start).toTimeString().slice(0, 5);
-                return time;
-            });
-
-        const availableTimes = allTimes.filter(
-            (time) => !reservedTimes.includes(time)
-        );
-
-
-
-
-        clickedDate.setHours(0, 0, 0, 0);
-
-        if (clickedDate.getTime() === today.getTime()) {
-            const now = new Date();
-            const filteredTimes = availableTimes.filter((time) => {
-                const [hours, minutes] = time.split(":").map(Number);
-                const termTime = new Date();
-                termTime.setHours(hours, minutes, 0, 0);
-                console.log(termTime);
-                console.log(now);
-                return termTime > now;
-            });
-            setAvailableTimes(filteredTimes);
-        } else {
-            setAvailableTimes(availableTimes);
-        }
+      if (clickedDate.getTime() === today.getTime()) {
+        const now = new Date();
+        const filteredTimes = availableTimes.filter((time) => {
+          const [hours, minutes] = time.split(":").map(Number);
+          const termTime = new Date();
+          termTime.setHours(hours, minutes, 0, 0);
+          console.log(termTime);
+          console.log(now);
+          return termTime > now;
+        });
+        setAvailableTimes(filteredTimes);
+      } else {
+        setAvailableTimes(availableTimes);
+      }
     }
   };
 
@@ -209,7 +199,10 @@ const Calendar = () => {
 
   return (
     <div>
-      <div id="notification" className={`filter-notification ${showNotification ? 'show' : ''}`}>
+      <div
+        id="notification"
+        className={`filter-notification ${showNotification ? "show" : ""}`}
+      >
         Rezervacija uspješno spremljena!
       </div>
       <div className="user-profile">
@@ -219,17 +212,18 @@ const Calendar = () => {
           className="profile-icon"
           onClick={toggleDropdown}
         />
-        <span
-          className="user-name"
-          onClick={toggleDropdown}
-        >
+        <span className="user-name" onClick={toggleDropdown}>
           {user.ime} {user.prezime[0]}.
         </span>
         {isDropdownOpen && (
           <div className="dropdown-menu">
             <button onClick={() => navigate("/profile")}>Profil</button>
-            <button onClick={() => navigate(`/requests/${user.id}`)}>Zahtjevi</button>
-            <button onClick={() => navigate(`/lections/${user.id}`)}>Lekcije</button>
+            <button onClick={() => navigate(`/requests/${user.id}`)}>
+              Zahtjevi
+            </button>
+            <button onClick={() => navigate(`/lections/${user.id}`)}>
+              Lekcije
+            </button>
           </div>
         )}
       </div>
@@ -271,28 +265,28 @@ const Calendar = () => {
         }}
       />
 
-    {user.uloga !== "Učitelj" && (
-    <div className="timeslots">
-        {selectedDate ? (
-          <div>
-            <h3>Dostupni termini za {formatEuropeanDate(selectedDate)}:</h3>
-            <div className="times">
-              {availableTimes.map((time) => (
-                <button
-                  key={time}
-                  onClick={() => handleTimeClick(time)} // Otvara modal na klik
-                  className="time-button"
-                >
-                  {time}
-                </button>
-              ))}
+      {user.uloga !== "Učitelj" && user.id && (
+        <div className="timeslots">
+          {selectedDate ? (
+            <div>
+              <h3>Dostupni termini za {formatEuropeanDate(selectedDate)}:</h3>
+              <div className="times">
+                {availableTimes.map((time) => (
+                  <button
+                    key={time}
+                    onClick={() => handleTimeClick(time)} // Otvara modal na klik
+                    className="time-button"
+                  >
+                    {time}
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
-        ) : (
-          <p>Molimo kliknite na datum za prikaz dostupnih termina.</p>
-        )}
-      </div>
-    )}
+          ) : (
+            <p>Molimo kliknite na datum za prikaz dostupnih termina.</p>
+          )}
+        </div>
+      )}
 
       {/* Modal za potvrdu rezervacije */}
       <Modal
@@ -326,4 +320,3 @@ const Calendar = () => {
 };
 
 export default Calendar;
-
