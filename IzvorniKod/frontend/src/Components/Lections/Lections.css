@@ -350,3 +350,105 @@
     justify-content: center !important;
   }
   
+/* Stilovi za pozadinski sloj modala */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5); /* Poluprozirna crna pozadina */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Visok Z-index kako bi prekrio sve ostale elemente */
+}
+
+/* Stilovi za sadržaj modala */
+.modal-upload-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 600px;
+  max-width: 90%;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1010; /* Veći Z-index od pozadinskog sloja */
+}
+
+.modal-upload-body input {
+  width: 100%; /* Širina preko cijelog dostupnog prostora */
+  height: 40px; /* Povećana visina */
+  padding: 10px; /* Prostor unutar polja za unos */
+  font-size: 16px; /* Veći font za bolju čitljivost */
+  border: 1px solid #ccc; /* Granica oko polja */
+  border-radius: 4px; /* Blago zaobljeni rubovi */
+  margin-top: 5px;
+  box-sizing: border-box; /* Uključuje padding u ukupnu širinu i visinu */
+}
+
+.modal-upload-body input:focus {
+  border-color: #007bff; /* Promjena boje granice kad je polje u fokusu */
+  outline: none; /* Uklanjanje dodatnog obruba u fokusu */
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Suptilan efekt fokusa */
+}
+
+.modal-upload-content h2 {
+  margin-bottom: 20px;
+}
+
+.modal-upload-body {
+  margin-bottom: 20px;
+}
+
+.modal-upload-body label {
+  margin-bottom: 5px;
+}
+
+.modal-upload-actions {
+  display: flex;
+  justify-content: space-between;
+}
+
+button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #f0f0f0;
+}
+
+.modal-material {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-material-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 500px;
+  width: 90%;
+  text-align: center;
+}
+
+.modal-material-content a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.modal-material-content a:hover {
+  text-decoration: underline;
+}
+
