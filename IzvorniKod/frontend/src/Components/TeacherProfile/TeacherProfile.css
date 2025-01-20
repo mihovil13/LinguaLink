@@ -402,8 +402,6 @@ p {
     padding: 10px;
     flex-direction: row; 
     justify-content: center; 
-    gap: 10px; 
-
   }
 
   .profile-buttons, .edit-button {

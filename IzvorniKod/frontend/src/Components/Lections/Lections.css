@@ -11,8 +11,8 @@
   .container
   {
     flex: 1;
-    min-width: 50vw; /* Postavljena minimalna širina */
-    max-width: 90vw; /* Povećana maksimalna širina */
+    min-width: 50vw; 
+    max-width: 90vw; 
     height: auto;
     background-color: white;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -24,7 +24,6 @@
     
   }
 
-  
 
   @media (max-width: 1024px) {
     .parent-container {
@@ -33,7 +32,7 @@
   
     .container{
       max-width: 95%;
-      min-width: auto; /* Minimalna širina za bolju vidljivost */
+      min-width: auto; 
       margin-left: 50px;
       overflow-x: hidden;
     }
@@ -47,7 +46,7 @@
   
     .container{
       max-width: 90%;
-      min-width: auto; /* Uklonjeno ograničenje širine */
+      min-width: auto; 
     }
   }
   
@@ -158,8 +157,6 @@
 }
 
 
-
-
 .modal-lecture {
   position: fixed;
   top: 50%;
@@ -245,7 +242,6 @@
   transform: scale(1.02);
 }
 
-/* Fade-in animation */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -257,9 +253,6 @@
   }
 }
 
-
-
-/* Overlay */
 .modal-lecture-overlay {
   position: fixed;
   top: 0;
@@ -284,7 +277,7 @@
 }
 
 .star.filled {
-  color: #f4c430; /* Zlatna za popunjene zvjezdice */
+  color: #f4c430; 
 }
 
 .recenzija-status {
@@ -316,32 +309,26 @@
   }
   .teacher-view {
     display: flex;
-    align-items: center; /* Vertikalno centriranje elemenata */
-    justify-content: space-between; /* Ravnomjeran razmak između elemenata */
-    gap: 20px; /* Razmak između elemenata */
+    align-items: center; 
+    justify-content: space-between; 
+    gap: 20px; 
   }
-  
-  
-
   
   @media (max-width: 1024px) {
 
-  
     .container {
       grid-area: container;
       width: 100%;
-      height: auto; /* Automatski visina prema sadržaju */
+      height: auto; 
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-      padding: 10px; /* Dodan padding za unutarnji razmak */
+      padding: 10px; 
       background-color: white;
-      border-radius: 5px; /* Lagano zaokruživanje */
+      border-radius: 5px; 
     }
-  
 
-  
     .main-content {
-      padding: 0; /* Uklanja nepotreban padding */
-      overflow-y: auto; /* Omogućuje skrolanje liste ako je preduga */
+      padding: 0; 
+      overflow-y: auto; 
     }
   }
 
@@ -350,75 +337,87 @@
     justify-content: center !important;
   }
   
-/* Stilovi za pozadinski sloj modala */
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5); /* Poluprozirna crna pozadina */
+  background-color: rgba(0, 0, 0, 0.5); 
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000; /* Visok Z-index kako bi prekrio sve ostale elemente */
+  z-index: 1000; 
 }
 
-/* Stilovi za sadržaj modala */
+.modal-upload-content h2 {
+  text-align: center;
+  color: #613c78;
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+}
+
+
 .modal-upload-content {
   background-color: #fff;
   padding: 20px;
   border-radius: 8px;
   width: 600px;
   max-width: 90%;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  z-index: 1010; /* Veći Z-index od pozadinskog sloja */
-}
-
-.modal-upload-body input {
-  width: 100%; /* Širina preko cijelog dostupnog prostora */
-  height: 40px; /* Povećana visina */
-  padding: 10px; /* Prostor unutar polja za unos */
-  font-size: 16px; /* Veći font za bolju čitljivost */
-  border: 1px solid #ccc; /* Granica oko polja */
-  border-radius: 4px; /* Blago zaobljeni rubovi */
-  margin-top: 5px;
-  box-sizing: border-box; /* Uključuje padding u ukupnu širinu i visinu */
-}
-
-.modal-upload-body input:focus {
-  border-color: #007bff; /* Promjena boje granice kad je polje u fokusu */
-  outline: none; /* Uklanjanje dodatnog obruba u fokusu */
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Suptilan efekt fokusa */
-}
-
-.modal-upload-content h2 {
-  margin-bottom: 20px;
+  box-shadow: 0px 4px 6px rgb(0, 0, 0, 0.7);
+  z-index: 1010; 
 }
 
 .modal-upload-body {
-  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background-color: #f9f9f9;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: 1px solid #ddd;
+  margin: 15px 0px;
 }
 
 .modal-upload-body label {
-  margin-bottom: 5px;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.modal-upload-body input[type="text"] {
+  width: 100%;
+  padding: 0.8rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  outline: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.modal-upload-body input[type="text"]:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.modal-upload-body input[type="text"]::placeholder {
+  color: #aaa;
+  font-style: italic;
 }
 
 .modal-upload-actions {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
 }
 
 button {
   padding: 10px 15px;
   border: none;
-  border-radius: 4px;
+  border-radius: 10px;
   cursor: pointer;
   transition: background-color 0.3s ease;
-}
-
-button:hover {
-  background-color: #f0f0f0;
+  width: auto;
 }
 
 .modal-material {
@@ -427,7 +426,7 @@ button:hover {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.5); 
   display: flex;
   justify-content: center;
   align-items: center;
@@ -435,12 +434,42 @@ button:hover {
 }
 
 .modal-material-content {
-  background: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  max-width: 500px;
+  background-color: #ffffff; 
   width: 90%;
-  text-align: center;
+  max-width: 500px;
+  padding: 20px;
+  border-radius: 10px; 
+  text-align: center; 
+  animation: fadeIn 0.3s ease-in-out; 
+  box-shadow: 0px 4px 6px rgb(0, 0, 0, 0.7);
+}
+
+.modal-material-content h2 {
+  font-size: 1.8rem;
+  color: #613c78; 
+  margin-bottom: 10px;
+}
+
+.modal-material-content p {
+  font-size: 1.2rem;
+  color: #333333; 
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+.modal-material-content button {
+  background-color: #613c78; 
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-top: 10px;
+}
+
+.modal-material-content button:hover {
+  background-color: #4d2763; 
 }
 
 .modal-material-content a {
@@ -452,3 +481,13 @@ button:hover {
   text-decoration: underline;
 }
 
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

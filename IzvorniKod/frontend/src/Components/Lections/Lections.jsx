@@ -21,8 +21,9 @@ const Lections = () => {
   const [komentar, setKomentar] = useState("");
   const [loading, setLoading] = useState(true);
   const [hoverOcjena, setHoverOcjena] = useState(0);
-  const [showNotification, setShowNotification] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [showNotification, setShowNotification] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState("");
   const toggleDropdown = () => setIsDropdownOpen((prev) => !prev);
 
   const navigate = useNavigate();
@@ -95,14 +96,18 @@ const Lections = () => {
       );
 
       if (response.status === 200) {
-        alert("Materijali uspješno dodani.");
+        setNotificationMessage("Materijali uspješno dodani!🎉");
+        setShowNotification(true); // Prikaži notifikaciju
+        setTimeout(() => setShowNotification(false), 3000);
         setUploadModalVisible(false);
         setLinkMaterijala("");
         fetchPredavanja(); // Osvježavanje predavanja
       }
     } catch (error) {
       console.error("Greška prilikom dodavanja materijala:", error);
-      alert("Došlo je do greške pri dodavanju materijala.");
+      setNotificationMessage("Došlo je do greške prilikom dodavanja materijala.");
+      setShowNotification(true); // Prikaži notifikaciju
+      setTimeout(() => setShowNotification(false), 3000);
     }
   };
 
@@ -210,6 +215,7 @@ const Lections = () => {
       );
 
       if (response.status === 200) {
+        setNotificationMessage("Recenzija uspješno spremljena!");
         setShowNotification(true);
         setTimeout(() => setShowNotification(false), 3000);
         fetchPredavanja();
@@ -230,7 +236,7 @@ const Lections = () => {
         id="notification"
         className={`filter-notification ${showNotification ? "show" : ""}`}
       >
-        Recenzija uspješno spremljena!
+        {notificationMessage}
       </div>
       <div className="user-profile">
         <img
@@ -292,7 +298,7 @@ const Lections = () => {
                           {materialModalVisible && (
                             <div className="modal-material">
                               <div className="modal-material-content">
-                                <h2>Materijal</h2>
+                                <h2>Materijali</h2>
                                 {selectedMaterial ? (
                                   <p>
                                     Link na materijal:{" "}
@@ -333,7 +339,7 @@ const Lections = () => {
                           {materialModalVisible && (
                             <div className="modal-material">
                               <div className="modal-material-content">
-                                <h2>Materijal</h2>
+                                <h2>Materijali</h2>
                                 {selectedMaterial ? (
                                   <p>
                                     Link na materijal:{" "}
@@ -411,7 +417,7 @@ const Lections = () => {
                     {materialModalVisible && (
                       <div className="modal-material">
                         <div className="modal-material-content">
-                          <h2>Materijal</h2>
+                          <h2>Materijali</h2>
                           {selectedMaterial ? (
                             <p>
                               Link na materijal:{" "}

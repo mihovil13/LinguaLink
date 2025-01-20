@@ -200,7 +200,7 @@ body {
 .teacher-button {
     display: flex;
     position: absolute;
-    top: -1.5%;
+    top: -0.5%;
     right: 1.5%;
     width: auto;
     color: #fff;
