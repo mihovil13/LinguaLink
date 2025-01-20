@@ -11,8 +11,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/admin")
+@PreAuthorize("hasRole('ADMIN')")
 public class AdminController {
-
     @Autowired
     private KorisnikService korisnikService;
 
@@ -21,6 +21,7 @@ public class AdminController {
         List<Korisnik> korisnici = korisnikService.getAllUsersExceptAdmins();
         return ResponseEntity.ok(korisnici);
     }
+
     @DeleteMapping("/delete_korisnik/{id}")
     public ResponseEntity<String> deleteUserById(@PathVariable Long id) {
         boolean isDeleted = korisnikService.deleteUserById(id);

@@ -32,7 +32,7 @@ public class AuthenticationService {
                 .email(request.getEmail())
                 .uloga(request.getUloga())
                 .lozinka(passwordEncoder.encode(request.getLozinka()))
-                .role(Role.USER)
+                .role(Role.ROLE_USER)
                 .build();
         //repository.save(user);
         korisnikServiceJPA.register(user);

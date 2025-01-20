@@ -50,12 +50,14 @@ public class Korisnik implements UserDetails {
                     @JsonProperty("prezime") String prezime,
                     @JsonProperty("email") String email,
                     @JsonProperty("lozinka") String lozinka,
-                    @JsonProperty("uloga") String uloga) {
+                    @JsonProperty("uloga") String uloga,
+                    @JsonProperty("role") Role role) {
         this.ime = ime;
         this.prezime = prezime;
         this.lozinka = lozinka;
         this.email = email;
         this.uloga = uloga;
+        this.role = role;
     }
 
     public Korisnik() {
@@ -119,9 +121,8 @@ public class Korisnik implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return List.of(new SimpleGrantedAuthority(role.name()));
     }
-
     @Override
     public String getPassword() {
         return getLozinka();
@@ -133,5 +134,11 @@ public class Korisnik implements UserDetails {
     }
 
 
-    public Object getRole() {return role;}
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
 }
