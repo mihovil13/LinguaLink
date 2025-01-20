@@ -11,6 +11,7 @@ export const UserProvider = ({ children }) => {
     ime: "",
     prezime: "",
     email: "",
+    slika: "",
     uloga: "",
     languagesKnown: [{ nazivJezika: "", razina: "početna" }],
     languagesToLearn: [{ nazivJezika: "" }],
@@ -43,6 +44,7 @@ export const UserProvider = ({ children }) => {
             }
           );
           if (response.status === 200) {
+            response.data.slika = "data:image/png;base64," + response.data.slika;
             setUser(response.data);
             console.log("U USER CONTEXT KORISNIK JE", user);
           }

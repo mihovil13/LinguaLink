@@ -38,6 +38,7 @@ const ProfilePage = () => {
         ime: "",
         prezime: "",
         email: "",
+        slika: "",
         uloga: "",
         languagesKnown: [{ nazivJezika: "", razina: "početna" }],
         languagesToLearn: [{ nazivJezika: "" }],
@@ -81,6 +82,7 @@ const ProfilePage = () => {
 
   const [showNotification, setShowNotification] = useState(false);
   const [notificationMessage, setNotificationMessage] = useState("");
+  const [profileImage, setProfileImage] = useState("");
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -104,6 +106,7 @@ const ProfilePage = () => {
               ime,
               prezime,
               email,
+              slika,
               uloga,
               languagesKnown,
               languagesToLearn,
@@ -114,6 +117,8 @@ const ProfilePage = () => {
               qualifications,
               satnica,
             } = response.data; // iz odgovora uzimamo navedene varijable
+
+            slika = "data:image/png;base64," + slika;
 
             languagesKnown = languagesKnown || [];
             languagesToLearn = languagesToLearn || [];
@@ -152,6 +157,7 @@ const ProfilePage = () => {
               ime: ime || "",
               prezime: prezime || "",
               email: email || "",
+              slika: slika || "",
               uloga: uloga || "",
               languagesKnown: languagesKnown || [],
               languagesToLearn: languagesToLearn || [],
@@ -339,11 +345,71 @@ const ProfilePage = () => {
     setEditedUser({ ...editedUser, [listType]: updatedList });
   };
 
-  const handleImageUrlUpload = async (imageUrl) => {
+  const handleImage = async (e) => {
+    const selectedImage = e.target.files[0];
+    if (selectedImage.type != "image/png") {
+      alert("Dozvoljen je samo PNG format slike");
+      return;
+    }
+
+    if (selectedImage) {
+      try {
+        const base64String = await convertToBase64(selectedImage);
+        const imageDetails = base64ToImage(base64String);
+
+        if (imageDetails) {
+          console.log(`Image URL: ${imageDetails.url}`);
+          console.log(`Image Extension: ${imageDetails.extension}`);
+
+          await handleApi(base64String);
+        }
+      } catch (error) {
+        console.error("Error processing image: ", error);
+      }
+    }
+    e.target.value = "";
+  };
+
+  const convertToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
+  };
+
+  const base64ToImage = (base64String) => {
+    const matches = base64String.match(/^data:(.+);base64,(.+)$/);
+    if (!matches || matches.length !== 3) {
+      console.error("Invalid base64 string format");
+      return null;
+    }
+
+    const mimeType = matches[1];
+    const data = matches[2];
+
+    try {
+      const binary = atob(data);
+      const array = new Uint8Array(binary.length);
+      for (let i = 0; i < binary.length; i++) {
+        array[i] = binary.charCodeAt(i);
+      }
+      const blob = new Blob([array], { type: mimeType });
+      const url = URL.createObjectURL(blob);
+
+      return { url, extension: mimeType.split("/")[1] };
+    } catch (error) {
+      console.error("Error decoding base64 string: ", error);
+      return null;
+    }
+  };
+
+  const handleApi = async (convertedImage) => {
     try {
       const response = await axios.post(
-        `${backend}/api/moj-profil/upload-profile-image-url`, // Nova ruta koja očekuje URL slike
-        { imageUrl }, // Šaljemo URL slike u tijelu POST zahtjeva
+        `${backend}/api/spremi-sliku`,
+        { email: user.email, slika: convertedImage },
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -351,21 +417,26 @@ const ProfilePage = () => {
         }
       );
 
-      if (response.status === 200) {
-        alert("Slika uspješno promijenjena!");
-        setUser({ ...user, profileImageUrl: response.data.imageUrl }); // Ažuriraj korisnički profil s novim URL-om
-      } else {
-        alert("Provjeri konzolu");
+      const responseProfile = await axios.get(`${backend}/api/moj-profil`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+
+      const serverBase64 = responseProfile.data.slika;
+      const completeBase64 = `data:image/png;base64,${serverBase64}`;
+
+      const imageDetails = base64ToImage(completeBase64);
+
+      if (imageDetails) {
+        setProfileImage(imageDetails.url);
+        setUser({
+          ...user,
+          slika: imageDetails.url,
+        });
       }
     } catch (error) {
-      console.error("Greška prilikom promjene slike: ", error);
-    }
-  };
-
-  const handleFileChange = (event) => {
-    const imageUrl = event.target.value; // Dohvati URL koji korisnik unosi u input
-    if (imageUrl) {
-      handleImageUrlUpload(imageUrl); // Pozovi funkciju za upload URL-a
+      console.error("Error during image upload: ", error);
     }
   };
 
@@ -514,8 +585,8 @@ const ProfilePage = () => {
         <div className="profile-imagetext">
           <div className="profile-image-container">
             <img
-              src={user.profileImageUrl || profileimg}
-              alt={`${user.ime}'s profile picture`}
+              src={user.slika}
+              alt={"https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"}
               className="profile-picture-large"
             />
             <label htmlFor="input-file">
@@ -524,7 +595,7 @@ const ProfilePage = () => {
           </div>
           <input
             type="file"
-            accept="image/jpeg, image/png, image/jpg"
+            accept="image/png"
             id="input-file"
             onChange={handleFileChange}
           />
