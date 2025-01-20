@@ -16,7 +16,7 @@ const TeacherList = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const navigate = useNavigate();
   const { user, setUser } = useUser();
-  const backend = "http://localhost:8080";
+  const backend = "https://lingualink-rxoa.onrender.com";
 
   const styles = [
     "Vizualni",
@@ -58,7 +58,7 @@ const TeacherList = () => {
 
     const fetchTeacherData = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/teachers", {
+        const response = await axios.get("https://lingualink-rxoa.onrender.com/teachers", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
