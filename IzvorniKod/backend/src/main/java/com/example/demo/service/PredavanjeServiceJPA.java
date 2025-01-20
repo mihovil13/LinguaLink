@@ -79,4 +79,12 @@ public class PredavanjeServiceJPA implements PredavanjeService {
     public Predavanje getPredavanjeById(Integer id) {
         return predavanjeRepository.getPredavanjeByPredavanjeId(id);
     }
+
+    @Override
+    public void postaviMaterijal(int id, String materijal) {
+        Predavanje predavanje = predavanjeRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Predavanje nije pronađeno s ID-jem: " + id));
+        predavanje.setMaterijal(materijal);
+        predavanjeRepository.save(predavanje);
+    }
 }

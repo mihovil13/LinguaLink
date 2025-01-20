@@ -4,10 +4,12 @@ import com.example.demo.DTO.PredavanjeDTO;
 import com.example.demo.model.Predavanje;
 import com.example.demo.service.PredavanjeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/api")
@@ -57,4 +59,34 @@ public class PredavanjeController {
         List<PredavanjeDTO> predavanja = predavanjeService.getPredavanjaByUcenikId(id);
         return ResponseEntity.ok(predavanja);
     }
+
+    @GetMapping("/dohvati-materijale/{id}")
+    public ResponseEntity<PredavanjeDTO> getPredavanjeById(@PathVariable int id) {
+        Predavanje predavanje = predavanjeService.getPredavanjeById(id);
+        PredavanjeDTO dto = new PredavanjeDTO();
+        dto.setPredavanjeId(predavanje.getPredavanjeId());
+        dto.setUcenikId(predavanje.getUcenikId());
+        dto.setUciteljId(predavanje.getUciteljId());
+        dto.setDatumVrijemePocetka(predavanje.getDatumVrijemePocetka());
+        dto.setPotvrdeno(predavanje.getPotvrdeno());
+        dto.setMaterijal(predavanje.getMaterijal());
+        dto.setUcenikIme(predavanje.getUcenik().getIme());
+        dto.setUcenikPrezime(predavanje.getUcenik().getPrezime());
+        dto.setUciteljIme(predavanje.getUcitelj().getIme());
+        dto.setUciteljPrezime(predavanje.getUcitelj().getPrezime());
+        return ResponseEntity.ok(dto);
+    }
+
+    @PostMapping("/postavi-materijale/{id}")
+    public ResponseEntity<String> postaviMaterijal(@PathVariable int id, @RequestBody String materijal) {
+        try {
+            predavanjeService.postaviMaterijal(id, materijal);
+            return ResponseEntity.ok("Materijal uspješno postavljen.");
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Predavanje s ID-jem " + id + " nije pronađeno.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Došlo je do pogreške prilikom postavljanja materijala.");
+        }
+    }
+
 }

@@ -30,6 +30,9 @@ public class Predavanje {
     @Column(name = "potvrdeno", nullable = false, columnDefinition = "INTEGER DEFAULT 0")
     private Integer potvrdeno = 0;
 
+    @Column(name = "materijal", nullable = true)
+    private String materijal;
+
     public Predavanje() {
         // Default konstruktor
     }
@@ -38,6 +41,13 @@ public class Predavanje {
         this.ucenikId = ucenikId;
         this.uciteljId = uciteljId;
         this.datumVrijemePocetka = datumVrijemePocetka;
+    }
+
+    public Predavanje(Integer ucenikId, Integer uciteljId, LocalDateTime datumVrijemePocetka, String materijal) {
+        this.ucenikId = ucenikId;
+        this.uciteljId = uciteljId;
+        this.datumVrijemePocetka = datumVrijemePocetka;
+        this.materijal = materijal;
     }
 
     @ManyToOne(cascade = CascadeType.ALL)

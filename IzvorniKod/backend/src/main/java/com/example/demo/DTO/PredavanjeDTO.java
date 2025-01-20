@@ -12,6 +12,7 @@ public class PredavanjeDTO {
     private String ucenikPrezime;
     private String uciteljIme;
     private String uciteljPrezime;
+    private String materijal;
 
     // Getteri i setteri
     public Integer getPredavanjeId() {
@@ -82,5 +83,13 @@ public class PredavanjeDTO {
 
     public void setUciteljPrezime(String uciteljPrezime) {
         this.uciteljPrezime = uciteljPrezime;
+    }
+
+    public String getMaterijal() {
+        return materijal;
+    }
+
+    public void setMaterijal(String materijal) {
+        this.materijal = materijal;
     }
 }

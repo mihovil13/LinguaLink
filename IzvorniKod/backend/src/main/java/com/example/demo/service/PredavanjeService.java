@@ -15,4 +15,5 @@ public interface PredavanjeService {
     List<PredavanjeDTO> getPredavanjaByUcenikId(int ucenikId); // Nova metoda
 
     Predavanje getPredavanjeById(Integer id);
+    void postaviMaterijal(int id, String materijal);
 }
