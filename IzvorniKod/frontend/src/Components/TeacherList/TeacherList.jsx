@@ -58,7 +58,7 @@ const TeacherList = () => {
 
     const fetchTeacherData = async () => {
       try {
-        const response = await axios.get(backend + "/teachers", {
+        const response = await axios.get("https://lingualink-rxoa.onrender.com/teachers", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
