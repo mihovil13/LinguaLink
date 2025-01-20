@@ -11,17 +11,19 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/admin")
-@PreAuthorize("hasRole('ADMIN')")
+@PreAuthorize("hasRole('ADMIN')") // Osigurava da samo ADMIN može pristupiti svim metodama ovog kontrolera
 public class AdminController {
     @Autowired
     private KorisnikService korisnikService;
 
+    // Prikaz svih korisnika osim admina
     @GetMapping("/korisnici")
     public ResponseEntity<List<Korisnik>> getAllUsersExceptAdmins() {
         List<Korisnik> korisnici = korisnikService.getAllUsersExceptAdmins();
         return ResponseEntity.ok(korisnici);
     }
 
+    // Brisanje korisnika po ID-u
     @DeleteMapping("/delete_korisnik/{id}")
     public ResponseEntity<String> deleteUserById(@PathVariable Long id) {
         boolean isDeleted = korisnikService.deleteUserById(id);
