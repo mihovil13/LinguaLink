@@ -6,7 +6,7 @@ import "./Ratings.css";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 
-const backend = "http://localhost:8080";
+const backend = "https://lingualink-rxoa.onrender.com";
 
 const Ratings = () => {
   const { user, setUser } = useUser();
