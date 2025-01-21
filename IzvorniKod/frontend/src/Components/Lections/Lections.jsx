@@ -105,7 +105,9 @@ const Lections = () => {
       }
     } catch (error) {
       console.error("Greška prilikom dodavanja materijala:", error);
-      setNotificationMessage("Došlo je do greške prilikom dodavanja materijala.");
+      setNotificationMessage(
+        "Došlo je do greške prilikom dodavanja materijala."
+      );
       setShowNotification(true); // Prikaži notifikaciju
       setTimeout(() => setShowNotification(false), 3000);
     }
@@ -125,12 +127,20 @@ const Lections = () => {
 
       if (response.status === 200) {
         const currentTime = new Date().getTime();
-        const filteredPredavanja = response.data.filter((predavanje) => {
-          const vrijemePocetka = new Date(
-            predavanje.datumVrijemePocetka
-          ).getTime();
-          return vrijemePocetka < currentTime && predavanje.potvrdeno === 1;
-        });
+        const filteredPredavanja = response.data
+          .filter((predavanje) => {
+            const vrijemePocetka = new Date(
+              predavanje.datumVrijemePocetka
+            ).getTime();
+            return vrijemePocetka < currentTime && predavanje.potvrdeno === 1;
+          })
+          .sort(
+            (a, b) =>
+              -(
+                new Date(a.datumVrijemePocetka).getTime() -
+                new Date(b.datumVrijemePocetka).getTime()
+              )
+          );
 
         setPredavanja(filteredPredavanja);
 
