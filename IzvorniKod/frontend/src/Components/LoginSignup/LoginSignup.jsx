@@ -107,9 +107,7 @@ const LoginSignup = () => {
           />
         </div>
       </div>
-      <div className="forgot-password">
-        Zaboravljena lozinka? <span>Postavi novu lozinku</span>
-      </div>
+      
       <div className="submit-container">
         <div className="submit" onClick={handleLogin}>
           Prijavi se

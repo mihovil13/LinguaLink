@@ -149,17 +149,7 @@ body {
     cursor: pointer;
 }
 
-.forgot-password {
-    margin: 30px auto;
-    color: #797979;
-    font-size: 17px;
-    text-align: center;
-}
 
-.forgot-password span {
-    color: #613c78;
-    cursor: pointer;
-}
 
 .submit-container {
     display: flex;
