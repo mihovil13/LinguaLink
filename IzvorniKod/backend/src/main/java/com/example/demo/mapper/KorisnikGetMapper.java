@@ -31,6 +31,9 @@ public class KorisnikGetMapper {
         korisnikGetDTO.setId(korisnik.getUser_id());
         korisnikGetDTO.setUloga(korisnik.getUloga());
         korisnikGetDTO.setEmail(korisnik.getEmail());
+        if (korisnik.getSlika() != null) {
+            korisnikGetDTO.setSlika(korisnik.getSlika());
+        }
         System.out.println("HULK1");
         System.out.println(korisnik.getUloga());
         if(korisnik.getUloga()!=null){
