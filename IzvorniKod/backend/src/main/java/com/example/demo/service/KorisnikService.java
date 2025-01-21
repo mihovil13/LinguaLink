@@ -16,4 +16,5 @@ public interface KorisnikService {
     public List<Korisnik> getAllUsersExceptAdmins();
 
     boolean deleteUserById(Long id);
+    public void save(Korisnik korisnik);
 }
