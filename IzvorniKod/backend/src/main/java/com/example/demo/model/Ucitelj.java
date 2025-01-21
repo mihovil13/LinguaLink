@@ -122,6 +122,10 @@ public class Ucitelj extends Korisnik {
         this.recenzija2 = recenzija2;
     }
 
+    public byte[] getSlika() {
+        return super.getSlika();
+    }
+
 
     /* public void setLanguagesTeach(String languagesTeach) {
         this.languagesTeach = languagesTeach;
