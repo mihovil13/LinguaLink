@@ -34,7 +34,7 @@ export const UserProvider = ({ children }) => {
       if (token) {
         try {
           const response = await axios.get(
-            "http://localhost:8080/api/moj-profil",
+            "https://lingualink-rxoa.onrender.com",
             {
               headers: {
                 Authorization: `Bearer ${token}`,
