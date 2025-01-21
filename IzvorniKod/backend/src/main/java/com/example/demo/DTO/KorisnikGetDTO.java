@@ -3,6 +3,7 @@ package com.example.demo.DTO;
 import com.example.demo.model.Jezik;
 import com.example.demo.model.JezikRazina;
 
+import java.util.Base64;
 import java.util.List;
 
 public class KorisnikGetDTO {
@@ -20,6 +21,19 @@ public class KorisnikGetDTO {
     //private String languagesTeach;
     private String stilPoducavanja;
     private String ciljeviUcenja;
+    private String slika; // Dodano: atribut za sliku
+
+    public KorisnikGetDTO(Integer id, String ime, String prezime,String email, List<Jezik> languagesTeach, List<Jezik> languagesToLearn, List<String> languagesKnown, String uloga, String slika) {
+        this.id = id;
+        this.ime = ime;
+        this.prezime = prezime;
+        this.email = email;
+        this.languagesTeach = languagesTeach;
+        this.languagesToLearn = languagesToLearn;
+        this.languagesKnown = languagesKnown;
+        this.uloga = uloga;
+        this.slika = slika;
+    }
 
     public KorisnikGetDTO(Integer id, String ime, String prezime,String email, List<Jezik> languagesTeach, List<Jezik> languagesToLearn, List<String> languagesKnown, String uloga) {
         this.id = id;
@@ -143,6 +157,14 @@ public class KorisnikGetDTO {
 
     public void setUloga(String uloga) {
         this.uloga = uloga;
+    }
+
+    public String getSlika() {
+        return slika;
+    }
+
+    public void setSlika(byte[] slika) {
+        this.slika = Base64.getEncoder().encodeToString(slika);
     }
 
 }
