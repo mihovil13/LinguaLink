@@ -1,6 +1,7 @@
 package com.example.demo;
 
 import com.example.demo.model.Korisnik;
+import com.example.demo.model.Role;
 import com.example.demo.model.Ucitelj;
 import com.example.demo.repository.JezikRepository;
 import com.example.demo.repository.KorisnikRepository;
