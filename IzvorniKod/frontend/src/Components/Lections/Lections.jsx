@@ -28,6 +28,9 @@ const Lections = () => {
 
   const navigate = useNavigate();
 
+  const default_profile_picture = "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg";
+
+
   const handleOpenMaterialModal = async (predavanjeId) => {
     try {
       const response = await axios.get(
@@ -250,7 +253,7 @@ const Lections = () => {
       </div>
       <div className="user-profile">
         <img
-          src="https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"
+          src={user.slika === "data:image/png;base64," ? default_profile_picture : user.slika}
           alt="Profile"
           className="profile-icon"
           onClick={toggleDropdown}

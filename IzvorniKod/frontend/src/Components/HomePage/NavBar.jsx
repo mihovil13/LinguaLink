@@ -12,6 +12,9 @@ const Navbar = () => {
     navigate('/profile'); // Navigacija na stranicu profila
   };
 
+  const default_profile_picture = "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg";
+
+
   return (
     <nav className="navbar">
       <div className="navbar-logo">
@@ -24,7 +27,7 @@ const Navbar = () => {
         {user && user.ime && user.prezime ? (
             <li className="profile-container">
             <img
-              src="https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"
+              src={user.slika === "data:image/png;base64," ? default_profile_picture : user.slika}
               alt="Profile"
               className="profile-icon-homepage"
               onClick={handleProfileClick}

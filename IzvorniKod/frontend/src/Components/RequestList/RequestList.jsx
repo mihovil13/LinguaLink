@@ -16,6 +16,9 @@ const RequestList = () => {
   const [notificationMessage, setNotificationMessage] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
+  const default_profile_picture = "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg";
+
+
   const formatDate = (timestamp) => {
     const date = new Date(timestamp);
     const day = String(date.getDate()).padStart(2, "0");
@@ -160,7 +163,7 @@ const RequestList = () => {
 
       <div className="user-profile">
         <img
-          src="https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"
+          src={user.slika === "data:image/png;base64," ? default_profile_picture : user.slika}
           alt="Profile"
           className="profile-icon"
           onClick={toggleDropdown}

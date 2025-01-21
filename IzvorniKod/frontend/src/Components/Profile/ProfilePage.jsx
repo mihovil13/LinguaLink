@@ -118,8 +118,8 @@ const ProfilePage = () => {
               qualifications,
               satnica,
             } = response.data; // iz odgovora uzimamo navedene varijable
-
             slika = "data:image/png;base64," + slika;
+            console.log("S BACKENDA DOSLO: ", slika);
 
             languagesKnown = languagesKnown || [];
             languagesToLearn = languagesToLearn || [];
@@ -407,6 +407,7 @@ const ProfilePage = () => {
 
   const handleApi = async (convertedImage) => {
     try {
+      console.log("NA BACKEND SALJEMO: ", convertedImage);
       const response = await axios.post(
         `${backend}/api/spremi-sliku`,
         { email: user.email, slika: convertedImage },
@@ -589,7 +590,7 @@ const ProfilePage = () => {
         <div className="profile-imagetext">
           <div className="profile-image-container">
             <img
-              src={user.slika || default_profile_picture}
+              src={user.slika==="data:image/png;base64," ? default_profile_picture : user.slika}
               alt={
                 `${user.ime}'s profile picture`
               }

@@ -8,6 +8,7 @@ import { useUser } from "../../UserContext";
 const TeacherProfile = () => {
   const backend = "http://localhost:8080";
   const { teacherId } = useParams(); //izvlacimo teacherId iz url-a
+  const default_profile_picture = "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg";
   const navigate = useNavigate();
   const location = useLocation();
   const [teacher, setTeacher] = useState({
@@ -43,6 +44,7 @@ const TeacherProfile = () => {
             ime,
             prezime,
             email,
+            slika,
             uloga,
             languagesTeach,
             stilPoducavanja,
@@ -50,7 +52,9 @@ const TeacherProfile = () => {
             qualifications,
             satnica,
           } = data; // iz odgovora uzimamo navedene varijable
-          console.log(data);
+
+          slika = "data:image/png;base64," + slika;
+          
           if (languagesTeach) {
             console.log(languagesTeach);
             languagesTeach = languagesTeach.map((entry) => {
@@ -70,6 +74,7 @@ const TeacherProfile = () => {
             ime: ime || "",
             prezime: prezime || "",
             email: email || "",
+            slika: slika || "",
             uloga: uloga || "",
             languagesTeach: languagesTeach || [],
             stilPoducavanja: stilPoducavanja || "",
@@ -101,7 +106,7 @@ const TeacherProfile = () => {
       {user.uloga === "Učenik" && (
         <div className="user-profile">
           <img
-            src="https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"
+            src={user.slika === "data:image/png;base64," ? default_profile_picture : user.slika}
             alt="Profile"
             className="profile-icon"
             onClick={toggleDropdown}
@@ -197,7 +202,7 @@ const TeacherProfile = () => {
         <div className="profile-imagetext">
           <img
             src={
-              "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"
+              teacher.slika === "data:image/png;base64," ? default_profile_picture : teacher.slika
             }
             alt={`${teacher.ime}'s profile`}
             className="profile-picture-large"

@@ -31,6 +31,9 @@ const TeacherList = () => {
     "Impulzivni",
   ];
 
+  const default_profile_picture = "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg";
+
+
   const languages = [
     "Engleski",
     "Njemački",
@@ -68,6 +71,7 @@ const TeacherList = () => {
         if (response.status === 200) {
           const teachersData = response.data.map((teacher) => ({
             ...teacher,
+            slika: teacher.slika = "data:image/png;base64," + teacher.slika,
             languagesTeach: teacher.languagesTeach
               ? teacher.languagesTeach.map((lang) => lang.nazivJezika.trim())
               : [],
@@ -77,6 +81,8 @@ const TeacherList = () => {
                 )
               : [],
           }));
+
+          
 
           const filteredByUserLanguages =
             user.id && user.languagesToLearn.length > 0
@@ -241,7 +247,7 @@ const TeacherList = () => {
       {user.uloga === "Učenik" && (
         <div className="user-profile">
           <img
-            src="https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"
+            src={user.slika === "data:image/png;base64," ? default_profile_picture : user.slika}
             alt="Profile"
             className="profile-icon"
             onClick={toggleDropdown}
@@ -280,7 +286,7 @@ const TeacherList = () => {
                 onClick={() => handleTeacherClick(teacher.user_id)}
               >
                 <img
-                  src="https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"
+                  src={teacher.slika === "data:image/png;base64," ? default_profile_picture : teacher.slika}
                   alt=""
                 />
                 <div className="teacher-info">
