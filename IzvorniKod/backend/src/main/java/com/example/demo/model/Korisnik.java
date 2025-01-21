@@ -7,11 +7,13 @@ import lombok.Builder;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.annotations.Type;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import java.lang.reflect.Array;
+import java.sql.Types;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -22,6 +24,7 @@ import java.util.List;
 @Inheritance(strategy = InheritanceType.JOINED)
 @AllArgsConstructor
 public class Korisnik implements UserDetails {
+
     @Id
     @SequenceGenerator(
             name = "user_sequence",
@@ -33,10 +36,13 @@ public class Korisnik implements UserDetails {
             generator = "user_sequence"
     )
     private Integer user_id;
-    @NotBlank (message = "Lozinka je obavezna")
+
+    @NotBlank(message = "Lozinka je obavezna")
     private String lozinka;
+
     @Email(message = "E-mail adresa nije u ispravnom formatu")
     private String email;
+
     private String ime;
     private String prezime;
     private String uloga;
@@ -44,7 +50,9 @@ public class Korisnik implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-
+    @JdbcTypeCode(Types.BINARY)
+    @Column(name = "slika", columnDefinition = "BYTEA")
+    private byte[] slika = null; // Inicializirano kao null, može biti opcionalno u bazi
 
     public Korisnik(@JsonProperty("ime") String ime,
                     @JsonProperty("prezime") String prezime,
@@ -58,10 +66,9 @@ public class Korisnik implements UserDetails {
         this.uloga = uloga;
     }
 
-    public Korisnik() {
+    public Korisnik() {}
 
-    }
-    public Korisnik(String ime,String prezime,String email){
+    public Korisnik(String ime, String prezime, String email) {
         this.ime = ime;
         this.prezime = prezime;
         this.email = email;
@@ -74,6 +81,15 @@ public class Korisnik implements UserDetails {
         this.email = email;
     }
 
+    // Getter i setter za sliku
+    public byte[] getSlika() {
+        return slika;
+    }
+
+    public void setSlika(byte[] slika) {
+        this.slika = slika;
+    }
+
     public String getUloga() {
         return uloga;
     }
@@ -81,6 +97,7 @@ public class Korisnik implements UserDetails {
     public void setUloga(String uloga) {
         this.uloga = uloga;
     }
+
     public Integer getUser_id() {
         return user_id;
     }
@@ -132,6 +149,7 @@ public class Korisnik implements UserDetails {
         return getEmail();
     }
 
-
-    public Object getRole() {return role;}
+    public Object getRole() {
+        return role;
+    }
 }
