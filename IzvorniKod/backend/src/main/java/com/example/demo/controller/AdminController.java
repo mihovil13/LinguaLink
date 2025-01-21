@@ -11,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/admin")
+@PreAuthorize("hasRole('ADMIN')") // Osigurava da samo ADMIN može pristupiti svim metodama ovog kontrolera
 public class AdminController {
 
     @Autowired
