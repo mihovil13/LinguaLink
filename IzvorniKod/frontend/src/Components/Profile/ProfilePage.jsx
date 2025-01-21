@@ -118,6 +118,9 @@ const ProfilePage = () => {
               qualifications,
               satnica,
             } = response.data; // iz odgovora uzimamo navedene varijable
+            if (slika==null) {
+              slika="";
+            }
             slika = "data:image/png;base64," + slika;
             console.log("S BACKENDA DOSLO: ", slika);
 

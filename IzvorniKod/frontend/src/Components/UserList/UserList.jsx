@@ -12,6 +12,29 @@ const backend = "http://localhost:8080";
 const UserList = () => {
   const [users, setUsers] = useState([]);
 
+  const fetchUser = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8080/api/moj-profil",
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        if (response.status === 200) {
+          console.log("OVO SE IZVRSILO");
+          if (response.data.slika==null) {
+            response.data.slika="";
+          }
+          response.data.slika = "data:image/png;base64," + response.data.slika;
+          setUser(response.data);
+        }
+      } catch (error) {
+        console.error("Greška prilikom dohvaćanja korisnika:", error);
+      }
+  };
+
   useEffect(() => {
     const fetchUsersData = async () => {
       try {
@@ -23,6 +46,13 @@ const UserList = () => {
 
         if (response.status === 200) {
           const userData = response.data;
+          userData.forEach((user) => {
+            if (user.slika==null) {
+              user.slika="";
+            }
+            user.slika="data:image/png;base64," + user.slika;
+          });
+          console.log("dobili smo ovaj userData", userData);
           setUsers(userData);
         } else {
           navigate("/profile"); // Ako nije 200, preusmjeri na /profile
@@ -33,6 +63,7 @@ const UserList = () => {
       }
     };
 
+    fetchUser();
     fetchUsersData();
   }, []);
 
@@ -57,7 +88,8 @@ const UserList = () => {
     }
   };
 
-  const { user, setUser } = useUser() || { user: {}, setUser: () => {} };
+  const { user, setUser } = useUser() || { user: {slika: "data:image/png;base64,"}, setUser: () => {} };
+  const default_profile_picture = "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg";
   const navigate = useNavigate();
   const toggleDropdown = () => setIsDropdownOpen((prev) => !prev);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -73,7 +105,7 @@ const UserList = () => {
       </a>
       <div className="user-profile">
         <img
-          src="https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"
+          src={user.slika === "data:image/png;base64," || user.slika==null ? default_profile_picture : user.slika}
           alt="Profile"
           className="profile-icon"
           onClick={toggleDropdown}
@@ -101,7 +133,7 @@ const UserList = () => {
               return (
                 <div className="user-container" key={index}>
                   <img
-                    src="https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"
+                    src={user.slika === "data:image/png;base64," ? default_profile_picture : user.slika}
                     alt=""
                   />
                   <div className="user-info">

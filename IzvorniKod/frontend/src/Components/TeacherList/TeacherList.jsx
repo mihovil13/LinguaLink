@@ -71,7 +71,7 @@ const TeacherList = () => {
         if (response.status === 200) {
           const teachersData = response.data.map((teacher) => ({
             ...teacher,
-            slika: teacher.slika = "data:image/png;base64," + teacher.slika,
+            slika: teacher.slika==null ? "data:image/png;base64," : "data:image/png;base64," + teacher.slika,
             languagesTeach: teacher.languagesTeach
               ? teacher.languagesTeach.map((lang) => lang.nazivJezika.trim())
               : [],

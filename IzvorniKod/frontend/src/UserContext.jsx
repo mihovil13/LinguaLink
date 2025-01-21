@@ -44,6 +44,9 @@ export const UserProvider = ({ children }) => {
             }
           );
           if (response.status === 200) {
+            if (response.data.slika==null) {
+              response.data.slika="";
+            }
             response.data.slika = "data:image/png;base64," + response.data.slika;
             setUser(response.data);
           }

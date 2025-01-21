@@ -53,6 +53,10 @@ const TeacherProfile = () => {
             satnica,
           } = data; // iz odgovora uzimamo navedene varijable
 
+          if (slika==null) {
+            slika="";
+          }
+
           slika = "data:image/png;base64," + slika;
           
           if (languagesTeach) {
