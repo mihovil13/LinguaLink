@@ -36,9 +36,7 @@ public class Ucenik extends Korisnik{
             inverseJoinColumns = @JoinColumn(name = "jezik_id")
     )
 
-    @OneToMany(mappedBy = "ucenik", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
-    private List<Predavanje> predavanja = new ArrayList<>();
+
     
     @JsonManagedReference
     private List<Jezik> languagesToLearn = new ArrayList<>();
@@ -158,6 +156,7 @@ public class Ucenik extends Korisnik{
     public Integer getId(){
         return super.getUser_id();
     }
+
 }
 
 //    @Override

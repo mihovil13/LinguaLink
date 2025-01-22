@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDateTime;
 
@@ -50,11 +52,13 @@ public class Predavanje {
         this.materijal = materijal;
     }
 
-    @ManyToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @ManyToOne
     @JoinColumn(name = "ucenik_id", insertable = false, updatable = false)
     private Ucenik ucenik;
 
-    @ManyToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @ManyToOne
     @JoinColumn(name = "ucitelj_id", insertable = false, updatable = false)
     private Ucitelj ucitelj;
 

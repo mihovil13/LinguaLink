@@ -23,6 +23,7 @@ public class Ucitelj extends Korisnik {
     //private String languagesTeach;
     private String stilPoducavanja;
 
+
     @ManyToMany
     @JoinTable(
             name = "UciteljJezik",
@@ -30,9 +31,7 @@ public class Ucitelj extends Korisnik {
             inverseJoinColumns = @JoinColumn(name = "jezik_id")
     )
 
-    @OneToMany(mappedBy = "ucitelj", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
-    private List<Predavanje> predavanjaUcitelj = new ArrayList<>();
+
 
     @JsonManagedReference
     private List<Jezik> languagesTeach = new ArrayList<>();
@@ -130,7 +129,6 @@ public class Ucitelj extends Korisnik {
     public byte[] getSlika() {
         return super.getSlika();
     }
-
 
     /* public void setLanguagesTeach(String languagesTeach) {
         this.languagesTeach = languagesTeach;
