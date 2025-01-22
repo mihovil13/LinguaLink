@@ -50,11 +50,11 @@ public class Predavanje {
         this.materijal = materijal;
     }
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinColumn(name = "ucenik_id", insertable = false, updatable = false)
     private Ucenik ucenik;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinColumn(name = "ucitelj_id", insertable = false, updatable = false)
     private Ucitelj ucitelj;
 
