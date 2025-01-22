@@ -34,7 +34,6 @@ const Ratings = () => {
         );
 
         if (response.status === 200) {
-          console.log("recenzije", response.data);
           setRecenzije(response.data);
         } else {
           console.error("Greška prilikom dohvaćanja recenzija.");

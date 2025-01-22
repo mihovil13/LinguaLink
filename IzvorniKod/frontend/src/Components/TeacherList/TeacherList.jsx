@@ -63,7 +63,7 @@ const TeacherList = () => {
 
     const fetchTeacherData = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/teachers", {
+        const response = await axios.get(`${backend}/teachers`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -95,7 +95,6 @@ const TeacherList = () => {
                 )
               : teachersData;
 
-          console.log(teachersData);
 
           setTeachers(teachersData);
           setFilteredTeachers(filteredByUserLanguages);

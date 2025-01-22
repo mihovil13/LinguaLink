@@ -15,7 +15,7 @@ const UserList = () => {
   const fetchUser = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8080/api/moj-profil",
+          `${backend}/api/moj-profil`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -23,7 +23,6 @@ const UserList = () => {
           }
         );
         if (response.status === 200) {
-          console.log("OVO SE IZVRSILO");
           if (response.data.slika==null) {
             response.data.slika="";
           }
@@ -52,7 +51,6 @@ const UserList = () => {
             }
             user.slika="data:image/png;base64," + user.slika;
           });
-          console.log("dobili smo ovaj userData", userData);
           setUsers(userData);
         } else {
           navigate("/profile"); // Ako nije 200, preusmjeri na /profile

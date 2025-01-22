@@ -60,7 +60,6 @@ const TeacherProfile = () => {
           slika = "data:image/png;base64," + slika;
           
           if (languagesTeach) {
-            console.log(languagesTeach);
             languagesTeach = languagesTeach.map((entry) => {
               return {
                 jezik_id: entry.jezik_id,
@@ -86,7 +85,6 @@ const TeacherProfile = () => {
             qualifications: qualifications || [],
             satnica: satnica || "",
           });
-          console.log(teacher);
         }
       } catch (error) {
         console.error("Error fetching teacher profile:", error);

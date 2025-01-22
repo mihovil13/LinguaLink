@@ -129,8 +129,7 @@ const Calendar = () => {
           const [hours, minutes] = time.split(":").map(Number);
           const termTime = new Date();
           termTime.setHours(hours, minutes, 0, 0);
-          console.log(termTime);
-          console.log(now);
+
           return termTime > now;
         });
         setAvailableTimes(filteredTimes);

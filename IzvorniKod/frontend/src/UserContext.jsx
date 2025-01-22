@@ -25,6 +25,9 @@ export const UserProvider = ({ children }) => {
 
   const location = useLocation();
 
+  const backend = "http://localhost:8080";
+
+
   useEffect( () => {
     const token = localStorage.getItem("token");
 
@@ -36,7 +39,7 @@ export const UserProvider = ({ children }) => {
       if (token) {
         try {
           const response = await axios.get(
-            "http://localhost:8080/api/moj-profil",
+            `${backend}/api/moj-profil`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,

@@ -122,7 +122,6 @@ const ProfilePage = () => {
               slika="";
             }
             slika = "data:image/png;base64," + slika;
-            console.log("S BACKENDA DOSLO: ", slika);
 
             languagesKnown = languagesKnown || [];
             languagesToLearn = languagesToLearn || [];
@@ -232,7 +231,6 @@ const ProfilePage = () => {
       return;
     }
 
-    console.log("Saljem na backend", updatedProfile);
 
     try {
       const response = await axios.put(
@@ -361,8 +359,6 @@ const ProfilePage = () => {
         const imageDetails = base64ToImage(base64String);
 
         if (imageDetails) {
-          console.log(`Image URL: ${imageDetails.url}`);
-          console.log(`Image Extension: ${imageDetails.extension}`);
 
           await handleApi(base64String);
         }
@@ -410,7 +406,6 @@ const ProfilePage = () => {
 
   const handleApi = async (convertedImage) => {
     try {
-      console.log("NA BACKEND SALJEMO: ", convertedImage);
       const response = await axios.post(
         `${backend}/api/spremi-sliku`,
         { email: user.email, slika: convertedImage },

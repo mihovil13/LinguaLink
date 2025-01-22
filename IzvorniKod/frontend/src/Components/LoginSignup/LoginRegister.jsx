@@ -19,6 +19,8 @@ const LoginRegister = () => {
     uloga: "Učenik",
   });
 
+  const backend = "http://localhost:8080";
+
   const [error, setError] = useState(""); // Za čuvanje greške
   const [showNotification, setShowNotification] = useState(false); // Za vidljivost obavijesti
 
@@ -30,7 +32,7 @@ const LoginRegister = () => {
   const handleRegister = async () => {
     try {
       const registerResponse = await axios.post(
-        "http://localhost:8080/api/korisnici/register",
+        `${backend}/api/korisnici/register`,
         formData
       );
 
@@ -47,7 +49,6 @@ const LoginRegister = () => {
           uloga: userData.uloga,
         }));
 
-        console.log("Trenutni korisnik: ", userData);
 
         const profileResponse = await axios.get(
           "http://localhost:8080/api/moj-profil",

@@ -41,7 +41,6 @@ const Lections = () => {
           },
         }
       );
-      console.log("Response: " + response);
       // izvlacenje linka za materijale, u JSON-u je vrijednost polja materijal bila npr. "{\"materijal\":\"https://youtu.be/QnMhoBRnd1c?si=wnhRb5hExsCXt-QS&t=66\"}"
       // pa se materialString.match funkcijom makne sve osim https://youtu.be/QnMhoBRnd1c?si=wnhRb5hExsCXt-QS&t=66
       const materialString = response.data.materijal;
@@ -51,8 +50,6 @@ const Lections = () => {
       }
       if (response.status === 200) {
         setSelectedMaterial(link);
-        console.log(response);
-        console.log(response.data.materijal);
         setMaterialModalVisible(true);
       }
     } catch (error) {
@@ -86,8 +83,6 @@ const Lections = () => {
       return;
     }
     try {
-      console.log("Ovo je link: " + linkMaterijala);
-      console.log("Id predavanja: " + selectedPredavanje.predavanjeId);
       const response = await axios.post(
         `${backend}/api/postavi-materijale/${selectedPredavanje.predavanjeId}`,
         { materijal: linkMaterijala },
