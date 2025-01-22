@@ -29,6 +29,11 @@ public class Ucitelj extends Korisnik {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "jezik_id")
     )
+
+    @OneToMany(mappedBy = "ucitelj", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<Predavanje> predavanjaUcitelj = new ArrayList<>();
+
     @JsonManagedReference
     private List<Jezik> languagesTeach = new ArrayList<>();
 
