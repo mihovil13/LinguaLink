@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import logo_icon from "../Assets/logo-prototip3.png";
 import axios from "axios";
 
-const backend = "http://localhost:8080";
+const backend = "https://lingualink-rxoa.onrender.com";
 
 const RequestList = () => {
   const { user, setUser } = useUser();
