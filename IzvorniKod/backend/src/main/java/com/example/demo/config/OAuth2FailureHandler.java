@@ -17,7 +17,7 @@ public class OAuth2FailureHandler implements AuthenticationFailureHandler {
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException {
         // Redirect the user to the login page with an error query parameter
-        String redirectUrl = UriComponentsBuilder.fromUriString("http://localhost:3000/login")
+        String redirectUrl = UriComponentsBuilder.fromUriString("https://lingualink-frontend-v1.onrender.com/login")
                 .queryParam("error", "user_exists") // Add the error parameter to the URL
                 .toUriString();
 
