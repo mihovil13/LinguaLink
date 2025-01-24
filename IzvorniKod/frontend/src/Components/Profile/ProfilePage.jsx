@@ -7,7 +7,7 @@ import edit_icon from "../Assets/pencil.png";
 import profileimg from "../Assets/person.jpg";
 import { useUser } from "../../UserContext";
 
-const backend = "http://localhost:8080";
+const backend = "https://lingualink-rxoa.onrender.com";
 
 const ProfilePage = () => {
   const navigate = useNavigate();
