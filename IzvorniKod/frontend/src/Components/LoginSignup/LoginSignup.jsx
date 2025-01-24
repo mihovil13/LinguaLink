@@ -6,7 +6,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const backend = "http://localhost:8080";
+const backend = "https://lingualink-rxoa.onrender.com";
 
 const LoginSignup = () => {
   const [error, setError] = useState("");
@@ -117,7 +117,7 @@ const LoginSignup = () => {
       <div className="submit-container">
         <div className="submit">
           <a
-            href="http://localhost:8080/oauth2/authorization/github"
+            href="https://lingualink-rxoa.onrender.com/oauth2/authorization/github"
             className="oauth2-btn2"
           >
             <img
