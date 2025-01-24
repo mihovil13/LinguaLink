@@ -19,7 +19,7 @@ const LoginRegister = () => {
     uloga: "Učenik",
   });
 
-  const backend = "http://localhost:8080";
+  const backend = "https://lingualink-rxoa.onrender.com";
 
   const [error, setError] = useState(""); // Za čuvanje greške
   const [showNotification, setShowNotification] = useState(false); // Za vidljivost obavijesti
@@ -51,7 +51,7 @@ const LoginRegister = () => {
 
 
         const profileResponse = await axios.get(
-          "http://localhost:8080/api/moj-profil",
+          "https://lingualink-rxoa.onrender.com/api/moj-profil",
           {
             headers: {
               Authorization: `Bearer ${userData.token}`,
@@ -180,7 +180,7 @@ const LoginRegister = () => {
       <div className="submit-container">
         <div className="submit">
           <a
-            href="http://localhost:8080/oauth2/authorization/github"
+            href="https://lingualink-rxoa.onrender.com/oauth2/authorization/github"
             className="oauth2-btn2"
           >
             <img
