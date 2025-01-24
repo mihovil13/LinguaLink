@@ -7,7 +7,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useUser } from "../../UserContext";
 
 
-const backend = "http://localhost:8080";
+const backend = "https://lingualink-rxoa.onrender.com";
 
 const UserList = () => {
   const [users, setUsers] = useState([]);
