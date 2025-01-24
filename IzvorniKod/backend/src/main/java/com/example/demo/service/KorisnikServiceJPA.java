@@ -115,4 +115,8 @@ public class KorisnikServiceJPA implements KorisnikService {
     public void save(Korisnik korisnik) {
         korisnikRepository.save(korisnik);
     }
+
+    public void deleteUser(Korisnik korisnik) {
+        throw new UnsupportedOperationException("Metoda deleteUser nije implementirana.");
+    }
 }
