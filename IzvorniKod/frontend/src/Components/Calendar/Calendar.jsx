@@ -9,7 +9,7 @@ import { useUser } from "../../UserContext";
 import { useLocation, useParams, useNavigate } from "react-router-dom";
 import logo_icon from "../Assets/logo-prototip3.png";
 
-const backend = "http://localhost:8080";
+const backend = "https://lingualink-rxoa.onrender.com";
 
 const default_profile_picture = "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg";
 
