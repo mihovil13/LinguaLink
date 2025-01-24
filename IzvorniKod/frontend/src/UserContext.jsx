@@ -25,7 +25,7 @@ export const UserProvider = ({ children }) => {
 
   const location = useLocation();
 
-  const backend = "http://localhost:8080";
+  const backend = "https://lingualink-rxoa.onrender.com";
 
 
   useEffect( () => {
