@@ -18,9 +18,9 @@ public class Ucitelj extends Korisnik {
     private Role role;
 
     private String iskustvo;
-    //private String qualifications;
+
     private String satnica;
-    //private String languagesTeach;
+
     private String stilPoducavanja;
 
 
@@ -66,15 +66,7 @@ public class Ucitelj extends Korisnik {
         this.qualifications = qualifications;
     }
 
-    /*
-        public List<Jezik> getJezici2() {
-            return jezici2;
-        }
 
-        public void setJezici2(List<Jezik> jezici2) {
-            this.jezici2 = jezici2;
-        }
-    */
     public String getIskustvo() {
         return iskustvo;
     }
@@ -82,15 +74,7 @@ public class Ucitelj extends Korisnik {
     public void setIskustvo(String iskustvo) {
         this.iskustvo = iskustvo;
     }
-/*
-    public String getQualifications() {
-        return qualifications;
-    }
 
-    public void setQualifications(String qualifications) {
-        this.qualifications = qualifications;
-    }
-*/
     public String getSatnica() {
         return satnica;
     }
@@ -130,47 +114,4 @@ public class Ucitelj extends Korisnik {
         return super.getSlika();
     }
 
-    /* public void setLanguagesTeach(String languagesTeach) {
-        this.languagesTeach = languagesTeach;
-    }
-    public void setLanguagesTeach(List<Map<String, String>> languages) {
-        this.languagesTeach = languages.stream()
-                .map(lang -> (String) lang.get("language"))
-                .collect(Collectors.joining(", "));
-    }
-
-    */
 }
-//    public Ucitelj(String ime, String prezime, String email, String lozinka) {
-//        super(ime, prezime, email, lozinka);
-//    }
-//
-//    public Long getUcitelj_id() {
-//        return ucitelj_id;
-//    }
-//
-//    public Integer getGodine_iskustva() {
-//        return godine_iskustva;
-//    }
-//
-//    public void setGodine_iskustva(Integer godine_iskustva) {
-//        this.godine_iskustva = godine_iskustva;
-//    }
-//
-//    public String getKvalifikacije() {
-//        return kvalifikacije;
-//    }
-//
-//    public void setKvalifikacije(String kvalifikacije) {
-//        this.kvalifikacije = kvalifikacije;
-//    }
-//
-//    public String getSatnica() {
-//        return satnica;
-//    }
-//
-//    public void setSatnica(String satnica) {
-//        this.satnica = satnica;
-//    }
-//}
-//```

@@ -67,8 +67,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
         // Save the new user to the database
         korisnikRepository.save(newUser);
-        //Ucenik ucenik = new Ucenik(newUser.getIme(),newUser.getPrezime(),newUser.getEmail(),newUser.getLozinka(), newUser.getUloga());
-        //ucenikRepository.save(ucenik);
+       
 
 
         // Return the new user with the authorities

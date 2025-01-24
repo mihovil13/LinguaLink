@@ -52,9 +52,7 @@ public class KorisnikController {
             KorisnikGetMapper mapper = new KorisnikGetMapper(ucenikServiceJPA,uciteljServiceJPA);
             KorisnikGetDTO korisnikGetDTO = mapper.korisnikGetDTO(korisnik1);
             return ResponseEntity.ok(korisnikGetDTO);
-            /*return korisnik.map(ResponseEntity::ok)
-                    .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
-            //return ResponseEntity.status(HttpStatus.NOT_FOUND).build();*/
+
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Korisnik nije autentificiran.");
         }
@@ -66,9 +64,9 @@ public class KorisnikController {
                                           Authentication authentication,@RequestBody Map<String, Object> body) {
         if (token.startsWith("Bearer ") && token != null) {
             token = token.substring(7);
-            System.out.println(body);
+
             String email = jwtService.extractUsername(token);
-            System.out.println(email);
+
             Korisnik korisnik = korisnikServiceJPA.getKorisnikByEmail(email);
 
             return korisnikServiceJPA.updateKorisnik(korisnik, body);

@@ -23,7 +23,6 @@ public class ViewUciteljController {
     @GetMapping("/{id}")
     public Ucitelj getUcitelj(@PathVariable long id) {
         Ucitelj ucitelj = uciteljService.getUciteljById(id);
-        System.out.println(ucitelj);
         return ucitelj;
     }
 }

@@ -14,7 +14,6 @@ public class RecenzijaGetDTO {
     private String komentar;
     private Integer ocjena;
     private Integer predavanje_id;
-    //private Recenzija recenzija;
 
     public RecenzijaGetDTO() {
     }

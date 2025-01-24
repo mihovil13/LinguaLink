@@ -36,7 +36,7 @@ public class Jezik {
     }
 
     public Jezik(String nazivJezika) {
-        //this.jezik_id = jezik_id;
+
         this.nazivJezika = nazivJezika;
 
     }

@@ -48,12 +48,12 @@ public class KorisnikServiceJPA implements KorisnikService {
         Korisnik korisnik1 = new Korisnik(username, korisnik.getEmail(), korisnik.getLozinka(), korisnik.getUloga());
 
         if(korisnik.getUloga().equals("Učenik")){
-            System.out.println("ucenik");
+
             Ucenik ucenik = new Ucenik(korisnik.getIme(),korisnik.getPrezime(),korisnik.getEmail(),korisnik.getLozinka(), korisnik.getUloga(), Role.ROLE_USER);
             ucenikRepository.save(ucenik);
         }
         if(korisnik.getUloga().equals("Učitelj")){
-            System.out.println("ucitelj");
+
             Ucitelj ucitelj = new Ucitelj(korisnik.getIme(),korisnik.getPrezime(),korisnik.getEmail(),korisnik.getLozinka(), korisnik.getUloga(), Role.ROLE_USER);
             uciteljRepository.save(ucitelj);
         }
@@ -71,7 +71,7 @@ public class KorisnikServiceJPA implements KorisnikService {
 
     @Override
     public ResponseEntity<?> updateKorisnik(Korisnik korisnik, Map<String, Object> body) {
-        System.out.println(korisnik.getUloga());
+
         if (body.containsKey("uloga") && korisnik.getUloga()==null) {
             korisnik.setUloga((String) body.get("uloga"));
             if(korisnik.getUloga().equals("Učitelj")){

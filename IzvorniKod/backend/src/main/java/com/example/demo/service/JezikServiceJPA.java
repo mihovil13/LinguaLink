@@ -30,7 +30,7 @@ public class JezikServiceJPA implements JezikService {
             System.out.println(jezik);
             jezikRepository.save(jezik);
         }
-        //jezikRepository.saveAll(languages);
+
     }
     public Jezik getJezikByNazivJezika(String name) {
         return jezikRepository.getJezikByNazivJezika(name);

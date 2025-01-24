@@ -18,7 +18,7 @@ public class KorisnikGetDTO {
     private String iskustvo;
     private List<String> qualifications;
     private String satnica;
-    //private String languagesTeach;
+
     private String stilPoducavanja;
     private String ciljeviUcenja;
     private String slika; // Dodano: atribut za sliku

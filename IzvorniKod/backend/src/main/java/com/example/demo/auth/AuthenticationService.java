@@ -34,20 +34,8 @@ public class AuthenticationService {
                 .lozinka(passwordEncoder.encode(request.getLozinka()))
                 .role(Role.ROLE_USER)
                 .build();
-        //repository.save(user);
-        korisnikServiceJPA.register(user);
-        // Spremiti u glavni repository
-        // Provjera uloge i spremanje u specifičan repository
-        //if ("Učenik".equalsIgnoreCase(request.getUloga())) {
-        //    Ucenik ucenik = new Ucenik(user); // Konstruktor kopira podatke iz Korisnik
-        //    ucenikRepository.save(ucenik);
-        //} else if ("Učitelj".equalsIgnoreCase(request.getUloga())) {
-        //    Ucitelj ucitelj = new Ucitelj(user); // Konstruktor kopira podatke iz Korisnik
-        //    uciteljRepository.save(ucitelj);
-        //} else {
-        //    throw new IllegalArgumentException("Nepoznata uloga: " + request.getUloga());
-        //}
 
+        korisnikServiceJPA.register(user);
 
         var jwtToken = jwtService.generateToken(user);
 

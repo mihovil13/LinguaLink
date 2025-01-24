@@ -29,8 +29,7 @@ public class ProfilePictureController {
     public ResponseEntity<?> spremiSliku(@RequestBody Map<String, String> payload) {
         String email = payload.get("email");
         String base64Image = payload.get("slika");
-        System.out.println("DOSO SI OVDJE");
-        System.out.println("OVO JE OG IZDANJE: " + base64Image.substring(0, 40));
+
         try {
             if (base64Image.startsWith("data:image")) {
                 base64Image = base64Image.substring(base64Image.indexOf(",") + 1);
@@ -39,14 +38,14 @@ public class ProfilePictureController {
             // Pronalaženje korisnika
             Korisnik korisnik = korisnikService.getKorisnikByEmail(email);
             if (korisnik == null) {
-                System.out.println("ALOOOOO");
+
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Korisnik nije pronađen.");
             }
 
             // Spremanje slike u korisnika
 
             korisnik.setSlika(imageBytes);
-            System.out.println("OVO JE PROMIJENJENO: " + Arrays.toString(imageBytes).substring(0, 10));
+
             korisnikService.save(korisnik);
 
             return ResponseEntity.ok("Slika uspješno spremljena.");
